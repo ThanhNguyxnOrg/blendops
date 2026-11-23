@@ -3,18 +3,18 @@
   "auditPhase": "v1.0.0-current",
   "status": "reconciled-current-state",
   "repository": "ThanhNguyxnOrg/blendops",
-  "branch": "main",
-  "sourceCommitSha": "aad20f0e5f03d99e2ee94a4e3cb26563329c7ca4",
-  "sourceCommitShort": "aad20f0",
-  "sourceCommitDate": "2026-11-15 04:52:30 +0000",
+  "branch": "devin/1795432846-merge-skills-14",
+  "sourceCommitSha": "657b5ba04235997d2212cee5f9cd2a2e3cfadaf8",
+  "sourceCommitShort": "657b5ba",
+  "sourceCommitDate": "2026-11-22 22:00:20 -0500",
   "auditProvenance": {
-    "sourceCommitSha": "aad20f0e5f03d99e2ee94a4e3cb26563329c7ca4",
-    "sourceCommitShort": "aad20f0",
-    "sourceCommitDate": "2026-11-15 04:52:30 +0000",
-    "workingTreeState": "clean",
-    "snapshotBasis": "clean-committed-tree",
-    "uncommittedChangeCount": 0,
-    "auditedInputsSha256": "7e516a35cdbdf85698a2468ce12432311d19d4bf350a3b531c7e587ab81dffca",
+    "sourceCommitSha": "657b5ba04235997d2212cee5f9cd2a2e3cfadaf8",
+    "sourceCommitShort": "657b5ba",
+    "sourceCommitDate": "2026-11-22 22:00:20 -0500",
+    "workingTreeState": "dirty",
+    "snapshotBasis": "working-tree-on-top-of-source-commit",
+    "uncommittedChangeCount": 601,
+    "auditedInputsSha256": "32883c38bdae37fe98208a88eae7c9fb287efef194081debe4c3844f6262040e",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "historicalBaseline": {
@@ -33,10 +33,10 @@
     "zeroCompensationGate": "All three initial P0 zero-compensation blockers (F-01 truth-state contradiction, F-02 non-portable ZIP exporter/CI gap, and F-04 zero automated evaluation runner) have been resolved with deterministic CI runners.",
     "activeZeroCompensationBlockers": [],
     "resolvedZeroCompensationBlockers": [
-      "RESOLVED (F-01): 0/48 SKILL.md files assign Not Run to Artifact status (was 30/48 at 3ea3c35). Guarded by scripts/check-docs.mjs and schemas.",
-      "RESOLVED (F-02): scripts/export-claude-skills.mjs uses pure-Node fflate across all 48 skills (SKILL.md + EVAL.md + references/*) with isolated --output-root concurrency safety and .github/workflows/docs.yml runs npm run ci.",
-      "RESOLVED (F-03): 48/48 catalog skills ship validated contract.json files, compiled registry/skills.json + registry/workflow-graph.json (371 edges, 0 progression cycles), and synchronized relative-path Markdown handoff blocks.",
-      "RESOLVED (F-04): scripts/run-evals.mjs validates and executes 269 deterministic, contract-routing, and contract-handoff evaluation cases across all 48/48 catalog skills in CI (0 unmigrated prose skills); live_model and blender_runtime modes remain honestly marked Not Run."
+      "RESOLVED (F-01): 0/14 SKILL.md files assign Not Run to Artifact status (was 30/14 at 3ea3c35). Guarded by scripts/check-docs.mjs and schemas.",
+      "RESOLVED (F-02): scripts/export-claude-skills.mjs uses pure-Node fflate across all 14 skills (SKILL.md + EVAL.md + references/*) with isolated --output-root concurrency safety and .github/workflows/docs.yml runs npm run ci.",
+      "RESOLVED (F-03): 14/14 catalog skills ship validated contract.json files, compiled registry/skills.json + registry/workflow-graph.json (195 edges, 0 progression cycles), and synchronized relative-path Markdown handoff blocks.",
+      "RESOLVED (F-04): scripts/run-evals.mjs validates and executes 269 deterministic, contract-routing, and contract-handoff evaluation cases across all 14/14 catalog skills in CI (0 unmigrated prose skills); live_model and blender_runtime modes remain honestly marked Not Run."
     ]
   },
   "totals": {
@@ -67,19 +67,19 @@
       "criteria": [
         {
           "id": "p1-c1",
-          "description": "All 48 skills ship valid Anthropic/Claude.ai frontmatter (name <= 64, description <= 200, no extra keys)",
+          "description": "All 14 skills ship valid Anthropic/Claude.ai frontmatter (name <= 64, description <= 200, no extra keys)",
           "maxPoints": 4,
           "awardedPoints": 4,
           "status": "Pass",
-          "evidence": "48/48 skills pass assertSkillFrontmatterSpecCompliant and assertSkillFrontmatterUploadLimits in scripts/check-docs.mjs."
+          "evidence": "14/14 skills pass assertSkillFrontmatterSpecCompliant and assertSkillFrontmatterUploadLimits in scripts/check-docs.mjs."
         },
         {
           "id": "p1-c2",
-          "description": "All 48 skills contain complete template sections and consistent truth-state definitions",
+          "description": "All 14 skills contain complete template sections and consistent truth-state definitions",
           "maxPoints": 4,
           "awardedPoints": 4,
           "status": "Pass",
-          "evidence": "F-01 FIXED & F-05 FIXED: 48/48 skills strictly separate Runtime status (Not Run) from Artifact status (Not Produced) and include all 9 core + 9 extended template sections enforced by scripts/check-docs.mjs and scripts/test-skill-templates.mjs."
+          "evidence": "F-01 FIXED & F-05 FIXED: 14/14 skills strictly separate Runtime status (Not Run) from Artifact status (Not Produced) and include all 9 core + 9 extended template sections enforced by scripts/check-docs.mjs and scripts/test-skill-templates.mjs."
         },
         {
           "id": "p1-c3",
@@ -87,7 +87,7 @@
           "maxPoints": 4,
           "awardedPoints": 4,
           "status": "Pass",
-          "evidence": "191 distinct trigger phrases and 48 distinct canonical roles across all 48 contracts with 0 collisions; the 4 routing participants enforce mutually exclusive Rank 1-4 activation gates verified across all 16 state combinations in scripts/build-registry.mjs."
+          "evidence": "191 distinct trigger phrases and 14 distinct canonical roles across all 14 contracts with 0 collisions; the 3 routing participants enforce mutually exclusive Rank 1-4 activation gates verified across all 16 state combinations in scripts/build-registry.mjs."
         },
         {
           "id": "p1-c4",
@@ -95,7 +95,7 @@
           "maxPoints": 3,
           "awardedPoints": 3,
           "status": "Pass",
-          "evidence": "F-03 FIXED: All 48/48 catalog skills ship Draft 2020-12 Ajv2020-validated contract.json files, context field vocabulary validation (registry/contract-context-fields.json), and compiled registry/skills.json."
+          "evidence": "F-03 FIXED: All 14/14 catalog skills ship Draft 2020-12 Ajv2020-validated contract.json files, context field vocabulary validation (registry/contract-context-fields.json), and compiled registry/skills.json."
         }
       ]
     },
@@ -116,11 +116,11 @@
       "criteria": [
         {
           "id": "p2-c1",
-          "description": "All 48 skills connected in workflow handoff graph with valid targets",
+          "description": "All 14 skills connected in workflow handoff graph with valid targets",
           "maxPoints": 5,
           "awardedPoints": 5,
           "status": "Pass",
-          "evidence": "All 48/48 skills are contracted nodes in registry/workflow-graph.json (371 edges) and 100% of handoff targets and exclusion delegates resolve to valid catalog skill IDs."
+          "evidence": "All 14/14 skills are contracted nodes in registry/workflow-graph.json (195 edges) and 100% of handoff targets and exclusion delegates resolve to valid catalog skill IDs."
         },
         {
           "id": "p2-c2",
@@ -128,7 +128,7 @@
           "maxPoints": 4,
           "awardedPoints": 4,
           "status": "Pass",
-          "evidence": "detectProgressionCycles and Ajv2020 retryPolicy validation enforce acyclic progression (0 cycles across all 48 skills) and bounded retry exit conditions in CI."
+          "evidence": "detectProgressionCycles and Ajv2020 retryPolicy validation enforce acyclic progression (0 cycles across all 14 skills) and bounded retry exit conditions in CI."
         },
         {
           "id": "p2-c3",
@@ -136,7 +136,7 @@
           "maxPoints": 3,
           "awardedPoints": 3,
           "status": "Pass",
-          "evidence": "F-03 & F-06 FIXED: All 48/48 SKILL.md files synchronize managed relative-path handoff blocks (../<target>/SKILL.md); 0 skills use bare-ID handoff notation."
+          "evidence": "F-03 & F-06 FIXED: All 14/14 SKILL.md files synchronize managed relative-path handoff blocks (../<target>/SKILL.md); 0 skills use bare-ID handoff notation."
         },
         {
           "id": "p2-c4",
@@ -144,7 +144,7 @@
           "maxPoints": 3,
           "awardedPoints": 3,
           "status": "Pass",
-          "evidence": "scripts/build-registry.mjs compiles registry/workflow-graph.json across all 48 contracted skills (371 edges, 0 progression cycles) and validates state-space overlap, reachability, and context field predicates in CI."
+          "evidence": "scripts/build-registry.mjs compiles registry/workflow-graph.json across all 14 contracted skills (195 edges, 0 progression cycles) and validates state-space overlap, reachability, and context field predicates in CI."
         }
       ]
     },
@@ -171,7 +171,7 @@
           "maxPoints": 4,
           "awardedPoints": 4,
           "status": "Pass",
-          "evidence": "48/48 skills ship EVAL.md verified by check-docs.mjs and exported byte-for-byte into dist/claude-skills/desktop-zips/*.zip and dist/claude-skills/claude-code-skills/*/."
+          "evidence": "14/14 skills ship EVAL.md verified by check-docs.mjs and exported byte-for-byte into dist/claude-skills/desktop-zips/*.zip and dist/claude-skills/claude-code-skills/*/."
         },
         {
           "id": "p3-c2",
@@ -179,7 +179,7 @@
           "maxPoints": 6,
           "awardedPoints": 6,
           "status": "Pass",
-          "evidence": "F-04 FIXED: All 48/48 catalog skills ship machine-readable evals/suites/<skill>.eval.json suites (269 total cases, >= 5 cases per skill, 0 unmigrated prose-only skills)."
+          "evidence": "F-04 FIXED: All 14/14 catalog skills ship machine-readable evals/suites/<skill>.eval.json suites (269 total cases, >= 5 cases per skill, 0 unmigrated prose-only skills)."
         },
         {
           "id": "p3-c3",
@@ -187,7 +187,7 @@
           "maxPoints": 10,
           "awardedPoints": 6,
           "status": "Warn",
-          "evidence": "scripts/run-evals.mjs executes all 269 deterministic cases across 48/48 catalog skills (21 contract_routing + 124 contract_handoff + 124 deterministic_fixture; 269/269 Passed) in CI. Live LLM (live_model) and Blender MCP (blender_runtime) evaluation modes remain Not Run."
+          "evidence": "scripts/run-evals.mjs executes all 269 deterministic cases across 14/14 catalog skills (35 contract_routing + 70 contract_handoff + 164 deterministic_fixture; 269/269 Passed) in CI. Live LLM (live_model) and Blender MCP (blender_runtime) evaluation modes remain Not Run."
         }
       ]
     },
@@ -204,9 +204,9 @@
         "scripts/inspect-glb.mjs",
         "scripts/generate-glb-handoff-report.mjs",
         "schemas/glb-web-handoff-manifest.schema.json",
-        "docs/examples/glb-web-handoff/README.md",
-        "docs/examples/glb-web-handoff/threejs-glb-viewer.mjs",
-        "docs/examples/glb-web-handoff/r3f-glb-viewer.tsx",
+        "docs/examples/blendops-glb-web-handoff/README.md",
+        "docs/examples/blendops-glb-web-handoff/threejs-glb-viewer.mjs",
+        "docs/examples/blendops-glb-web-handoff/r3f-glb-viewer.tsx",
         "scripts/test-glb-handoff.mjs",
         "docs/audits/current/skill-inventory.json"
       ],
@@ -221,11 +221,11 @@
         },
         {
           "id": "p4-c2",
-          "description": "151 domain reference files covering geometry, PBR materials, lighting, camera, color management, and GLB budgets",
+          "description": "199 domain reference files covering geometry, PBR materials, lighting, camera, color management, and GLB budgets",
           "maxPoints": 6,
           "awardedPoints": 4.5,
           "status": "Pass",
-          "evidence": "151 reference markdown files across 48 skills (3–4 per skill)."
+          "evidence": "199 reference markdown files across 14 skills (3–4 per skill)."
         },
         {
           "id": "p4-c3",
@@ -233,7 +233,7 @@
           "maxPoints": 4,
           "awardedPoints": 4,
           "status": "Pass",
-          "evidence": "F-07 FIXED: scripts/inspect-glb.mjs and scripts/generate-glb-handoff-report.mjs validate GLB 2.0 binary headers, JSON/BIN chunk alignment, buffer/accessor bounds, scene/node/skin/animation/material/texture/extension inventory, and optional Khronos gltf-validator status; schemas/glb-web-handoff-manifest.schema.json and docs/examples/glb-web-handoff/ provide deterministic web handoff manifests, HTML/Markdown reports, and Three.js / React Three Fiber viewer integration; docs/blender-version-compatibility.md documents Blender 3.6 LTS, 4.2 LTS, and 5.1+ shader, engine, color management, and glTF 2.0 matrices."
+          "evidence": "F-07 FIXED: scripts/inspect-glb.mjs and scripts/generate-glb-handoff-report.mjs validate GLB 2.0 binary headers, JSON/BIN chunk alignment, buffer/accessor bounds, scene/node/skin/animation/material/texture/extension inventory, and optional Khronos gltf-validator status; schemas/glb-web-handoff-manifest.schema.json and docs/examples/blendops-glb-web-handoff/ provide deterministic web handoff manifests, HTML/Markdown reports, and Three.js / React Three Fiber viewer integration; docs/blender-version-compatibility.md documents Blender 3.6 LTS, 4.2 LTS, and 5.1+ shader, engine, color management, and glTF 2.0 matrices."
         }
       ]
     },
@@ -258,7 +258,7 @@
           "maxPoints": 3,
           "awardedPoints": 3,
           "status": "Pass",
-          "evidence": "Enforced across all 48 SKILL.md files by scripts/check-docs.mjs, schemas/skill-contract.schema.json, schemas/skill-eval.schema.json, schemas/runtime-evidence-packet.schema.json, scripts/validate-evidence-packet.mjs, and scripts/run-evals.mjs."
+          "evidence": "Enforced across all 14 SKILL.md files by scripts/check-docs.mjs, schemas/skill-contract.schema.json, schemas/skill-eval.schema.json, schemas/runtime-evidence-packet.schema.json, scripts/validate-evidence-packet.mjs, and scripts/run-evals.mjs."
         },
         {
           "id": "p5-c2",
@@ -287,7 +287,7 @@
       "verdict": "Pass",
       "evidenceFiles": [
         "laws/no-arbitrary-python-interface.md",
-        "skills/asset-license-checker/SKILL.md",
+        "skills/blendops-assets/SKILL.md",
         "bundles/generic-project-local/ROLLBACK.md",
         "docs/safety-model.md",
         "schemas/runtime-capability-policy.schema.json",
@@ -301,7 +301,7 @@
           "maxPoints": 5,
           "awardedPoints": 4.5,
           "status": "Pass",
-          "evidence": "Enforced via laws/no-arbitrary-python-interface.md and skills/asset-license-checker/SKILL.md."
+          "evidence": "Enforced via laws/no-arbitrary-python-interface.md and skills/blendops-assets/SKILL.md."
         },
         {
           "id": "p6-c2",
@@ -317,7 +317,7 @@
           "maxPoints": 3,
           "awardedPoints": 3,
           "status": "Pass",
-          "evidence": "F-10 FIXED: schemas/runtime-capability-policy.schema.json, registry/runtime-capability-policy.json (all 48 skills defaulting to L0), scripts/validate-capability-policy.mjs, and docs/safety-model.md enforce L0-L3 capability tiers, non-escalation, asset-license-checker clearance, and fail-closed pre-mutation .blend backup verification."
+          "evidence": "F-10 FIXED: schemas/runtime-capability-policy.schema.json, registry/runtime-capability-policy.json (all 14 skills defaulting to L0), scripts/validate-capability-policy.mjs, and docs/safety-model.md enforce L0-L3 capability tiers, non-escalation, blendops-assets clearance, and fail-closed pre-mutation .blend backup verification."
         }
       ]
     },
@@ -385,11 +385,11 @@
       "criteria": [
         {
           "id": "p8-c1",
-          "description": "Clear start-here onboarding, hub index, plain-language law, deterministic 96-file bundle reference summaries, and 0 broken relative links across active Markdown files",
+          "description": "Clear start-here onboarding, hub index, plain-language law, deterministic 28-file bundle reference summaries, and 0 broken relative links across active Markdown files",
           "maxPoints": 5,
           "awardedPoints": 5,
           "status": "Pass",
-          "evidence": "F-09 FIXED: Active markdown files pass relative link and policy checks in scripts/check-docs.mjs, and all 96 bundle reference summaries across bundles/claude-desktop-manual/references/skills/*.md and bundles/skill-package/blendops/references/skill-*.md are deterministically generated and verified via scripts/generate-bundle-reference-summaries.mjs and scripts/test-bundle-summaries.mjs."
+          "evidence": "F-09 FIXED: Active markdown files pass relative link and policy checks in scripts/check-docs.mjs, and all 28 bundle reference summaries across bundles/claude-desktop-manual/references/skills/*.md and bundles/skill-package/blendops/references/skill-*.md are deterministically generated and verified via scripts/generate-bundle-reference-summaries.mjs and scripts/test-bundle-summaries.mjs."
         }
       ]
     },

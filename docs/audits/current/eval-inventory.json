@@ -3,29 +3,29 @@
   "auditPhase": "v1.0.0-current",
   "reconciledFromBaselineCommit": "3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d",
   "repository": "ThanhNguyxnOrg/blendops",
-  "branch": "main",
-  "sourceCommitSha": "aad20f0e5f03d99e2ee94a4e3cb26563329c7ca4",
-  "sourceCommitShort": "aad20f0",
-  "sourceCommitDate": "2026-11-15 04:52:30 +0000",
+  "branch": "devin/1795432846-merge-skills-14",
+  "sourceCommitSha": "657b5ba04235997d2212cee5f9cd2a2e3cfadaf8",
+  "sourceCommitShort": "657b5ba",
+  "sourceCommitDate": "2026-11-22 22:00:20 -0500",
   "auditProvenance": {
-    "sourceCommitSha": "aad20f0e5f03d99e2ee94a4e3cb26563329c7ca4",
-    "sourceCommitShort": "aad20f0",
-    "sourceCommitDate": "2026-11-15 04:52:30 +0000",
-    "workingTreeState": "clean",
-    "snapshotBasis": "clean-committed-tree",
-    "uncommittedChangeCount": 0,
-    "auditedInputsSha256": "7e516a35cdbdf85698a2468ce12432311d19d4bf350a3b531c7e587ab81dffca",
+    "sourceCommitSha": "657b5ba04235997d2212cee5f9cd2a2e3cfadaf8",
+    "sourceCommitShort": "657b5ba",
+    "sourceCommitDate": "2026-11-22 22:00:20 -0500",
+    "workingTreeState": "dirty",
+    "snapshotBasis": "working-tree-on-top-of-source-commit",
+    "uncommittedChangeCount": 601,
+    "auditedInputsSha256": "32883c38bdae37fe98208a88eae7c9fb287efef194081debe4c3844f6262040e",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "summary": {
-    "totalEvalFiles": 48,
-    "machineReadableSuitesCount": 48,
-    "machineReadablePilotSuitesCount": 48,
+    "totalEvalFiles": 14,
+    "machineReadableSuitesCount": 14,
+    "machineReadablePilotSuitesCount": 14,
     "skillsWithoutSuitesCount": 0,
     "totalMachineReadableCases": 269,
-    "contractRoutingCasesCount": 21,
-    "contractHandoffCasesCount": 124,
-    "deterministicFixtureCasesCount": 124,
+    "contractRoutingCasesCount": 35,
+    "contractHandoffCasesCount": 70,
+    "deterministicFixtureCasesCount": 164,
     "structuredMultiCaseTableCount": 8,
     "singlePromptProseOutlineCount": 40,
     "remainingUnmigratedProseSkillsCount": 0,
@@ -37,28 +37,25 @@
   },
   "evals": [
     {
-      "id": "acceptance-criteria-builder",
-      "category": "process-discipline",
+      "id": "blendops-glb-budget",
+      "category": "quality-validators",
       "isGatewaySkill": false,
-      "lineCount": 26,
+      "lineCount": 86,
       "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Sample passing response outline",
-        "Sample failing response outline"
+        "From former `blendops-glb-budget`",
+        "From former `blendops-glb-budget`"
       ],
       "hasStructuredEvalCasesTable": false,
       "evalCaseRowCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/acceptance-criteria-builder/EVAL.md",
+      "evalPath": "skills/blendops-glb-budget/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/acceptance-criteria-builder.eval.json",
-      "machineReadableCaseCount": 5,
+      "evalJsonPath": "evals/suites/blendops-glb-budget.eval.json",
+      "machineReadableCaseCount": 10,
       "countsByEvaluationType": {
         "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
+        "contract_handoff": 5,
+        "deterministic_fixture": 5
       },
       "evaluationTypes": [
         "contract_handoff",
@@ -70,202 +67,24 @@
       "auditDisposition": "EVAL_JSON_IMPLEMENTED"
     },
     {
-      "id": "asset-discovery",
-      "category": "asset-and-sourcing",
+      "id": "blendops-render-settings",
+      "category": "render-and-output-decisions",
       "isGatewaySkill": false,
-      "lineCount": 82,
+      "lineCount": 59,
       "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Eval cases",
-        "Expected evidence/status fields",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": true,
-      "evalCaseRowCount": 18,
-      "evalTierClassification": "structured_multi_case_table",
-      "evalPath": "skills/asset-discovery/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/asset-discovery.eval.json",
-      "machineReadableCaseCount": 9,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 2,
-        "deterministic_fixture": 7
-      },
-      "evaluationTypes": [
-        "deterministic_fixture",
-        "contract_handoff"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "asset-fallback-strategy",
-      "category": "asset-and-sourcing",
-      "isGatewaySkill": false,
-      "lineCount": 35,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Sample passing response outline",
-        "Sample failing response outline"
+        "From former `blendops-render-settings`",
+        "From former `blendops-render-settings`"
       ],
       "hasStructuredEvalCasesTable": false,
       "evalCaseRowCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/asset-fallback-strategy/EVAL.md",
+      "evalPath": "skills/blendops-render-settings/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/asset-fallback-strategy.eval.json",
-      "machineReadableCaseCount": 5,
+      "evalJsonPath": "evals/suites/blendops-render-settings.eval.json",
+      "machineReadableCaseCount": 10,
       "countsByEvaluationType": {
         "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "asset-library-plan",
-      "category": "asset-and-sourcing",
-      "isGatewaySkill": false,
-      "lineCount": 29,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/asset-library-plan/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/asset-library-plan.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "asset-license-checker",
-      "category": "asset-and-sourcing",
-      "isGatewaySkill": false,
-      "lineCount": 34,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/asset-license-checker/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/asset-license-checker.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "asset-style-check",
-      "category": "asset-and-sourcing",
-      "isGatewaySkill": false,
-      "lineCount": 27,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/asset-style-check/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/asset-style-check.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "blender-brainstorming",
-      "category": "process-discipline",
-      "isGatewaySkill": false,
-      "lineCount": 80,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Eval cases",
-        "Expected evidence/status fields",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": true,
-      "evalCaseRowCount": 15,
-      "evalTierClassification": "structured_multi_case_table",
-      "evalPath": "skills/blender-brainstorming/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/blender-brainstorming.eval.json",
-      "machineReadableCaseCount": 7,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 2,
+        "contract_handoff": 5,
         "deterministic_fixture": 5
       },
       "evaluationTypes": [
@@ -278,29 +97,59 @@
       "auditDisposition": "EVAL_JSON_IMPLEMENTED"
     },
     {
-      "id": "blender-recipe-decomposer",
-      "category": "process-discipline",
+      "id": "blendops-done-criteria",
+      "category": "routing-and-governance",
       "isGatewaySkill": false,
-      "lineCount": 36,
+      "lineCount": 166,
       "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Sample passing response outline",
-        "Sample failing response outline"
+        "From former `blendops-done-criteria`",
+        "From former `blendops-done-criteria`",
+        "From former `blendops-done-criteria`",
+        "From former `blendops-done-criteria`",
+        "From former `blendops-done-criteria`"
       ],
       "hasStructuredEvalCasesTable": false,
       "evalCaseRowCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/blender-recipe-decomposer/EVAL.md",
+      "evalPath": "skills/blendops-done-criteria/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/blender-recipe-decomposer.eval.json",
-      "machineReadableCaseCount": 5,
+      "evalJsonPath": "evals/suites/blendops-done-criteria.eval.json",
+      "machineReadableCaseCount": 25,
+      "countsByEvaluationType": {
+        "contract_routing": 14,
+        "contract_handoff": 0,
+        "deterministic_fixture": 11
+      },
+      "evaluationTypes": [
+        "contract_routing",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
+      "liveModelStatus": "Not Run",
+      "blenderRuntimeStatus": "Not Run",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
+    },
+    {
+      "id": "blendops-glb-web-handoff",
+      "category": "evidence-and-handoff",
+      "isGatewaySkill": false,
+      "lineCount": 122,
+      "headings": [
+        "From former `blendops-glb-web-handoff`",
+        "From former `blendops-glb-web-handoff`",
+        "From former `blendops-glb-web-handoff`"
+      ],
+      "hasStructuredEvalCasesTable": false,
+      "evalCaseRowCount": 0,
+      "evalTierClassification": "single_prompt_prose_outline",
+      "evalPath": "skills/blendops-glb-web-handoff/EVAL.md",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/blendops-glb-web-handoff.eval.json",
+      "machineReadableCaseCount": 15,
       "countsByEvaluationType": {
         "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
+        "contract_handoff": 7,
+        "deterministic_fixture": 8
       },
       "evaluationTypes": [
         "contract_handoff",
@@ -312,27 +161,242 @@
       "auditDisposition": "EVAL_JSON_IMPLEMENTED"
     },
     {
-      "id": "blender-troubleshooting",
+      "id": "blendops-camera",
+      "category": "scene-planners",
+      "isGatewaySkill": false,
+      "lineCount": 103,
+      "headings": [
+        "From former `blendops-camera`",
+        "From former `blendops-camera`",
+        "From former `blendops-camera`"
+      ],
+      "hasStructuredEvalCasesTable": false,
+      "evalCaseRowCount": 0,
+      "evalTierClassification": "single_prompt_prose_outline",
+      "evalPath": "skills/blendops-camera/EVAL.md",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/blendops-camera.eval.json",
+      "machineReadableCaseCount": 15,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 6,
+        "deterministic_fixture": 9
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
+      "liveModelStatus": "Not Run",
+      "blenderRuntimeStatus": "Not Run",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
+    },
+    {
+      "id": "blendops-lighting-materials",
+      "category": "scene-planners",
+      "isGatewaySkill": false,
+      "lineCount": 149,
+      "headings": [
+        "From former `blendops-lighting-materials`",
+        "From former `blendops-lighting-materials`",
+        "From former `blendops-lighting-materials`",
+        "From former `blendops-lighting-materials`"
+      ],
+      "hasStructuredEvalCasesTable": false,
+      "evalCaseRowCount": 0,
+      "evalTierClassification": "single_prompt_prose_outline",
+      "evalPath": "skills/blendops-lighting-materials/EVAL.md",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/blendops-lighting-materials.eval.json",
+      "machineReadableCaseCount": 20,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 8,
+        "deterministic_fixture": 12
+      },
+      "evaluationTypes": [
+        "deterministic_fixture",
+        "contract_handoff"
+      ],
+      "deterministicRunnerStatus": "Passed",
+      "liveModelStatus": "Not Run",
+      "blenderRuntimeStatus": "Not Run",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
+    },
+    {
+      "id": "blendops-product-shot",
+      "category": "scene-planners",
+      "isGatewaySkill": false,
+      "lineCount": 81,
+      "headings": [
+        "From former `blendops-product-shot`",
+        "From former `blendops-product-shot`"
+      ],
+      "hasStructuredEvalCasesTable": false,
+      "evalCaseRowCount": 0,
+      "evalTierClassification": "single_prompt_prose_outline",
+      "evalPath": "skills/blendops-product-shot/EVAL.md",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/blendops-product-shot.eval.json",
+      "machineReadableCaseCount": 10,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 6,
+        "deterministic_fixture": 4
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
+      "liveModelStatus": "Not Run",
+      "blenderRuntimeStatus": "Not Run",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
+    },
+    {
+      "id": "blendops-scene-plan",
+      "category": "scene-planners",
+      "isGatewaySkill": false,
+      "lineCount": 137,
+      "headings": [
+        "From former `blendops-scene-plan`",
+        "From former `blendops-scene-plan`",
+        "From former `blendops-scene-plan`"
+      ],
+      "hasStructuredEvalCasesTable": false,
+      "evalCaseRowCount": 0,
+      "evalTierClassification": "single_prompt_prose_outline",
+      "evalPath": "skills/blendops-scene-plan/EVAL.md",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/blendops-scene-plan.eval.json",
+      "machineReadableCaseCount": 15,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 9,
+        "deterministic_fixture": 6
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
+      "liveModelStatus": "Not Run",
+      "blenderRuntimeStatus": "Not Run",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
+    },
+    {
+      "id": "blendops-brief",
+      "category": "routing-and-governance",
+      "isGatewaySkill": false,
+      "lineCount": 232,
+      "headings": [
+        "From former `blendops-brief`",
+        "From former `blendops-brief`",
+        "From former `blendops-brief`",
+        "From former `blendops-brief`"
+      ],
+      "hasStructuredEvalCasesTable": true,
+      "evalCaseRowCount": 35,
+      "evalTierClassification": "structured_multi_case_table",
+      "evalPath": "skills/blendops-brief/EVAL.md",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/blendops-brief.eval.json",
+      "machineReadableCaseCount": 26,
+      "countsByEvaluationType": {
+        "contract_routing": 7,
+        "contract_handoff": 0,
+        "deterministic_fixture": 19
+      },
+      "evaluationTypes": [
+        "deterministic_fixture",
+        "contract_routing"
+      ],
+      "deterministicRunnerStatus": "Passed",
+      "liveModelStatus": "Not Run",
+      "blenderRuntimeStatus": "Not Run",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
+    },
+    {
+      "id": "blendops-connect-blender",
       "category": "runtime-and-execution",
       "isGatewaySkill": false,
-      "lineCount": 79,
+      "lineCount": 237,
       "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Eval cases",
-        "Expected evidence/status fields",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
+        "From former `blendops-connect-blender`",
+        "From former `blendops-connect-blender`",
+        "From former `blendops-connect-blender`",
+        "From former `blendops-connect-blender`",
+        "From former `blendops-connect-blender`",
+        "From former `blendops-connect-blender`"
+      ],
+      "hasStructuredEvalCasesTable": true,
+      "evalCaseRowCount": 17,
+      "evalTierClassification": "structured_multi_case_table",
+      "evalPath": "skills/blendops-connect-blender/EVAL.md",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/blendops-connect-blender.eval.json",
+      "machineReadableCaseCount": 36,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 7,
+        "deterministic_fixture": 29
+      },
+      "evaluationTypes": [
+        "deterministic_fixture",
+        "contract_handoff"
+      ],
+      "deterministicRunnerStatus": "Passed",
+      "liveModelStatus": "Not Run",
+      "blenderRuntimeStatus": "Not Run",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
+    },
+    {
+      "id": "blendops-assets",
+      "category": "asset-and-sourcing",
+      "isGatewaySkill": false,
+      "lineCount": 211,
+      "headings": [
+        "From former `blendops-assets`",
+        "From former `blendops-assets`",
+        "From former `blendops-assets`",
+        "From former `blendops-assets`",
+        "From former `blendops-assets`"
+      ],
+      "hasStructuredEvalCasesTable": true,
+      "evalCaseRowCount": 18,
+      "evalTierClassification": "structured_multi_case_table",
+      "evalPath": "skills/blendops-assets/EVAL.md",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/blendops-assets.eval.json",
+      "machineReadableCaseCount": 29,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 6,
+        "deterministic_fixture": 23
+      },
+      "evaluationTypes": [
+        "deterministic_fixture",
+        "contract_handoff"
+      ],
+      "deterministicRunnerStatus": "Passed",
+      "liveModelStatus": "Not Run",
+      "blenderRuntimeStatus": "Not Run",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
+    },
+    {
+      "id": "blendops-fix-problems",
+      "category": "quality-validators",
+      "isGatewaySkill": false,
+      "lineCount": 83,
+      "headings": [
+        "From former `blendops-fix-problems`"
       ],
       "hasStructuredEvalCasesTable": true,
       "evalCaseRowCount": 15,
       "evalTierClassification": "structured_multi_case_table",
-      "evalPath": "skills/blender-troubleshooting/EVAL.md",
+      "evalPath": "skills/blendops-fix-problems/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/blender-troubleshooting.eval.json",
+      "evalJsonPath": "evals/suites/blendops-fix-problems.eval.json",
       "machineReadableCaseCount": 8,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -349,34 +413,30 @@
       "auditDisposition": "EVAL_JSON_IMPLEMENTED"
     },
     {
-      "id": "blendops-help",
+      "id": "blendops-start",
       "category": "routing-and-governance",
       "isGatewaySkill": false,
-      "lineCount": 68,
+      "lineCount": 132,
       "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Eval cases",
-        "Expected evidence/status fields",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Sample passing response outline",
-        "Sample failing response outline"
+        "From former `blendops-start`",
+        "From former `blendops-start`",
+        "From former `blendops-start`"
       ],
       "hasStructuredEvalCasesTable": true,
       "evalCaseRowCount": 14,
       "evalTierClassification": "structured_multi_case_table",
-      "evalPath": "skills/blendops-help/EVAL.md",
+      "evalPath": "skills/blendops-start/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/blendops-help.eval.json",
-      "machineReadableCaseCount": 6,
+      "evalJsonPath": "evals/suites/blendops-start.eval.json",
+      "machineReadableCaseCount": 16,
       "countsByEvaluationType": {
-        "contract_routing": 6,
+        "contract_routing": 14,
         "contract_handoff": 0,
-        "deterministic_fixture": 0
+        "deterministic_fixture": 2
       },
       "evaluationTypes": [
-        "contract_routing"
+        "contract_routing",
+        "deterministic_fixture"
       ],
       "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
@@ -384,1310 +444,32 @@
       "auditDisposition": "EVAL_JSON_IMPLEMENTED"
     },
     {
-      "id": "bridge-conflicts",
-      "category": "runtime-and-execution",
+      "id": "blendops-final-check",
+      "category": "evidence-and-handoff",
       "isGatewaySkill": false,
-      "lineCount": 84,
+      "lineCount": 277,
       "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Eval cases",
-        "Expected evidence/status fields",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
+        "From former `blendops-final-check`",
+        "From former `blendops-final-check`",
+        "From former `blendops-final-check`",
+        "From former `blendops-final-check`",
+        "From former `blendops-final-check`"
       ],
       "hasStructuredEvalCasesTable": true,
-      "evalCaseRowCount": 17,
+      "evalCaseRowCount": 42,
       "evalTierClassification": "structured_multi_case_table",
-      "evalPath": "skills/bridge-conflicts/EVAL.md",
+      "evalPath": "skills/blendops-final-check/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/bridge-conflicts.eval.json",
-      "machineReadableCaseCount": 9,
+      "evalJsonPath": "evals/suites/blendops-final-check.eval.json",
+      "machineReadableCaseCount": 34,
       "countsByEvaluationType": {
         "contract_routing": 0,
-        "contract_handoff": 2,
-        "deterministic_fixture": 7
+        "contract_handoff": 9,
+        "deterministic_fixture": 25
       },
       "evaluationTypes": [
         "deterministic_fixture",
         "contract_handoff"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "camera-composition",
-      "category": "scene-planners",
-      "isGatewaySkill": false,
-      "lineCount": 33,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/camera-composition/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/camera-composition.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "character-portrait",
-      "category": "scene-planners",
-      "isGatewaySkill": false,
-      "lineCount": 43,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/character-portrait/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/character-portrait.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "cli-appendix-job-outline",
-      "category": "runtime-and-execution",
-      "isGatewaySkill": false,
-      "lineCount": 27,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/cli-appendix-job-outline/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/cli-appendix-job-outline.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "color-management-decision",
-      "category": "render-and-output-decisions",
-      "isGatewaySkill": false,
-      "lineCount": 29,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/color-management-decision/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/color-management-decision.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "composition-quality-checker",
-      "category": "quality-validators",
-      "isGatewaySkill": false,
-      "lineCount": 39,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/composition-quality-checker/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/composition-quality-checker.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "cycles-vs-eevee-decision",
-      "category": "render-and-output-decisions",
-      "isGatewaySkill": false,
-      "lineCount": 27,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/cycles-vs-eevee-decision/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/cycles-vs-eevee-decision.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "done-criteria",
-      "category": "process-discipline",
-      "isGatewaySkill": false,
-      "lineCount": 34,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/done-criteria/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/done-criteria.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "environment-shot",
-      "category": "scene-planners",
-      "isGatewaySkill": false,
-      "lineCount": 45,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/environment-shot/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/environment-shot.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "glb-animation-handoff",
-      "category": "evidence-and-handoff",
-      "isGatewaySkill": false,
-      "lineCount": 40,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/glb-animation-handoff/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/glb-animation-handoff.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "glb-web-handoff",
-      "category": "evidence-and-handoff",
-      "isGatewaySkill": false,
-      "lineCount": 34,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/glb-web-handoff/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/glb-web-handoff.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "intent-to-3d-brief-writer",
-      "category": "process-discipline",
-      "isGatewaySkill": false,
-      "lineCount": 83,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Eval cases",
-        "Expected evidence/status fields",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": true,
-      "evalCaseRowCount": 19,
-      "evalTierClassification": "structured_multi_case_table",
-      "evalPath": "skills/intent-to-3d-brief-writer/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/intent-to-3d-brief-writer.eval.json",
-      "machineReadableCaseCount": 9,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 2,
-        "deterministic_fixture": 7
-      },
-      "evaluationTypes": [
-        "deterministic_fixture",
-        "contract_handoff"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "interior-scene",
-      "category": "scene-planners",
-      "isGatewaySkill": false,
-      "lineCount": 45,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/interior-scene/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/interior-scene.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "lighting-material-plan",
-      "category": "scene-planners",
-      "isGatewaySkill": false,
-      "lineCount": 33,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/lighting-material-plan/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/lighting-material-plan.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "lighting-quality-checker",
-      "category": "quality-validators",
-      "isGatewaySkill": false,
-      "lineCount": 42,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/lighting-quality-checker/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/lighting-quality-checker.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "material-quality-checker",
-      "category": "quality-validators",
-      "isGatewaySkill": false,
-      "lineCount": 41,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/material-quality-checker/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/material-quality-checker.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "mobile-glb-budget",
-      "category": "evidence-and-handoff",
-      "isGatewaySkill": false,
-      "lineCount": 41,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/mobile-glb-budget/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/mobile-glb-budget.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "output-format-decision",
-      "category": "render-and-output-decisions",
-      "isGatewaySkill": false,
-      "lineCount": 28,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/output-format-decision/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/output-format-decision.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "pack-prerequisite-checker",
-      "category": "routing-and-governance",
-      "isGatewaySkill": false,
-      "lineCount": 27,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/pack-prerequisite-checker/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/pack-prerequisite-checker.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 5,
-        "contract_handoff": 0,
-        "deterministic_fixture": 0
-      },
-      "evaluationTypes": [
-        "contract_routing"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "path-one-host-outline",
-      "category": "runtime-and-execution",
-      "isGatewaySkill": false,
-      "lineCount": 27,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/path-one-host-outline/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/path-one-host-outline.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "plain-language-response",
-      "category": "evidence-and-handoff",
-      "isGatewaySkill": false,
-      "lineCount": 34,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/plain-language-response/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/plain-language-response.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "polycount-budget-checker",
-      "category": "quality-validators",
-      "isGatewaySkill": false,
-      "lineCount": 41,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/polycount-budget-checker/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/polycount-budget-checker.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "pre-handoff-verification",
-      "category": "evidence-and-handoff",
-      "isGatewaySkill": false,
-      "lineCount": 85,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Eval cases",
-        "Expected evidence/status fields",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": true,
-      "evalCaseRowCount": 19,
-      "evalTierClassification": "structured_multi_case_table",
-      "evalPath": "skills/pre-handoff-verification/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/pre-handoff-verification.eval.json",
-      "machineReadableCaseCount": 9,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 2,
-        "deterministic_fixture": 7
-      },
-      "evaluationTypes": [
-        "deterministic_fixture",
-        "contract_handoff"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "preview-report",
-      "category": "evidence-and-handoff",
-      "isGatewaySkill": false,
-      "lineCount": 40,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/preview-report/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/preview-report.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "product-grid-scene-planner",
-      "category": "scene-planners",
-      "isGatewaySkill": false,
-      "lineCount": 43,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/product-grid-scene-planner/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/product-grid-scene-planner.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "product-hero-scene-planner",
-      "category": "scene-planners",
-      "isGatewaySkill": false,
-      "lineCount": 34,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/product-hero-scene-planner/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/product-hero-scene-planner.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "r3f-component-plan",
-      "category": "evidence-and-handoff",
-      "isGatewaySkill": false,
-      "lineCount": 44,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/r3f-component-plan/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/r3f-component-plan.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "recipe-fit-assessor",
-      "category": "routing-and-governance",
-      "isGatewaySkill": false,
-      "lineCount": 29,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/recipe-fit-assessor/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/recipe-fit-assessor.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 5,
-        "contract_handoff": 0,
-        "deterministic_fixture": 0
-      },
-      "evaluationTypes": [
-        "contract_routing"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "render-export-evidence",
-      "category": "evidence-and-handoff",
-      "isGatewaySkill": false,
-      "lineCount": 87,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Eval cases",
-        "Expected evidence/status fields",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": true,
-      "evalCaseRowCount": 22,
-      "evalTierClassification": "structured_multi_case_table",
-      "evalPath": "skills/render-export-evidence/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/render-export-evidence.eval.json",
-      "machineReadableCaseCount": 10,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 2,
-        "deterministic_fixture": 8
-      },
-      "evaluationTypes": [
-        "deterministic_fixture",
-        "contract_handoff"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "resolution-aspect-decision",
-      "category": "render-and-output-decisions",
-      "isGatewaySkill": false,
-      "lineCount": 27,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/resolution-aspect-decision/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/resolution-aspect-decision.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "runtime-attempt-report",
-      "category": "runtime-and-execution",
-      "isGatewaySkill": false,
-      "lineCount": 27,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/runtime-attempt-report/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/runtime-attempt-report.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "runtime-path-picker",
-      "category": "runtime-and-execution",
-      "isGatewaySkill": false,
-      "lineCount": 27,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/runtime-path-picker/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/runtime-path-picker.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "runtime-readiness",
-      "category": "runtime-and-execution",
-      "isGatewaySkill": false,
-      "lineCount": 34,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/runtime-readiness/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/runtime-readiness.eval.json",
-      "machineReadableCaseCount": 7,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 2,
-        "deterministic_fixture": 5
-      },
-      "evaluationTypes": [
-        "deterministic_fixture",
-        "contract_handoff"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "runtime-setup",
-      "category": "runtime-and-execution",
-      "isGatewaySkill": false,
-      "lineCount": 34,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/runtime-setup/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/runtime-setup.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "scene-readiness",
-      "category": "quality-validators",
-      "isGatewaySkill": false,
-      "lineCount": 34,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/scene-readiness/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/scene-readiness.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "scope-guard",
-      "category": "process-discipline",
-      "isGatewaySkill": false,
-      "lineCount": 34,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/scope-guard/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/scope-guard.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "stage-gates",
-      "category": "process-discipline",
-      "isGatewaySkill": false,
-      "lineCount": 41,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Common failure modes",
-        "Evidence expectations",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/stage-gates/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/stage-gates.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "workflow-stage-router",
-      "category": "routing-and-governance",
-      "isGatewaySkill": false,
-      "lineCount": 26,
-      "headings": [
-        "Text-only eval prompt",
-        "Expected behavior",
-        "Pass / Warn / Fail criteria",
-        "Sample passing response outline",
-        "Sample failing response outline"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/workflow-stage-router/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/workflow-stage-router.eval.json",
-      "machineReadableCaseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 5,
-        "contract_handoff": 0,
-        "deterministic_fixture": 0
-      },
-      "evaluationTypes": [
-        "contract_routing"
       ],
       "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",

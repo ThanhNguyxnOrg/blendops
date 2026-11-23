@@ -74,7 +74,7 @@ export function validateEvidencePacket(packet, { catalogSkillSet = null, schemaP
   }
 
   if (catalogSkillSet && typeof packet.skillId === 'string' && !catalogSkillSet.has(packet.skillId)) {
-    errors.push(`skillId '${packet.skillId}' does not exist in the 48-skill catalog`);
+    errors.push(`skillId '${packet.skillId}' does not exist in the 14-skill catalog`);
   }
 
   const rt = packet.runtimeEvidence;

@@ -421,7 +421,7 @@ export const SUPPORTED_TARGETS = Object.freeze({
     scope: 'bundle-output',
     requiresProject: false,
     requiresOut: true,
-    description: 'User-managed manual import/upload package under --out (48 per-skill ZIPs + manual bundle); no UI automation.',
+    description: 'User-managed manual import/upload package under --out (14 per-skill ZIPs + manual bundle); no UI automation.',
   },
 });
 
@@ -1761,7 +1761,7 @@ function applyManagedBlockToDocument(existingContent, managedBlock, defaultHeade
     return `${before}${managedBlock.trim()}${after}`;
   }
 
-  const trimmed = existingContent.replace(/\s+$/, '');
+  const trimmed = existingContent.trimEnd();
   return `${trimmed}\n\n${managedBlock.trim()}\n`;
 }
 
@@ -2636,7 +2636,7 @@ function buildClaudeDesktopPlan({ repoRootReal, outReal, requestedTarget }) {
   };
 
   const limitations = [
-    'Manual upload bundle only (48 per-skill ZIPs in desktop-zips/*.zip + claude-desktop-manual/ + shared-catalog/blendops-knowledge-and-recipes.zip). Does not automate Claude Desktop UI import, does not configure Anthropic Blender Connector or Lab MCP add-on, and does not run Blender.',
+    'Manual upload bundle only (14 per-skill ZIPs in desktop-zips/*.zip + claude-desktop-manual/ + shared-catalog/blendops-knowledge-and-recipes.zip). Does not automate Claude Desktop UI import, does not configure Anthropic Blender Connector or Lab MCP add-on, and does not run Blender.',
   ];
 
   const planPayload = {
@@ -2818,7 +2818,7 @@ export function formatInstallerReport(result) {
   ];
 
   if (result.skillMdCountPerZip !== undefined) {
-    lines.push(`- SKILL.md count if ZIP mode: ${result.skillMdCountPerZip} per ZIP (${result.zipCount || 48} ZIPs)`);
+    lines.push(`- SKILL.md count if ZIP mode: ${result.skillMdCountPerZip} per ZIP (${result.zipCount || 14} ZIPs)`);
   }
 
   return `${lines.join('\n')}\n`;
@@ -4171,7 +4171,7 @@ function executeWriteClaudeDesktopPlan(livePlan) {
     ].join('\n');
     writeAtomicFile(path.join(stagingDir, 'README.md'), topReadmeContent);
 
-    // Verify all 48 ZIPs, extracted skill folders, manual bundle, README, and manifest inside staging
+    // Verify all 14 ZIPs, extracted skill folders, manual bundle, README, and manifest inside staging
     for (const skillName of sourceInfo.skillNames) {
       const zipAbs = path.join(stagingDir, 'desktop-zips', `${skillName}.zip`);
       if (!fs.existsSync(zipAbs)) {
@@ -4674,7 +4674,7 @@ export function runInstaller(rawArgsOrOptions, options = {}) {
     };
     if (isBundleTarget) {
       result.skillMdCountPerZip = 1;
-      result.zipCount = livePlan.skillCount || 48;
+      result.zipCount = livePlan.skillCount || 14;
     }
     result.report = formatInstallerReport(result);
     return result;

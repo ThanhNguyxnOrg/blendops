@@ -22,14 +22,11 @@ const root = process.cwd();
 const skillsDir = path.join(root, 'skills');
 
 const ORIGINALLY_AFFECTED_SKILLS = [
-  'acceptance-criteria-builder',
-  'cli-appendix-job-outline',
-  'pack-prerequisite-checker',
-  'path-one-host-outline',
-  'recipe-fit-assessor',
-  'runtime-attempt-report',
-  'runtime-path-picker',
-  'workflow-stage-router',
+  'blendops-done-criteria',
+  'blendops-connect-blender',
+  'blendops-brief',
+  'blendops-final-check',
+  'blendops-start',
 ];
 
 const EXPECTED_EXTENDED_HEADINGS = [
@@ -55,9 +52,9 @@ function listRealCatalogSkills(rootDir = root) {
 }
 
 describe('Catalog Template Completion & F-05 Resolution', () => {
-  it('Scenario 1: all 48 catalog skills contain all 9 extended template sections and all 9 core sections', () => {
+  it('Scenario 1: all 14 catalog skills contain all 9 extended template sections and all 9 core sections', () => {
     const skills = listRealCatalogSkills(root);
-    assert.equal(skills.length, 48, 'Expected exactly 48 real catalog skills');
+    assert.equal(skills.length, 14, 'Expected exactly 14 real catalog skills');
     assert.deepEqual(
       REQUIRED_EXTENDED_SKILL_HEADINGS,
       EXPECTED_EXTENDED_HEADINGS,
@@ -85,8 +82,8 @@ describe('Catalog Template Completion & F-05 Resolution', () => {
     }
   });
 
-  it('Scenario 2: each of the 8 originally affected skills passes validation with substantive, role-specific content in all 9 extended sections', () => {
-    assert.equal(ORIGINALLY_AFFECTED_SKILLS.length, 8);
+  it('Scenario 2: each of the 5 merged skills that absorbed the 8 originally affected skills passes validation with substantive, role-specific content in all 9 extended sections', () => {
+    assert.equal(ORIGINALLY_AFFECTED_SKILLS.length, 5);
 
     const decisionTrees = new Set();
     const responseTemplates = new Set();
@@ -120,18 +117,18 @@ describe('Catalog Template Completion & F-05 Resolution', () => {
 
     assert.equal(
       decisionTrees.size,
-      8,
-      'Each of the 8 affected skills must have a distinct, role-specific Decision tree',
+      5,
+      'Each of the 5 merged skills must have a distinct, role-specific Decision tree',
     );
     assert.equal(
       responseTemplates.size,
-      8,
-      'Each of the 8 affected skills must have a distinct, role-specific User-facing response template',
+      5,
+      'Each of the 5 merged skills must have a distinct, role-specific User-facing response template',
     );
   });
 
   it('Scenario 3: removing a required heading from a real skill causes structural validation to fail', () => {
-    const relPath = 'skills/acceptance-criteria-builder/SKILL.md';
+    const relPath = 'skills/blendops-done-criteria/SKILL.md';
     const originalMd = fs.readFileSync(path.join(root, relPath), 'utf8');
 
     for (const targetHeading of ['Decision tree', 'User-facing response template', 'Purpose']) {
@@ -149,7 +146,7 @@ describe('Catalog Template Completion & F-05 Resolution', () => {
   });
 
   it('Scenario 4: duplicating a required heading in a real skill causes structural validation to fail', () => {
-    const relPath = 'skills/runtime-path-picker/SKILL.md';
+    const relPath = 'skills/blendops-connect-blender/SKILL.md';
     const originalMd = fs.readFileSync(path.join(root, relPath), 'utf8');
     const mutatedMd = `${originalMd}\n## Troubleshooting\n\nDuplicate troubleshooting section content for test.\n`;
 
@@ -194,7 +191,7 @@ describe('Catalog Template Completion & F-05 Resolution', () => {
   it('Scenario 6: template files, non-skill Markdown, and generated artifacts are not mistaken for real catalog skills', () => {
     const skills = listRealCatalogSkills(root);
     assert.equal(skills.includes('_template'), false, '_template must never be listed as a real catalog skill');
-    assert.equal(skills.length, 48);
+    assert.equal(skills.length, 14);
 
     const templatePath = 'skills/_template/SKILL.md';
     const templateMd = fs.readFileSync(path.join(root, templatePath), 'utf8');
@@ -207,15 +204,15 @@ describe('Catalog Template Completion & F-05 Resolution', () => {
 
     const docsCheckRes = runDocsCheck(root);
     assert.equal(docsCheckRes.ok, true, `runDocsCheck failed: ${docsCheckRes.errors.join('; ')}`);
-    assert.equal(docsCheckRes.catalogSkillCount, 48);
+    assert.equal(docsCheckRes.catalogSkillCount, 14);
   });
 
   it('Scenario 7: inventory counts in docs/audits/current/skill-inventory.json agree 100% with per-skill records', () => {
     const inv = JSON.parse(
       fs.readFileSync(path.join(root, 'docs', 'audits', 'current', 'skill-inventory.json'), 'utf8'),
     );
-    assert.equal(inv.summary.totalSkills, 48);
-    assert.equal(inv.skills.length, 48);
+    assert.equal(inv.summary.totalSkills, 14);
+    assert.equal(inv.skills.length, 14);
 
     const derivedMissingExtendedSkills = inv.skills.filter(
       (s) => Array.isArray(s.missingExtendedTemplateHeadings) && s.missingExtendedTemplateHeadings.length > 0,
@@ -252,7 +249,7 @@ describe('Catalog Template Completion & F-05 Resolution', () => {
     }
   });
 
-  it('Scenario 8: F-05 status in findings.json is FIXED only when all 48 skills pass extended-section compliance and reverts to OPEN if a skill omits an extended section', () => {
+  it('Scenario 8: F-05 status in findings.json is FIXED only when all 14 skills pass extended-section compliance and reverts to OPEN if a skill omits an extended section', () => {
     const currentFindings = JSON.parse(
       fs.readFileSync(path.join(root, 'docs', 'audits', 'current', 'findings.json'), 'utf8'),
     );
@@ -308,7 +305,7 @@ describe('Catalog Template Completion & F-05 Resolution', () => {
       execFileSync('git', ['commit', '-m', 'Initial temp commit'], { cwd: tempDir });
 
       // Remove "## Decision tree" and "## Playbooks" from one skill in tempDir
-      const targetSkillFile = path.join(tempDir, 'skills', 'runtime-path-picker', 'SKILL.md');
+      const targetSkillFile = path.join(tempDir, 'skills', 'blendops-connect-blender', 'SKILL.md');
       const txt = fs.readFileSync(targetSkillFile, 'utf8');
       const mutated = txt
         .replace(/^##\s+Decision tree\s*$/m, '### Decision tree')
@@ -337,7 +334,7 @@ describe('Catalog Template Completion & F-05 Resolution', () => {
     assert.equal(fs.existsSync(path.join(root, 'docs', 'audits', 'phase-0')), false);
   });
 
-  it('Scenario 10: all 48 skills preserve valid Anthropic frontmatter and resolvable relative links', () => {
+  it('Scenario 10: all 14 skills preserve valid Anthropic frontmatter and resolvable relative links', () => {
     const skills = listRealCatalogSkills(root);
     for (const skillId of skills) {
       const info = scanSkillMarkdown(root, skillId);
@@ -366,7 +363,7 @@ describe('Catalog Template Completion & F-05 Resolution', () => {
     assert.match(out, /build-registry --check passed/i);
   });
 
-  it('Scenario 12: evaluation suites and exporter remain green across all 48 skills', () => {
+  it('Scenario 12: evaluation suites and exporter remain green across all 14 skills', () => {
     const evalCheckOut = execFileSync(process.execPath, [path.join(root, 'scripts', 'run-evals.mjs'), '--check'], {
       cwd: root,
       encoding: 'utf8',

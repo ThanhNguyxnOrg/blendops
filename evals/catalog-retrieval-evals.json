@@ -1077,7 +1077,7 @@
       "query": "gltf coordinate conversion shader node export portability tone mapping parity",
       "filters": {
         "type": "knowledge",
-        "skill_id": "glb-web-handoff"
+        "skill_id": "blendops-glb-web-handoff"
       },
       "expected_top_ids": [
         "knowledge.shader-node-gltf-export-portability",
@@ -1092,7 +1092,7 @@
       "language": "en",
       "query": "mobile triangle budget draw calls ktx2 draco meshopt lod",
       "filters": {
-        "skill_id": "mobile-glb-budget"
+        "skill_id": "blendops-glb-budget"
       },
       "expected_top_ids": [
         "knowledge.triangle-draw-call-and-vram-budgets",
@@ -1109,7 +1109,7 @@
       "query": "principled bsdf v2 orm channel packing non-color normal map shader export",
       "filters": {
         "type": "knowledge",
-        "skill_id": "material-quality-checker"
+        "skill_id": "blendops-lighting-materials"
       },
       "expected_top_ids": [
         "knowledge.principled-bsdf-v2-energy-conserving-pbr",

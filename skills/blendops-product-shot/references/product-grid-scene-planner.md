@@ -1,0 +1,220 @@
+
+# blendops-product-shot (reference for `blendops-product-shot`)
+
+> Detailed playbook carried over from the former `blendops-product-shot` skill. Load it from [`../SKILL.md`](../SKILL.md) when this part of the job is in scope.
+
+## Purpose
+Translate a multi-product grid intent (e-commerce / catalog / comparison) into a structured scene plan. Distinct from `blendops-product-shot` (single product, hero) and `blendops-scene-plan` (room scene).
+
+## Quick start
+- pin product list (count + per-product type and relative real-world size)
+- normalize product scale across cells (or split incompatible scales into separate grids)
+- pin grid layout (rows × cols + spacing)
+- pin per-cell consistency level (strict / loose for camera angle, lighting, background)
+- pin shared material / lighting / background palette
+- record assumptions register and hand off to asset discovery, format decision, and quality checkers
+
+## When to use
+- intent is multi-product display (4+ products in same scene)
+- e-commerce catalog grid
+- product comparison view
+- showroom-style grid
+
+## When not to use
+
+## Trigger phrases
+
+## Prerequisites / readiness
+- product list known (count + per-product description)
+- consistency expectations known (identical lighting? identical camera? identical scale?)
+
+## Input schema
+
+### Required inputs
+
+| Input | Why it is required |
+|---|---|
+| Product list + relative sizes | Determines grid size, asset scope, and scale normalization |
+| Grid layout (rows × cols + spacing) | Drives overall and per-cell composition |
+| Aspect ratio | Governs framing and cell proportions |
+| Consistency level (strict / loose) | Determines per-cell camera, lighting, and background rules |
+
+### Optional inputs
+
+| Input | Use |
+|---|---|
+| Brand palette | Shared material + background consistency |
+| Per-product variants (color / SKU) | Adds variant rows and informs `blendops-render-settings` |
+| Reference catalog images | Calibrates visual style and spacing |
+
+### Assumptions to confirm
+- Scale normalization method is agreed (true relative scale vs. visual bounding-box normalization).
+- Lighting is shared across cells (not separate per-cell lighting setups).
+- Camera angle is consistent (same angle, distance, and lens feel) across cells unless variation is explicitly requested.
+
+## Output schema
+
+### Primary output
+A structured product-grid plan: Product list, Scale normalization rule (normalized or split), Grid layout (rows × cols + spacing), Consistency level (strict / loose), Per-cell composition and camera rules, Shared lighting plan, Shared background and palette, Aspect + framing, and Assumptions register.
+
+### Secondary output
+- per-product asset rows flagged for `blendops-assets`
+- variant / SKU file output notes routed to `blendops-render-settings`
+- downstream validation and sign-off handoff list
+
+### Evidence / caveat output
+
+```txt
+Runtime status: Not Run | Attempted | Produced | Verified | Failed
+Artifact status: Not Produced | Produced | Verified | Failed
+Evidence used: <links, paths, logs, or "none">
+Limitations: <known gaps>
+```
+
+## Required laws
+- `../../laws/evidence-before-done.md`
+- `../../laws/non-blender-user-language.md`
+- `../../laws/no-arbitrary-python-interface.md`
+- `../../laws/official-runtime-only.md`
+
+## Official runtime boundary
+
+Planning-only skill — does not run Blender, model, source assets, or render. Runtime status must remain `Not Run` and Artifact status must remain `Not Produced` (truth states are downgrade-only, never upgrade). Hand off asset needs to `blendops-assets`, file output rules to `blendops-render-settings`, and validation to quality checkers.
+
+## Operating procedure
+1. Read product list from user or `blendops-brief`; pin count, per-product description, and relative sizes.
+2. Normalize scale across differently-sized products (or split incompatible items into separate grid plans).
+3. Pin grid layout (rows × cols + spacing) per `references/grid-layout-rules.md`.
+4. Decide consistency level (strict / loose).
+5. Plan shared palette, shared lighting (one setup applied uniformly), and shared background.
+6. Plan per-cell camera + framing (including caption/label space).
+7. Define per-product asset rows and document the assumptions register.
+8. Hand off to `blendops-assets`, `blendops-render-settings` (if variant/SKU file outputs apply), `blendops-camera`, `blendops-lighting-materials`, `blendops-final-check`, `blendops-done-criteria`, and `blendops-done-criteria`.
+
+## Decision tree
+
+```txt
+Products at very different scales (lipstick + sofa) in same grid?
+  → Fail if unaddressed; normalize to a clear visual bounding box or split into separate scenes
+Different lighting per cell requested?
+  → Warn; usually erodes catalog uniformity
+20+ products in single render?
+  → Warn; recommend splitting into multiple grid plans
+Brand palette or intent unclear?
+  → Hand off to blendops-brief
+Variant / SKU file output formats needed?
+  → Hand off file output rules to blendops-render-settings
+```
+
+## Playbooks
+
+### Playbook A: 2×2 e-commerce hero grid (16:9)
+4 products, identical 35mm lens, identical 3-point lighting, neutral seamless background, products centered in cells, equal spacing.
+
+### Playbook B: 3×3 catalog page (1:1)
+9 products, square cells, identical lighting, brand-color background, consistent product orientation, lower-third caption space per cell.
+
+### Playbook C: 1×4 comparison strip (2.39:1)
+4 product variants of same SKU, side-by-side, identical lighting + camera, label space below each.
+
+## Mode handling
+
+### Text-only mode
+
+Emit the complete grid plan and assumptions register. Runtime stays `Not Run`; Artifacts stay `Not Produced`.
+
+### Runtime-ready mode
+
+Emit the complete grid plan, assumptions register, and downstream handoff targets. Do not execute Blender; Runtime stays `Not Run` and Artifacts stay `Not Produced`.
+
+### Blocked runtime mode
+
+Emit the complete grid plan and assumptions register; flag unconfirmed inputs under Limitations. Runtime stays `Not Run` and Artifacts stay `Not Produced`.
+
+## Validation checklist
+- [ ] Product list complete with count and relative sizes
+- [ ] Scale normalized across products (or explicitly split into separate grids)
+- [ ] Grid layout (rows × cols + spacing) explicit
+- [ ] Consistency level (strict / loose) stated
+- [ ] Shared palette, lighting plan, and background present
+- [ ] Per-cell camera and framing consistent (or variation explicit)
+- [ ] Assumptions register included
+- [ ] Asset rows flagged for `blendops-assets`
+- [ ] Validation and sign-off handoffs named
+
+## Pass / Warn / Fail rubric
+
+| Verdict | Criteria |
+| --- | --- |
+| Pass | All sections complete + scale normalized (or split) + consistency level stated + shared lighting/palette + assumptions register + asset list + truth states locked to `Not Run` / `Not Produced`. |
+| Warn | Minor cell variance (e.g., per-cell angle or lighting tweak) without clear justification, or 20+ items crammed into one grid. |
+| Fail | Mixed-scale products without normalization or split, missing shared lighting/camera consistency, missing consistency level, missing assumptions register, or upgraded truth states. |
+
+## Failure handling
+- Mixed product scales → require normalized visual scale or split into separate grid plans.
+- 20+ products → suggest splitting into multiple grid plans.
+- Missing brand palette or unclear intent → hand off to `blendops-brief`.
+
+## Troubleshooting
+
+| Problem | Response |
+| --- | --- |
+| Products appear mismatched in size across cells | Specify bounding-box scale normalization and identical per-cell camera distance in the plan. |
+| One cell stands out visually | Enforce strict consistency level for shared lighting and shared background palette. |
+| Caption space cramped | Increase planned grid spacing or reduce product count per grid. |
+| Background distracts from products | Plan a neutral solid or subtle gradient background that contrasts cleanly with the shared palette. |
+
+## Best practices
+- Lock one camera angle and one shared lighting plan; apply identically across all cells.
+- Normalize product scale (or split grids) before finalizing rows and columns.
+- Reserve consistent caption or label space per cell for catalog layout.
+- Keep the shared background tone consistent so material differences across SKUs remain accurate.
+
+## Good examples
+- "Products: 4 sneaker variants (identical real-world scale, normalized to equal cell bounding boxes). Grid: 2×2, even spacing. Shared lighting: soft studio three-point setup, even illumination. Shared palette/background: neutral light-gray seamless backdrop. Per-cell camera: standard eye-level framing, identical distance and orientation. Caption space lower 15% reserved. Assumptions register: identical footwear dimensions; no props; single still catalog output. Runtime status: Not Run. Artifact status: Not Produced."
+
+## Bad examples
+- "Show 4 products in a grid." — no lighting, layout, scale.
+
+## User-facing response template
+
+```txt
+Product list: <count + per-product list>
+Scale normalization: <normalized bounding box / true relative scale / split into separate grids>
+Grid layout: <rows × cols> | spacing <value> | aspect <ratio>
+Consistency: <strict / loose>
+Shared palette: <colors + surface tones>
+Shared lighting: <plain-language lighting plan>
+Shared background: <type + tone>
+Per-cell camera: <angle> | <distance> | <framing>
+Caption / label space: <location + proportion>
+Mood + style: <line>
+Assumptions register: <explicit assumptions to confirm>
+
+Assets to discover: <per-product rows for blendops-assets>
+Runtime status: Not Run
+Artifact status: Not Produced
+Evidence used: <links, paths, logs, or "none">
+Limitations: <known gaps>
+Next: blendops-assets | blendops-render-settings | blendops-camera | blendops-lighting-materials | blendops-lighting-materials | blendops-final-check | blendops-done-criteria | blendops-done-criteria
+```
+
+## Anti-patterns
+- Per-cell separate lighting setups (breaks uniformity).
+- Mixed-scale products without normalization.
+- Background clashing with products.
+- Skipping caption space when downstream layout needs it.
+
+## Cross-skill handoff
+
+## Non-goals
+- Model the products.
+- Source the products.
+- Render.
+- Run Blender.
+
+## References
+- `references/grid-layout-rules.md`
+- `references/grid-consistency-rules.md`
+- `references/grid-output-naming-rules.md`
+- `../../docs/skill-system.md`

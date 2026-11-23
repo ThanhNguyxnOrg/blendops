@@ -1265,15 +1265,15 @@ describe('Secure Async MCP Client, Runtime Trust Verification & Governed Live Re
   });
 
   it('Group I: skills.sh / vercel-labs/skills ecosystem integration — skills.sh.json validation, Lockfile v2 computedHash test vectors, and --with-skills-dir + --skill transactional install & rollback', () => {
-    // 1. Validate root skills.sh.json covers all 48 canonical skills across 8 domain groupings
+    // 1. Validate root skills.sh.json covers all 14 canonical skills across 8 domain groupings
     const shValidation = validateSkillsShConfig(REPO_ROOT);
     assert.equal(
       shValidation.valid,
       true,
       `Expected skills.sh.json to be valid, got: ${shValidation.errors.join('; ')}`,
     );
-    assert.equal(shValidation.groupCount, 8);
-    assert.equal(shValidation.skillCount, 48);
+    assert.equal(shValidation.groupCount, 4);
+    assert.equal(shValidation.skillCount, 14);
 
     // 2. Verify computeSkillEntriesLockHash & computeSkillFolderLockHash against official vercel-labs/skills Lockfile v2 test vectors
     assert.equal(
@@ -1294,10 +1294,10 @@ describe('Secure Async MCP Client, Runtime Trust Verification & Governed Live Re
       'b22c4d22aa319d2924312fa18fcbfedc88fa89c74dbd8f298c683e1caf7b7f24',
     );
 
-    // 3. Verify buildSkillsLockJsonV2 across all 48 canonical BlendOps skills
+    // 3. Verify buildSkillsLockJsonV2 across all 14 canonical BlendOps skills
     const fullLock = buildSkillsLockJsonV2(REPO_ROOT);
     assert.equal(fullLock.version, 2);
-    assert.equal(Object.keys(fullLock.skills).length, 48);
+    assert.equal(Object.keys(fullLock.skills).length, 14);
     for (const [slug, entry] of Object.entries(fullLock.skills)) {
       assert.equal(entry.source, 'ThanhNguyxnOrg/blendops');
       assert.equal(entry.sourceType, 'github');
@@ -1330,12 +1330,12 @@ describe('Secure Async MCP Client, Runtime Trust Verification & Governed Live Re
           proj,
           '--with-skills-dir',
           '--skill',
-          'camera-composition,scene-readiness',
+          'blendops-camera,blendops-final-check',
         ]);
         assert.equal(dryRes.ok, true);
         assert.ok(
-          dryRes.filesCreated.includes(`${expectedDir}/camera-composition/SKILL.md`),
-          `Expected ${expectedDir}/camera-composition/SKILL.md in dry-run plan`,
+          dryRes.filesCreated.includes(`${expectedDir}/blendops-camera/SKILL.md`),
+          `Expected ${expectedDir}/blendops-camera/SKILL.md in dry-run plan`,
         );
         assert.ok(dryRes.filesCreated.includes('skills-lock.json'));
 
@@ -1348,20 +1348,20 @@ describe('Secure Async MCP Client, Runtime Trust Verification & Governed Live Re
           proj,
           '--with-skills-dir',
           '--skill',
-          'camera-composition,scene-readiness',
+          'blendops-camera,blendops-final-check',
         ]);
         assert.equal(writeRes.ok, true);
         assert.equal(writeRes.runtimeStatus, 'Not Run');
         assert.equal(writeRes.artifactStatus, 'Not Produced');
 
-        const installedSkillDir = path.join(proj, expectedDir, 'camera-composition');
+        const installedSkillDir = path.join(proj, expectedDir, 'blendops-camera');
         assert.ok(fs.existsSync(path.join(installedSkillDir, 'SKILL.md')));
         const lockJson = JSON.parse(fs.readFileSync(path.join(proj, 'skills-lock.json'), 'utf8'));
         assert.equal(lockJson.version, 2);
-        assert.deepEqual(Object.keys(lockJson.skills), ['camera-composition', 'scene-readiness']);
+        assert.deepEqual(Object.keys(lockJson.skills), ['blendops-camera', 'blendops-final-check']);
         assert.equal(
           computeSkillFolderLockHash(installedSkillDir),
-          lockJson.skills['camera-composition'].computedHash,
+          lockJson.skills['blendops-camera'].computedHash,
           'Installed skill folder computedHash must match skills-lock.json v2 entry byte-for-byte',
         );
 

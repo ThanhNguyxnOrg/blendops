@@ -792,12 +792,12 @@ function renderHtml(options = {}) {
       </div>
       <div class="card">
         <div class="kpi-label">Full-Catalog Contract Engine</div>
-        <div class="kpi-val" style="color:var(--green)">${currentSkillInv ? currentSkillInv.summary.contractedSkillsCount : 48} / 48</div>
-        <div class="kpi-sub"><code>${escapeHtml(currentSkillInv ? currentSkillInv.summary.contractStatus : 'full-catalog')}</code> &middot; ${registryGraph ? registryGraph.summary.totalContractedEdges : 371} edges</div>
+        <div class="kpi-val" style="color:var(--green)">${currentSkillInv ? currentSkillInv.summary.contractedSkillsCount : 14} / 14</div>
+        <div class="kpi-sub"><code>${escapeHtml(currentSkillInv ? currentSkillInv.summary.contractStatus : 'full-catalog')}</code> &middot; ${registryGraph ? registryGraph.summary.totalContractedEdges : 195} edges</div>
       </div>
       <div class="card">
         <div class="kpi-label">Deterministic Eval Runner</div>
-        <div class="kpi-val" style="color:var(--green)">${currentEvalInv ? currentEvalInv.summary.machineReadableSuitesCount ?? 48 : 48} / 48</div>
+        <div class="kpi-val" style="color:var(--green)">${currentEvalInv ? currentEvalInv.summary.machineReadableSuitesCount ?? 14 : 14} / 14</div>
         <div class="kpi-sub"><code>${escapeHtml(totalCases)} / ${escapeHtml(totalCases)}</code> cases Passed &middot; 0 prose pending</div>
       </div>
       <div class="card">
@@ -899,8 +899,8 @@ function renderHtml(options = {}) {
       </tbody>
     </table>
 
-    <h2>48 Skills Inventory</h2>
-    <input id="skills-filter-input" type="search" aria-label="Filter 48 skills by ID, category, contract status, eval status, or flag" placeholder="Filter 48 skills by ID, category, contract status, eval status, or remaining issue..." oninput="filterSkills(this.value)" />
+    <h2>14 Skills Inventory</h2>
+    <input id="skills-filter-input" type="search" aria-label="Filter 14 skills by ID, category, contract status, eval status, or flag" placeholder="Filter 14 skills by ID, category, contract status, eval status, or remaining issue..." oninput="filterSkills(this.value)" />
     <table id="skills-table">
       <thead>
         <tr>

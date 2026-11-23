@@ -1,0 +1,933 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "blendops-camera",
+  "category": "scene-planners",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/blendops-camera/contract.json",
+  "skillMarkdownPath": "skills/blendops-camera/SKILL.md",
+  "evalMarkdownPath": "skills/blendops-camera/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "camera-composition-normal-in-scope-handoff",
+      "skillId": "blendops-camera",
+      "scenario": "Normal in-scope execution of blendops-camera (camera-rig-and-composition-deep-planner) with contract handoff to blendops-lighting-materials",
+      "category": "normal",
+      "inputPrompt": "Use blendops-camera to design the camera rig for our locked 16:9 luxury watch product-hero-v0 brief (85mm portrait lens, rule-of-thirds right anchor, shallow DOF f/2.8, 15-degree hero three-quarter angle).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (domain_scene_plan) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces camera_rig_specification, focal_length_and_dof_plan, composition_anchor_guidelines for role camera-rig-and-composition-deep-planner",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blendops-lighting-materials (Next (lookdev & lighting))"
+      ],
+      "requiredOutputProperties": [
+        "85mm",
+        "rule-of-thirds",
+        "safe-frame margin",
+        "blendops-lighting-materials",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "camera created in Blender",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-lighting-materials",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs camera_rig_specification, focal_length_and_dof_plan, composition_anchor_guidelines conforming to skills/blendops-camera/SKILL.md",
+        "Matches contract handoff predicate to blendops-lighting-materials in skills/blendops-camera/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "lookdev_planning"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only camera-rig-and-composition-deep-planner (blendops-camera)",
+          "recommendedNextAction": "Complete camera_rig_specification and hand off to blendops-lighting-materials (Next (lookdev & lighting)).",
+          "targetHandoff": "blendops-lighting-materials",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Planned 85mm camera focal length, sensor fit, 3/4 hero camera coordinates, DOF focus target, and 16:9 safe-frame margins. Delivered 85mm, rule-of-thirds, safe-frame margin and routed to blendops-lighting-materials.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-camera/SKILL.md",
+            "skills/blendops-camera/EVAL.md",
+            "skills/blendops-camera/contract.json",
+            "skills/blendops-camera/references/camera-presets.md",
+            "skills/blendops-camera/references/camera-rubric.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "camera-composition-secondary-contract-handoff",
+      "skillId": "blendops-camera",
+      "scenario": "Secondary upstream_reference contract handoff from blendops-camera to blendops-product-shot",
+      "category": "structured_skip",
+      "inputPrompt": "While applying blendops-camera, the workflow context is {\"brief.locked\":true,\"recipe.domain\":\"product_hero\"} (Upstream input from). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/blendops-camera/contract.json",
+        "Routes to blendops-product-shot (Upstream input from) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blendops-product-shot",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "camera created in Blender",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-product-shot",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to blendops-product-shot"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "recipe.domain": "product_hero"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blendops-camera (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to blendops-product-shot (Upstream input from).",
+          "targetHandoff": "blendops-product-shot",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from blendops-camera to blendops-product-shot under context {\"brief.locked\":true,\"recipe.domain\":\"product_hero\"}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-camera/contract.json",
+            "skills/blendops-camera/SKILL.md",
+            "skills/blendops-camera/references/camera-presets.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "camera-composition-unmatched-handoff-and-evidence-boundary",
+      "skillId": "blendops-camera",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in blendops-camera",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during blendops-camera with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for blendops-camera and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/blendops-camera/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (blendops-camera)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for blendops-camera.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/blendops-camera/contract.json",
+            "skills/blendops-camera/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "camera-composition-ambiguous-missing-required-inputs",
+      "skillId": "blendops-camera",
+      "scenario": "Missing required input (domain_scene_plan) for blendops-camera halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Plan the exact camera focal length, position, and depth-of-field for our shot without telling me the subject dimensions, aspect ratio, or framing mood.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'domain_scene_plan' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing subject bounding dimensions, target aspect ratio, and framing intent required by blendops-camera (domain_scene_plan)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "domain_scene_plan",
+        "subject bounding dimensions, target aspect ratio, and framing intent",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "camera created in Blender",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'domain_scene_plan' (subject bounding dimensions, target aspect ratio, and framing intent)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (blendops-camera)",
+          "recommendedNextAction": "Provide the missing subject bounding dimensions, target aspect ratio, and framing intent (domain_scene_plan) before blendops-camera locks camera_rig_specification.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted blendops-camera due to missing required input 'domain_scene_plan' (subject bounding dimensions, target aspect ratio, and framing intent); no values were fabricated.",
+          "warnings": [
+            "Do not invent subject bounding dimensions, target aspect ratio, and framing intent when 'domain_scene_plan' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-camera/SKILL.md",
+            "skills/blendops-camera/EVAL.md",
+            "skills/blendops-camera/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "camera-composition-out-of-scope-exclusion-delegation",
+      "skillId": "blendops-camera",
+      "scenario": "Out-of-scope request (as proof of rendered output quality or to validate an existing framing) is excluded from blendops-camera and delegated to blendops-camera",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of provide detailed composition and camera planning for product hero outputs., handle this request inside blendops-camera: as proof of rendered output quality or to validate an existing framing.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/blendops-camera/contract.json when as proof of rendered output quality or to validate an existing framing",
+        "Delegates to blendops-camera (use blendops-camera) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blendops-camera",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "camera created in Blender",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside blendops-camera anyway"
+      ],
+      "expectedRoutingTarget": "blendops-camera",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blendops-camera per skills/blendops-camera/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (blendops-camera)",
+          "recommendedNextAction": "Request is out of scope for blendops-camera (as proof of rendered output quality or to validate an existing framing); delegate to blendops-camera.",
+          "targetHandoff": "blendops-camera",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced blendops-camera exclusion boundary (use blendops-camera) and delegated to blendops-camera.",
+          "warnings": [
+            "blendops-camera is scoped to camera-rig-and-composition-deep-planner and does not absorb blendops-camera responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-camera/contract.json",
+            "skills/blendops-camera/SKILL.md",
+            "skills/blendops-camera/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "composition-quality-checker-normal-in-scope-handoff",
+      "skillId": "blendops-camera",
+      "scenario": "Normal in-scope execution of blendops-camera (framing-and-silhouette-validator) with contract handoff to blendops-final-check",
+      "category": "normal",
+      "inputPrompt": "Use blendops-camera on a 16:9 product hero card camera plan where the subject is placed at the right-third intersection, occupies 60% frame width, has 12% headroom, and uses an 85mm lens.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (camera_and_framing_spec) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces composition_verdict_table, silhouette_and_headroom_assessment, camera_replan_remediation_hints for role framing-and-silhouette-validator",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blendops-final-check (Broad scene readiness review (consumes these rows))"
+      ],
+      "requiredOutputProperties": [
+        "7 check rows",
+        "headroom",
+        "negative space",
+        "blendops-final-check",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Composition looks great without rows",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-final-check",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs composition_verdict_table, silhouette_and_headroom_assessment, camera_replan_remediation_hints conforming to skills/blendops-camera/SKILL.md",
+        "Matches contract handoff predicate to blendops-final-check in skills/blendops-camera/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "holistic",
+          "stage.current": "quality_validation"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only framing-and-silhouette-validator (blendops-camera)",
+          "recommendedNextAction": "Complete composition_verdict_table and hand off to blendops-final-check (Broad scene readiness review (consumes these rows)).",
+          "targetHandoff": "blendops-final-check",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Evaluated 7 composition check rows (rule of thirds, subject placement, headroom, lead room, negative space, visual hierarchy, lens/FOV) with top-line Pass verdict. Delivered 7 check rows, headroom, negative space and routed to blendops-final-check.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-camera/SKILL.md",
+            "skills/blendops-camera/EVAL.md",
+            "skills/blendops-camera/contract.json",
+            "skills/blendops-camera/references/aspect-ratio-rules.md",
+            "skills/blendops-camera/references/composition-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "composition-quality-checker-secondary-contract-handoff",
+      "skillId": "blendops-camera",
+      "scenario": "Secondary retry contract handoff from blendops-camera to blendops-camera",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "While applying blendops-camera, the workflow context is {\"quality.domain\":\"composition\",\"quality.verdict\":\"Fail\"} (Camera & framing re-plan). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the retry handoff predicate in skills/blendops-camera/contract.json",
+        "Routes to blendops-camera (Camera & framing re-plan) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blendops-camera",
+        "retry",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Composition looks great without rows",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-camera",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract retry handoff predicate match to blendops-camera"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "composition",
+          "quality.verdict": "Fail"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blendops-camera (retry handoff)",
+          "recommendedNextAction": "Follow retry handoff to blendops-camera (Camera & framing re-plan).",
+          "targetHandoff": "blendops-camera",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered retry handoff from blendops-camera to blendops-camera under context {\"quality.domain\":\"composition\",\"quality.verdict\":\"Fail\"}.",
+          "warnings": [
+            "Bounded retry handoff to blendops-camera (maxAttempts=2)."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-camera/contract.json",
+            "skills/blendops-camera/SKILL.md",
+            "skills/blendops-camera/references/aspect-ratio-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "composition-quality-checker-unmatched-handoff-and-evidence-boundary",
+      "skillId": "blendops-camera",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in blendops-camera",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during blendops-camera with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for blendops-camera and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/blendops-camera/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (blendops-camera)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for blendops-camera.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/blendops-camera/contract.json",
+            "skills/blendops-camera/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "composition-quality-checker-ambiguous-missing-required-inputs",
+      "skillId": "blendops-camera",
+      "scenario": "Missing required input (camera_and_framing_spec) for blendops-camera halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Run blendops-camera and give me a Pass verdict without providing the aspect ratio, subject frame occupancy, or camera focal length.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'camera_and_framing_spec' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing target aspect ratio, camera focal length, and subject placement coordinates required by blendops-camera (camera_and_framing_spec)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "camera_and_framing_spec",
+        "target aspect ratio, camera focal length, and subject placement coordinates",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Composition looks great without rows",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'camera_and_framing_spec' (target aspect ratio, camera focal length, and subject placement coordinates)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (blendops-camera)",
+          "recommendedNextAction": "Provide the missing target aspect ratio, camera focal length, and subject placement coordinates (camera_and_framing_spec) before blendops-camera locks composition_verdict_table.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted blendops-camera due to missing required input 'camera_and_framing_spec' (target aspect ratio, camera focal length, and subject placement coordinates); no values were fabricated.",
+          "warnings": [
+            "Do not invent target aspect ratio, camera focal length, and subject placement coordinates when 'camera_and_framing_spec' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-camera/SKILL.md",
+            "skills/blendops-camera/EVAL.md",
+            "skills/blendops-camera/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "composition-quality-checker-out-of-scope-exclusion-delegation",
+      "skillId": "blendops-camera",
+      "scenario": "Out-of-scope request (planning or editing camera framing) is excluded from blendops-camera and delegated to blendops-camera",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of validate camera framing, subject placement, headroom/lead-room, and visual hierarchy against the scene brief before render., handle this request inside blendops-camera: planning or editing camera framing.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/blendops-camera/contract.json when planning or editing camera framing",
+        "Delegates to blendops-camera (use blendops-camera) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blendops-camera",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Composition looks great without rows",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside blendops-camera anyway"
+      ],
+      "expectedRoutingTarget": "blendops-camera",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blendops-camera per skills/blendops-camera/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (blendops-camera)",
+          "recommendedNextAction": "Request is out of scope for blendops-camera (planning or editing camera framing); delegate to blendops-camera.",
+          "targetHandoff": "blendops-camera",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced blendops-camera exclusion boundary (use blendops-camera) and delegated to blendops-camera.",
+          "warnings": [
+            "blendops-camera is scoped to framing-and-silhouette-validator and does not absorb blendops-camera responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-camera/contract.json",
+            "skills/blendops-camera/SKILL.md",
+            "skills/blendops-camera/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "resolution-aspect-decision-normal-in-scope-handoff",
+      "skillId": "blendops-camera",
+      "scenario": "Normal in-scope execution of blendops-camera (resolution-and-aspect-ratio-pinner) with contract handoff to blendops-camera",
+      "category": "normal",
+      "inputPrompt": "Apply blendops-camera for a retina web hero banner (16:9 aspect ratio, 2880x1620 master render downscaled to 1920x1080 and 960x540 responsive breakpoints).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (target_delivery_surfaces) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces pinned_pixel_dimensions_and_aspect_ratio, safe_frame_and_overscan_margins, camera_sensor_fit_alignment_notes for role resolution-and-aspect-ratio-pinner",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blendops-camera (Composition framing validation against pinned aspect)"
+      ],
+      "requiredOutputProperties": [
+        "16:9",
+        "2880x1620",
+        "downscale derivative",
+        "blendops-camera",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "upscale 720p to 4K master",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-camera",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs pinned_pixel_dimensions_and_aspect_ratio, safe_frame_and_overscan_margins, camera_sensor_fit_alignment_notes conforming to skills/blendops-camera/SKILL.md",
+        "Matches contract handoff predicate to blendops-camera in skills/blendops-camera/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "composition",
+          "quality.verdict": "not_run"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only resolution-and-aspect-ratio-pinner (blendops-camera)",
+          "recommendedNextAction": "Complete pinned_pixel_dimensions_and_aspect_ratio and hand off to blendops-camera (Composition framing validation against pinned aspect).",
+          "targetHandoff": "blendops-camera",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Pinned 16:9 aspect ratio, 2880x1620 master render resolution (100% scale), downscale derivative table (1920x1080, 960x540), and safe-area crop rules. Delivered 16:9, 2880x1620, downscale derivative and routed to blendops-camera.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-camera/SKILL.md",
+            "skills/blendops-camera/EVAL.md",
+            "skills/blendops-camera/contract.json",
+            "skills/blendops-camera/references/aspect-defaults.md",
+            "skills/blendops-camera/references/print-vs-screen-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "resolution-aspect-decision-secondary-contract-handoff",
+      "skillId": "blendops-camera",
+      "scenario": "Secondary upstream_reference contract handoff from blendops-camera to blendops-camera",
+      "category": "structured_skip",
+      "inputPrompt": "While applying blendops-camera, the workflow context is {\"brief.locked\":true,\"stage.current\":\"camera_planning\"} (Camera & composition planning (upstream framing setup)). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/blendops-camera/contract.json",
+        "Routes to blendops-camera (Camera & composition planning (upstream framing setup)) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blendops-camera",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "upscale 720p to 4K master",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-camera",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to blendops-camera"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "camera_planning"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blendops-camera (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to blendops-camera (Camera & composition planning (upstream framing setup)).",
+          "targetHandoff": "blendops-camera",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from blendops-camera to blendops-camera under context {\"brief.locked\":true,\"stage.current\":\"camera_planning\"}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-camera/contract.json",
+            "skills/blendops-camera/SKILL.md",
+            "skills/blendops-camera/references/aspect-defaults.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "resolution-aspect-decision-unmatched-handoff-and-evidence-boundary",
+      "skillId": "blendops-camera",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in blendops-camera",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during blendops-camera with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for blendops-camera and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/blendops-camera/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (blendops-camera)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for blendops-camera.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/blendops-camera/contract.json",
+            "skills/blendops-camera/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "resolution-aspect-decision-ambiguous-missing-required-inputs",
+      "skillId": "blendops-camera",
+      "scenario": "Missing required input (target_delivery_surfaces) for blendops-camera halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Pin the exact render pixel resolution and aspect ratio without telling me whether the output is for desktop web hero, vertical mobile stories, or print poster.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'target_delivery_surfaces' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing target placement channel (web vs mobile vs print) and aspect ratio requirement required by blendops-camera (target_delivery_surfaces)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "target_delivery_surfaces",
+        "target placement channel (web vs mobile vs print) and aspect ratio requirement",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "upscale 720p to 4K master",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'target_delivery_surfaces' (target placement channel (web vs mobile vs print) and aspect ratio requirement)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (blendops-camera)",
+          "recommendedNextAction": "Provide the missing target placement channel (web vs mobile vs print) and aspect ratio requirement (target_delivery_surfaces) before blendops-camera locks pinned_pixel_dimensions_and_aspect_ratio.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted blendops-camera due to missing required input 'target_delivery_surfaces' (target placement channel (web vs mobile vs print) and aspect ratio requirement); no values were fabricated.",
+          "warnings": [
+            "Do not invent target placement channel (web vs mobile vs print) and aspect ratio requirement when 'target_delivery_surfaces' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-camera/SKILL.md",
+            "skills/blendops-camera/EVAL.md",
+            "skills/blendops-camera/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "resolution-aspect-decision-out-of-scope-exclusion-delegation",
+      "skillId": "blendops-camera",
+      "scenario": "Out-of-scope request (after render is complete (no benefit)) is excluded from blendops-camera and delegated to blendops-camera",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of pick the right render resolution + aspect ratio for the consumer use case before render; avoid render-then-crop and aspect mismatch., handle this request inside blendops-camera: after render is complete (no benefit).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/blendops-camera/contract.json when after render is complete (no benefit)",
+        "Delegates to blendops-camera (no benefit) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blendops-camera",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "upscale 720p to 4K master",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside blendops-camera anyway"
+      ],
+      "expectedRoutingTarget": "blendops-camera",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blendops-camera per skills/blendops-camera/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (blendops-camera)",
+          "recommendedNextAction": "Request is out of scope for blendops-camera (after render is complete (no benefit)); delegate to blendops-camera.",
+          "targetHandoff": "blendops-camera",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced blendops-camera exclusion boundary (no benefit) and delegated to blendops-camera.",
+          "warnings": [
+            "blendops-camera is scoped to resolution-and-aspect-ratio-pinner and does not absorb blendops-camera responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-camera/contract.json",
+            "skills/blendops-camera/SKILL.md",
+            "skills/blendops-camera/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

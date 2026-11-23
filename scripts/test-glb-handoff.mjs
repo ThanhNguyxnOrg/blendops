@@ -42,7 +42,7 @@ import {
   disposeGltfScene,
   extractAnimationClipSummary,
   createThreeGlbViewer,
-} from '../docs/examples/glb-web-handoff/threejs-glb-viewer.mjs';
+} from '../docs/examples/blendops-glb-web-handoff/threejs-glb-viewer.mjs';
 import { buildSubprocessInvocation, resolveNpmCliScript } from './test-cli-package.mjs';
 import { ensureMainRepoGitRestored } from './generate-current-audit.mjs';
 
@@ -901,7 +901,7 @@ describe('Web-Ready GLB Delivery & Viewer Integration', () => {
 
     // 3. Verify React Three Fiber example file structure and exported symbols
     const r3fSource = fs.readFileSync(
-      path.join(ROOT, 'docs', 'examples', 'glb-web-handoff', 'r3f-glb-viewer.tsx'),
+      path.join(ROOT, 'docs', 'examples', 'blendops-glb-web-handoff', 'r3f-glb-viewer.tsx'),
       'utf8',
     );
     assert.match(r3fSource, /export class GlbViewerErrorBoundary/);
@@ -1002,9 +1002,9 @@ describe('Web-Ready GLB Delivery & Viewer Integration', () => {
     assert.ok(packedFiles.has('scripts/inspect-glb.mjs'));
     assert.ok(packedFiles.has('scripts/generate-glb-handoff-report.mjs'));
     assert.ok(packedFiles.has('schemas/glb-web-handoff-manifest.schema.json'));
-    assert.ok(packedFiles.has('docs/examples/glb-web-handoff/README.md'));
-    assert.ok(packedFiles.has('docs/examples/glb-web-handoff/threejs-glb-viewer.mjs'));
-    assert.ok(packedFiles.has('docs/examples/glb-web-handoff/r3f-glb-viewer.tsx'));
+    assert.ok(packedFiles.has('docs/examples/blendops-glb-web-handoff/README.md'));
+    assert.ok(packedFiles.has('docs/examples/blendops-glb-web-handoff/threejs-glb-viewer.mjs'));
+    assert.ok(packedFiles.has('docs/examples/blendops-glb-web-handoff/r3f-glb-viewer.tsx'));
 
     execNpmTool(
       'npm',

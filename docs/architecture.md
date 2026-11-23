@@ -14,20 +14,20 @@ BlendOps enforces a strict separation across five architectural layers:
 | **B. Knowledge Layer** | Reusable, source-attributed 3D domain rules, principles, numeric parameter guidance, observable checks, and version-aware claims across 11 3D domains. | `registry/knowledge-sources.json` (20 sources), `registry/knowledge-catalog.json` (30 `knowledge.*` records), `schemas/knowledge-*.schema.json` | Procedural multi-skill stage routing (belongs in Recipe/Skill layers) or unattributed lore. |
 | **C. Recipe Layer & SceneSpec Harmonizer** | Composable multi-stage scene/asset blueprints (`recipe.*`), canonical `SceneSpec` intermediate representation, and the deterministic Skill Harmonizer (`scripts/compile-scene-plan.mjs`) that compiles a `SceneSpec` into an `ExecutionPlan` with 8-level conflict resolution. | `registry/recipe-catalog.json` (10 `recipe.*` records), `schemas/{recipe-record,scene-spec,execution-plan}.schema.json`, `scripts/compile-scene-plan.mjs`, `docs/recipes/cyberpunk-shoe-hero.md`, `packs/product-hero-v0/PACK.md` | Single-skill operating rubrics or live runtime execution transcripts. |
 | **D. Runtime / Production Layer** | External execution boundary governed by `L0`–`L3` capability tiers (`registry/runtime-capability-policy.json`), 18 typed operations (`registry/runtime-operations.json`), and transaction/checkpoint orchestration (`scripts/runtime-orchestrator.mjs`). BlendOps redirects to upstream runtimes and never owns a bridge or add-on. | `registry/runtime-capability-policy.json`, `registry/runtime-operations.json`, `schemas/{runtime-session,runtime-operations,operation-execution-ledger}.schema.json`, `scripts/runtime-orchestrator.mjs`, `docs/runtime-stack-strategy.md`, `docs/external-runtime-setup.md` | BlendOps-owned MCP servers, Blender add-ons, or implied execution during skill installation. |
-| **E. Evaluation & Evidence Layer** | Deterministic verification of skill routing (`evals/suites/*.eval.json`), catalog retrieval (`evals/catalog-retrieval-evals.json`), SceneSpec compilation (`evals/scene-specs/*.json`), architecture audits (`docs/audits/`), and operator runtime evidence (`docs/evals/`). | `evals/suites/*.eval.json` (48), `evals/catalog-retrieval-evals.json` (90 cases), `evals/scene-specs/*.json` (12 fixtures), `docs/audits/skill-architecture-audit.{json,md}`, `docs/audits/current/*`, `docs/evals/*.md` | Treating schema validity (`authored`/`version-checked`) as live runtime proof (`Not Run` / `Not Produced`). |
+| **E. Evaluation & Evidence Layer** | Deterministic verification of skill routing (`evals/suites/*.eval.json`), catalog retrieval (`evals/catalog-retrieval-evals.json`), SceneSpec compilation (`evals/scene-specs/*.json`), architecture audits (`docs/audits/`), and operator runtime evidence (`docs/evals/`). | `evals/suites/*.eval.json` (14), `evals/catalog-retrieval-evals.json` (90 cases), `evals/scene-specs/*.json` (12 fixtures), `docs/audits/skill-architecture-audit.{json,md}`, `docs/audits/current/*`, `docs/evals/*.md` | Treating schema validity (`authored`/`version-checked`) as live runtime proof (`Not Run` / `Not Produced`). |
 
 ```txt
 Non-Blender user
   └──> AI coding agent or chat UI (26 supported targets)
         └──> BlendOps 5-Layer Knowledge, Recipe & Skill System (this repository)
-              ├── Layer A (Skills): 48 portable skills + 4 guardrail laws + deterministic DAG (`registry/workflow-graph.json`)
+              ├── Layer A (Skills): 14 portable skills + 4 guardrail laws + deterministic DAG (`registry/workflow-graph.json`)
               ├── Layer B (Knowledge): 30 `knowledge.*` records across 11 3D domains + 20 `source.*` citations (`registry/knowledge-catalog.json`)
               ├── Layer C (Recipes & SceneSpec Harmonizer): 10 `recipe.*` blueprints + `SceneSpec` -> `ExecutionPlan` compiler (`scripts/compile-scene-plan.mjs`)
               ├── Layer D (Runtime Boundary & Production Layer): L0–L3 capability policy + 18 typed operations (`registry/runtime-operations.json`) + transaction/checkpoint orchestrator (`scripts/runtime-orchestrator.mjs`) + upstream redirect (Path 1 Lab MCP 5.1+, Path 2 `mcp-for-blender` 3.0+, CLI appendix)
-              └── Layer E (Evaluation & Evidence): 48 skill eval suites + 90 catalog retrieval evals + 12 SceneSpec fixtures + GLB 2.0 inspector & web handoff toolkit
+              └── Layer E (Evaluation & Evidence): 14 skill eval suites + 90 catalog retrieval evals + 12 SceneSpec fixtures + GLB 2.0 inspector & web handoff toolkit
 ```
 
-See [`docs/runtime-stack-strategy.md`](./runtime-stack-strategy.md) for the authoritative 2-path + CLI appendix runtime specification, [`docs/knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) for the human-readable Knowledge & Recipe Catalog, and [`docs/audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md) for the 48-skill and 151-reference architecture reconciliation audit.
+See [`docs/runtime-stack-strategy.md`](./runtime-stack-strategy.md) for the authoritative 2-path + CLI appendix runtime specification, [`docs/knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) for the human-readable Knowledge & Recipe Catalog, and [`docs/audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md) for the 14-skill and 199-reference architecture reconciliation audit.
 
 ---
 
@@ -59,8 +59,8 @@ blendops/
 ├── package-lock.json                     # Deterministic npm dependency lockfile
 ├── bin/
 │   └── blendops.mjs                      # Distributable CLI entrypoint (`doctor`, `install`, `rollback`, `glb-*`, `catalog-*`, `scene-spec-validate`, `plan-*`, `runtime`, `operation`, `execution`)
-├── skills/                               # 48 canonical skills + `_template/` authoring template
-│   ├── README.md                         # Canonical 48-skill catalog index
+├── skills/                               # 14 canonical skills + `_template/` authoring template
+│   ├── README.md                         # Canonical 14-skill catalog index
 │   ├── _template/                        # Skill & eval authoring template (`SKILL.md`, `EVAL.md`)
 │   └── <skill-id>/                       # Each skill: `SKILL.md`, `EVAL.md`, `contract.json`, `references/*.md`
 ├── laws/                                 # 4 non-negotiable guardrail laws
@@ -74,8 +74,8 @@ blendops/
 │   └── product-hero-v0/PACK.md
 ├── bundles/                              # Offline & project-local attachment bundles
 │   ├── generic-project-local/            # Project-local attachment template (`BLENDOPS.md`, `ROLLBACK.md`, `manifest.json`)
-│   ├── claude-desktop-manual/            # Claude Desktop manual bundle + 48 generated skill reference summaries
-│   └── skill-package/blendops/           # Standalone portable upload package + 48 generated skill reference summaries
+│   ├── claude-desktop-manual/            # Claude Desktop manual bundle + 14 generated skill reference summaries
+│   └── skill-package/blendops/           # Standalone portable upload package + 14 generated skill reference summaries
 ├── schemas/                              # JSON Schema Draft 2020-12 contracts (15 schemas)
 │   ├── adapter-compatibility-matrix.schema.json
 │   ├── contract-context-fields.schema.json
@@ -101,26 +101,26 @@ blendops/
 │   ├── runtime-capability-policy.json    # Canonical L0–L3 runtime capability tier policy
 │   ├── runtime-operations.json           # Canonical 18-operation typed runtime operation registry (`op.*`) + blocked L3 interfaces
 │   ├── catalog-index.json                # [Generated] Deterministic search & cross-reference index (`npm run catalog:build`)
-│   ├── skills.json                       # [Generated] Aggregated 48-skill contract registry (`npm run registry:build`)
+│   ├── skills.json                       # [Generated] Aggregated 14-skill contract registry (`npm run registry:build`)
 │   └── workflow-graph.json               # [Generated] Deterministic skill handoff & DAG routing graph
 ├── evals/                                # Deterministic behavioral, catalog retrieval & SceneSpec evaluation suites
 │   ├── README.md
 │   ├── catalog-retrieval-evals.json      # 90-case deterministic bilingual knowledge & recipe retrieval evaluation suite
 │   ├── scene-specs/*.json                # 12 canonical SceneSpec fixtures (8 valid + 4 negative/conflicting)
-│   └── suites/<skill-id>.eval.json       # 48 machine-readable positive/negative/edge behavioral test suites
+│   └── suites/<skill-id>.eval.json       # 14 machine-readable positive/negative/edge behavioral test suites
 ├── scripts/                              # Generators, validators, CLI tools, and regression test suites
 │   ├── build-knowledge-catalog.mjs       # Validates & builds `registry/catalog-index.json`, `docs/knowledge-and-recipe-catalog.md`, and `docs/audits/skill-architecture-audit.{json,md}`
 │   ├── build-registry.mjs                # Builds and validates `registry/skills.json` & `registry/workflow-graph.json`
 │   ├── check-docs.mjs                    # Enforces frontmatter, runtime model, links, headings, and policy guards
 │   ├── compile-scene-plan.mjs            # Deterministic SceneSpec validator, Skill Harmonizer, and ExecutionPlan compiler
 │   ├── dev-server.mjs                    # Local documentation & git bundle verification server (port 3000)
-│   ├── export-claude-skills.mjs          # Deterministically exports 48 skill ZIPs + Claude Code folders + shared catalog ZIP to `dist/`
+│   ├── export-claude-skills.mjs          # Deterministically exports 14 skill ZIPs + Claude Code folders + shared catalog ZIP to `dist/`
 │   ├── generate-bundle-reference-summaries.mjs # Generates & verifies 96 dual-profile bundle reference summaries
 │   ├── generate-current-audit.mjs        # Reconciles `docs/audits/current/*` with live SHA-256 input provenance
 │   ├── generate-glb-handoff-report.mjs   # Generates JSON/Markdown/HTML GLB web handoff reports
 │   ├── inspect-glb.mjs                   # Binary GLB 2.0 container & glTF semantic inspector
 │   ├── install-skills.mjs                # Safe project-local installer & CLI (`--doctor`, `--dry-run`, `--write`, `--rollback`, `glb-*`, `catalog-*`, `scene-spec-validate`, `plan-*`, `runtime`, `operation`, `execution`)
-│   ├── run-evals.mjs                     # Deterministic behavioral evaluation runner for all 48 skills
+│   ├── run-evals.mjs                     # Deterministic behavioral evaluation runner for all 14 skills
 │   ├── runtime-orchestrator.mjs          # Runtime session discovery, typed operation registry validator, checkpoint/rollback transaction orchestrator, and CLI subcommands
 │   ├── validate-capability-policy.mjs    # Validates `registry/runtime-capability-policy.json`
 │   ├── validate-compatibility-matrix.mjs # Validates `registry/compatibility-matrix.json` against `docs/install/` & `docs/adapters/`
@@ -140,7 +140,7 @@ blendops/
     ├── adapters/                         # Verified & drafted project-local adapter mappings (8 files)
     ├── audits/                           # `skill-architecture-audit.{json,md}` + `current/` audit state
     ├── evals/                            # Runtime smoke tests, dry-run install evidence, and manual eval packets (12 files)
-    ├── examples/glb-web-handoff/         # Three.js (`threejs-glb-viewer.mjs`) & React Three Fiber (`r3f-glb-viewer.tsx`) viewer modules
+    ├── examples/blendops-glb-web-handoff/         # Three.js (`threejs-glb-viewer.mjs`) & React Three Fiber (`r3f-glb-viewer.tsx`) viewer modules
     ├── install/                          # Per-target install guides for 26 targets + `installer-spec.md` (28 files)
     ├── recipes/                          # End-to-end 3D scene scenario recipes (`cyberpunk-shoe-hero.md`)
     └── workflows/                        # Canonical multi-skill workflow chains (`full-non-blender-user-workflow.md`, `product-hero-workflow.md`)
@@ -153,10 +153,10 @@ blendops/
 | Classification | Canonical Location(s) | Mutability & Ownership Rule |
 |---|---|---|
 | **Canonical Source** (`canonical_source`) | `skills/*/{SKILL.md,EVAL.md,contract.json,references/*}`, `laws/*.md`, `packs/*`, `registry/{compatibility-matrix,contract-context-fields,knowledge-sources,knowledge-catalog,recipe-catalog,runtime-capability-policy,runtime-operations}.json`, `bundles/*/BLENDOPS.md` | Authoritative source of truth. Edited directly and validated by CI. |
-| **Generated Artifacts** (`generated_artifact`) | `registry/{skills,workflow-graph,catalog-index}.json`, `docs/knowledge-and-recipe-catalog.md`, `docs/audits/skill-architecture-audit.{json,md}`, `bundles/claude-desktop-manual/references/skills/*.md` (48), `bundles/skill-package/blendops/references/skill-*.md` (48), `docs/audits/current/*`, `dist/*` (untracked build output) | Must **never** be hand-edited. Regenerated deterministically by `npm run catalog:build`, `npm run registry:build`, `npm run bundles:summaries:build`, `node scripts/generate-current-audit.mjs`, and `npm run arch:build`. |
+| **Generated Artifacts** (`generated_artifact`) | `registry/{skills,workflow-graph,catalog-index}.json`, `docs/knowledge-and-recipe-catalog.md`, `docs/audits/skill-architecture-audit.{json,md}`, `bundles/claude-desktop-manual/references/skills/*.md` (14), `bundles/skill-package/blendops/references/skill-*.md` (14), `docs/audits/current/*`, `dist/*` (untracked build output) | Must **never** be hand-edited. Regenerated deterministically by `npm run catalog:build`, `npm run registry:build`, `npm run bundles:summaries:build`, `node scripts/generate-current-audit.mjs`, and `npm run arch:build`. |
 | **Historical Records** (`historical_record`) | `skill-reviews/reports/*`, `docs/evals/*.md`, `CHANGELOG.md` | Preserved for auditability and provenance. Historical review and eval records must not be rewritten to falsify past baselines (obsolete build-time phase snapshots were removed prior to `v1.0.0`). |
 | **Documentation** (`documentation`) | `README.md`, `TODO.md`, `AGENTS.md`, `CONTRIBUTING.md`, `SECURITY.md`, `SUPPORT.md`, `CODE_OF_CONDUCT.md`, `docs/*.md`, `docs/{install,adapters,recipes,workflows}/*.md` | User-facing and contributor-facing guides; validated for link integrity and runtime model accuracy by `npm run docs:check` and `npm run arch:check`. |
-| **Runtime, Build & Test Infrastructure** (`runtime_build_test_infrastructure`) | `scripts/*.mjs`, `evals/*.json`, `evals/suites/*.eval.json`, `docs/examples/glb-web-handoff/*.{mjs,tsx}` | Executed by `npm run ci`, `npm test`, and the `blendops` CLI. |
+| **Runtime, Build & Test Infrastructure** (`runtime_build_test_infrastructure`) | `scripts/*.mjs`, `evals/*.json`, `evals/suites/*.eval.json`, `docs/examples/blendops-glb-web-handoff/*.{mjs,tsx}` | Executed by `npm run ci`, `npm test`, and the `blendops` CLI. |
 | **Distribution Artifacts** (`distribution_artifact`) | `bin/blendops.mjs`, `bundles/*/manifest.json`, `bundles/skill-package/blendops/**` | Packaged into local `npm pack` tarballs and offline skill bundles. |
 | **Configuration** (`configuration`) | `package.json`, `package-lock.json`, `.gitignore`, `.gitattributes`, `.editorconfig`, `.github/**`, `schemas/*.schema.json`, `docs/audits/audited-inputs.manifest.json` | Governs tooling, schema validation, CI matrix execution, and repository hygiene. |
 
@@ -168,13 +168,13 @@ blendops/
    - `LICENSE` (root MIT license) and `bundles/skill-package/blendops/LICENSE.txt` are byte-for-byte identical (`SHA-256: 25df86f7dc59...`) so that `bundles/skill-package/blendops/` remains legally self-contained when distributed as a standalone upload folder.
    - Any other exact duplicate tracked file is rejected by `scripts/validate-repository-architecture.mjs`.
 2. **Dual-Profile Generated Bundle Reference Summaries**:
-   - `bundles/claude-desktop-manual/references/skills/<id>.md` (48 files) and `bundles/skill-package/blendops/references/skill-<id>.md` (48 files) are generated deterministically from `skills/<id>/SKILL.md` and `skills/<id>/contract.json` by `scripts/generate-bundle-reference-summaries.mjs` and verified in CI (`npm run bundles:summaries:check`).
+   - `bundles/claude-desktop-manual/references/skills/<id>.md` (14 files) and `bundles/skill-package/blendops/references/skill-<id>.md` (14 files) are generated deterministically from `skills/<id>/SKILL.md` and `skills/<id>/contract.json` by `scripts/generate-bundle-reference-summaries.mjs` and verified in CI (`npm run bundles:summaries:check`).
 
 ---
 
 ## 5. npm Packaging & Permanent Scope Boundaries
 
-- **Packaged Tarball Scope (`package.json` `"files"`)**: Includes `bin/`, core runtime scripts (`install-skills.mjs`, `build-knowledge-catalog.mjs`, `compile-scene-plan.mjs`, `runtime-orchestrator.mjs`, `validate-capability-policy.mjs`, `validate-evidence-packet.mjs`, `export-claude-skills.mjs`, `inspect-glb.mjs`, `generate-glb-handoff-report.mjs`), `docs/knowledge-and-recipe-catalog.md`, `docs/recipes/`, `docs/workflows/`, `docs/examples/glb-web-handoff/`, `skills/`, `laws/`, `packs/`, `bundles/`, `registry/`, `schemas/`, `README.md`, `LICENSE`, and `CHANGELOG.md`. Excludes test suites (`scripts/test-*.mjs`), CI-only audit generators, dev server, `docs/audits/`, `evals/`, and `.github/`.
+- **Packaged Tarball Scope (`package.json` `"files"`)**: Includes `bin/`, core runtime scripts (`install-skills.mjs`, `build-knowledge-catalog.mjs`, `compile-scene-plan.mjs`, `runtime-orchestrator.mjs`, `validate-capability-policy.mjs`, `validate-evidence-packet.mjs`, `export-claude-skills.mjs`, `inspect-glb.mjs`, `generate-glb-handoff-report.mjs`), `docs/knowledge-and-recipe-catalog.md`, `docs/recipes/`, `docs/workflows/`, `docs/examples/blendops-glb-web-handoff/`, `skills/`, `laws/`, `packs/`, `bundles/`, `registry/`, `schemas/`, `README.md`, `LICENSE`, and `CHANGELOG.md`. Excludes test suites (`scripts/test-*.mjs`), CI-only audit generators, dev server, `docs/audits/`, `evals/`, and `.github/`.
 - **Permanent Non-Goals**:
   - Public npm CLI distribution is published as [`blendops@1.0.0`](https://www.npmjs.com/package/blendops); the Agent Skills source is listed on [skills.sh](https://www.skills.sh/ThanhNguyxnOrg/blendops).
   - Official marketplace/plugin listing status remains `Not Published`.

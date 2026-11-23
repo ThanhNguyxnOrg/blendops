@@ -60,7 +60,7 @@ Read [`docs/README.md`](./docs/README.md) for the full hub. Read [`docs/runtime-
 | Per-target install index (26 targets) | [`docs/install/README.md`](./docs/install/README.md) |
 | Adapter index + registry | [`docs/adapters/README.md`](./docs/adapters/README.md), [`docs/adapter-registry.md`](./docs/adapter-registry.md) |
 | Skill system architecture | [`docs/skill-system.md`](./docs/skill-system.md) |
-| Skills (48 total — 16 baseline + 32 expansion across Batches 1–8) | [`skills/README.md`](./skills/README.md) |
+| Skills (14 total, merged from the former 48 in v2.0.0) | [`skills/README.md`](./skills/README.md) |
 | Laws | [`laws/README.md`](./laws/README.md) |
 | Packs | [`packs/README.md`](./packs/README.md) |
 | Evals + readiness | [`docs/evals/README.md`](./docs/evals/README.md), [`docs/release-readiness.md`](./docs/release-readiness.md) |

@@ -8,7 +8,7 @@ Scope: universal BlendOps install/prep UX across coding agents and Claude Deskto
 
 ## Purpose
 
-This is the detailed companion to the concise prompt in [`README.md`](../README.md#-use-in-30-seconds) and the agent-facing [`AI Agent Quickstart`](./ai-agent-quickstart.md). The flow works across project-aware coding agents and chat-only assistants by selecting one safe mode:
+This is the detailed companion to the concise prompt in [`README.md`](../README.md#use-in-30-seconds) and the agent-facing [`AI Agent Quickstart`](./ai-agent-quickstart.md). The flow works across project-aware coding agents and chat-only assistants by selecting one safe mode:
 
 1. **Project-local install** for Claude Code, OpenCode, Cursor, Codex, Gemini, Antigravity, GitHub Copilot, or similar agents with project file access.
 2. **Multiple Skills ZIP preparation** for Claude Desktop / Claude.ai / chat-only contexts without target project write access.
@@ -32,7 +32,7 @@ Success in one layer does not imply success in another. A successful install or 
 
 ## Universal flow
 
-1. User pastes the concise prompt from [`README.md`](../README.md#-use-in-30-seconds) into any AI/agent; the prompt tells the agent to read [`docs/ai-agent-quickstart.md`](./ai-agent-quickstart.md).
+1. User pastes the concise prompt from [`README.md`](../README.md#use-in-30-seconds) into any AI/agent; the prompt tells the agent to read [`docs/ai-agent-quickstart.md`](./ai-agent-quickstart.md).
 2. The assistant decides mode from available capability, not optimism.
 3. If project write access exists, use project-local mode.
 4. If no target project/write access exists, use multiple Skills ZIP mode.
@@ -66,26 +66,26 @@ Prepare one downloadable ZIP per canonical skill from:
 skills/*/SKILL.md
 ```
 
-Expected ZIP set (one per `skills/*/SKILL.md`, currently 48 — run `npm run skills:export`; do not hand-maintain the list here; inventory: `skills/README.md`):
+Expected ZIP set (one per `skills/*/SKILL.md`, currently 14 — run `npm run skills:export`; do not hand-maintain the list here; inventory: `skills/README.md`):
 
 ```txt
-# Canonical baseline snapshot (16 of 48; full set via skills:export — do not hand-maintain)
-blendops-help.zip
-blender-brainstorming.zip
-intent-to-3d-brief-writer.zip
-asset-discovery.zip
-blender-troubleshooting.zip
-pre-handoff-verification.zip
-bridge-conflicts.zip
-runtime-setup.zip
-runtime-readiness.zip
-product-hero-scene-planner.zip
-camera-composition.zip
-lighting-material-plan.zip
-scene-readiness.zip
-render-export-evidence.zip
-glb-web-handoff.zip
-plain-language-response.zip
+# Canonical skill snapshot (14; full set via skills:export — do not hand-maintain)
+blendops-start.zip
+blendops-brief.zip
+blendops-brief.zip
+blendops-assets.zip
+blendops-fix-problems.zip
+blendops-final-check.zip
+blendops-connect-blender.zip
+blendops-connect-blender.zip
+blendops-connect-blender.zip
+blendops-product-shot.zip
+blendops-camera.zip
+blendops-lighting-materials.zip
+blendops-final-check.zip
+blendops-final-check.zip
+blendops-glb-web-handoff.zip
+blendops-start.zip
 ```
 
 ZIP requirements:

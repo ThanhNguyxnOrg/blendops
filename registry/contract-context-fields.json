@@ -20,217 +20,349 @@
       "field": "artifact.hasAnimation",
       "domain": "artifact",
       "valueType": "boolean",
-      "allowedValues": [true, false],
+      "allowedValues": [
+        true,
+        false
+      ],
       "description": "Whether the planned or exported 3D deliverable contains skeletal, morph-target, or transform animation clips."
     },
     {
       "field": "artifact.status",
       "domain": "artifact",
       "valueType": "string",
-      "allowedValues": ["Not Produced", "Produced", "Verified", "Failed"],
+      "allowedValues": [
+        "Not Produced",
+        "Produced",
+        "Verified",
+        "Failed"
+      ],
       "description": "Conservative artifact truth state under laws/evidence-before-done.md (defaults to Not Produced; never Not Run)."
     },
     {
       "field": "artifact.type",
       "domain": "artifact",
       "valueType": "string",
-      "allowedValues": ["preview", "render", "blend", "glb"],
+      "allowedValues": [
+        "preview",
+        "render",
+        "blend",
+        "glb"
+      ],
       "description": "Target artifact category being planned, inspected, or packaged."
     },
     {
       "field": "assets.discoveryComplete",
       "domain": "assets",
       "valueType": "boolean",
-      "allowedValues": [true, false],
+      "allowedValues": [
+        true,
+        false
+      ],
       "description": "Whether per-asset-class acquisition strategies and sources have been planned."
     },
     {
       "field": "assets.externalUsed",
       "domain": "assets",
       "valueType": "boolean",
-      "allowedValues": [true, false],
+      "allowedValues": [
+        true,
+        false
+      ],
       "description": "Whether the scene plan relies on third-party, downloaded, or externally generated 3D/material/HDRI assets."
     },
     {
       "field": "assets.fallbackNeeded",
       "domain": "assets",
       "valueType": "boolean",
-      "allowedValues": [true, false],
+      "allowedValues": [
+        true,
+        false
+      ],
       "description": "Whether one or more planned assets failed license, budget, style, or availability checks and require fallback substitution."
     },
     {
       "field": "assets.licenseCleared",
       "domain": "assets",
       "valueType": "boolean",
-      "allowedValues": [true, false],
-      "description": "Whether all external assets have passed asset-license-checker verification."
+      "allowedValues": [
+        true,
+        false
+      ],
+      "description": "Whether all external assets have passed blendops-assets verification."
     },
     {
       "field": "assets.licenseVerdict",
       "domain": "assets",
       "valueType": "string",
-      "allowedValues": ["Pass", "Warn", "Fail"],
-      "description": "Top-line validation verdict from asset-license-checker."
+      "allowedValues": [
+        "Pass",
+        "Warn",
+        "Fail"
+      ],
+      "description": "Top-line validation verdict from blendops-assets."
     },
     {
       "field": "assets.styleVerdict",
       "domain": "assets",
       "valueType": "string",
-      "allowedValues": ["Pass", "Warn", "Fail"],
-      "description": "Top-line visual coherence verdict across realism, detail, color, and surface axes from asset-style-check."
+      "allowedValues": [
+        "Pass",
+        "Warn",
+        "Fail"
+      ],
+      "description": "Top-line visual coherence verdict across realism, detail, color, and surface axes from blendops-assets."
     },
     {
       "field": "brief.complete",
       "domain": "brief",
       "valueType": "boolean",
-      "allowedValues": [true, false],
+      "allowedValues": [
+        true,
+        false
+      ],
       "description": "Whether all required 8-slot 3D brief fields are populated without blocking unknowns."
     },
     {
       "field": "brief.locked",
       "domain": "brief",
       "valueType": "boolean",
-      "allowedValues": [true, false],
-      "description": "Whether the structured 8-slot 3D brief has been authored and locked via intent-to-3d-brief-writer."
+      "allowedValues": [
+        true,
+        false
+      ],
+      "description": "Whether the structured 8-slot 3D brief has been authored and locked via blendops-brief."
     },
     {
       "field": "budget.pinned",
       "domain": "budget",
       "valueType": "boolean",
-      "allowedValues": [true, false],
+      "allowedValues": [
+        true,
+        false
+      ],
       "description": "Whether numeric triangle, texture, material, draw-call, and file-size ceilings have been pinned."
     },
     {
       "field": "budget.verdict",
       "domain": "budget",
       "valueType": "string",
-      "allowedValues": ["Pass", "Warn", "Fail", "Not Run"],
-      "description": "Validation verdict from polycount-budget-checker or mobile-glb-budget comparison."
+      "allowedValues": [
+        "Pass",
+        "Warn",
+        "Fail",
+        "Not Run"
+      ],
+      "description": "Validation verdict from blendops-glb-budget or blendops-glb-budget comparison."
     },
     {
       "field": "decision.aspectLocked",
       "domain": "decision",
       "valueType": "boolean",
-      "allowedValues": [true, false],
-      "description": "Whether target aspect ratio, pixel resolution, and DPI/PPI have been pinned via resolution-aspect-decision."
+      "allowedValues": [
+        true,
+        false
+      ],
+      "description": "Whether target aspect ratio, pixel resolution, and DPI/PPI have been pinned via blendops-camera."
     },
     {
       "field": "decision.colorLocked",
       "domain": "decision",
       "valueType": "boolean",
-      "allowedValues": [true, false],
+      "allowedValues": [
+        true,
+        false
+      ],
       "description": "Whether Display Device, View Transform, Look, and Sequencer color management settings are locked."
     },
     {
       "field": "decision.engineLocked",
       "domain": "decision",
       "valueType": "boolean",
-      "allowedValues": [true, false],
+      "allowedValues": [
+        true,
+        false
+      ],
       "description": "Whether the target render engine (Cycles, Eevee, or Workbench), sample count, and device are pinned."
     },
     {
       "field": "decision.formatLocked",
       "domain": "decision",
       "valueType": "boolean",
-      "allowedValues": [true, false],
+      "allowedValues": [
+        true,
+        false
+      ],
       "description": "Whether the output container format, bit depth, compression, and alpha channel policy are locked."
     },
     {
       "field": "fit.multiDeliverableDetected",
       "domain": "fit",
       "valueType": "boolean",
-      "allowedValues": [true, false],
+      "allowedValues": [
+        true,
+        false
+      ],
       "description": "Whether the user's request spans multiple incompatible deliverables or recipes requiring decomposition."
     },
     {
       "field": "fit.verdict",
       "domain": "fit",
       "valueType": "string",
-      "allowedValues": ["strong_fit", "partial_fit", "custom_decomposition", "poor_fit"],
-      "description": "Recipe/pack fit classification produced by recipe-fit-assessor."
+      "allowedValues": [
+        "strong_fit",
+        "partial_fit",
+        "custom_decomposition",
+        "poor_fit"
+      ],
+      "description": "Recipe/pack fit classification produced by blendops-brief."
     },
     {
       "field": "gate.status",
       "domain": "gate",
       "valueType": "string",
-      "allowedValues": ["pending", "passed", "warn", "failed", "blocked"],
+      "allowedValues": [
+        "pending",
+        "passed",
+        "warn",
+        "failed",
+        "blocked"
+      ],
       "description": "Current workflow stage gate or pre-handoff verification gate status."
     },
     {
       "field": "goal.clarity",
       "domain": "goal",
       "valueType": "string",
-      "allowedValues": ["clear", "ambiguous_or_mixed"],
+      "allowedValues": [
+        "clear",
+        "ambiguous_or_mixed"
+      ],
       "description": "Whether the user's 3D goal and entry intent are clear or ambiguous/mixed."
     },
     {
       "field": "handoff.consumerStack",
       "domain": "handoff",
       "valueType": "string",
-      "allowedValues": ["web_glb", "react_three_fiber", "stakeholder_report", "plain_language_summary"],
+      "allowedValues": [
+        "web_glb",
+        "react_three_fiber",
+        "stakeholder_report",
+        "plain_language_summary"
+      ],
       "description": "Downstream consumer surface receiving the validated handoff package."
     },
     {
       "field": "inventory.exists",
       "domain": "inventory",
       "valueType": "boolean",
-      "allowedValues": [true, false],
+      "allowedValues": [
+        true,
+        false
+      ],
       "description": "Whether an in-flight workflow stage or artifact inventory already exists."
     },
     {
       "field": "preflight.passed",
       "domain": "preflight",
       "valueType": "boolean",
-      "allowedValues": [true, false],
-      "description": "Whether pack-prerequisite-checker preflight readiness checks have passed."
+      "allowedValues": [
+        true,
+        false
+      ],
+      "description": "Whether blendops-done-criteria preflight readiness checks have passed."
     },
     {
       "field": "preflight.verdict",
       "domain": "preflight",
       "valueType": "string",
-      "allowedValues": ["go", "conditional_go", "no_go"],
-      "description": "Go/No-Go preflight decision emitted by pack-prerequisite-checker."
+      "allowedValues": [
+        "go",
+        "conditional_go",
+        "no_go"
+      ],
+      "description": "Go/No-Go preflight decision emitted by blendops-done-criteria."
     },
     {
       "field": "quality.domain",
       "domain": "quality",
       "valueType": "string",
-      "allowedValues": ["composition", "lighting", "material", "polycount", "holistic"],
+      "allowedValues": [
+        "composition",
+        "lighting",
+        "material",
+        "polycount",
+        "holistic"
+      ],
       "description": "Quality validation domain requiring inspection or remediation."
     },
     {
       "field": "quality.verdict",
       "domain": "quality",
       "valueType": "string",
-      "allowedValues": ["pass", "warn", "fail", "not_run", "Pass", "Warn", "Fail", "Ready", "Conditionally Ready", "Not Ready"],
+      "allowedValues": [
+        "pass",
+        "warn",
+        "fail",
+        "not_run",
+        "Pass",
+        "Warn",
+        "Fail",
+        "Ready",
+        "Conditionally Ready",
+        "Not Ready"
+      ],
       "description": "Validation verdict from a domain quality checker or holistic scene quality checker."
     },
     {
       "field": "recipe.domain",
       "domain": "recipe",
       "valueType": "string",
-      "allowedValues": ["product_hero", "product_grid", "character_portrait", "environment_shot", "interior_archviz"],
+      "allowedValues": [
+        "product_hero",
+        "product_grid",
+        "character_portrait",
+        "environment_shot",
+        "interior_archviz"
+      ],
       "description": "Selected scene-planning domain archetype."
     },
     {
       "field": "recipe.id",
       "domain": "recipe",
       "valueType": "string",
-      "allowedValues": ["product-hero-v0", "product-grid-v0", "character-portrait-v0", "environment-shot-v0", "interior-archviz-v0", "custom-recipe"],
+      "allowedValues": [
+        "product-hero-v0",
+        "product-grid-v0",
+        "character-portrait-v0",
+        "environment-shot-v0",
+        "interior-archviz-v0",
+        "custom-recipe"
+      ],
       "description": "Identifier of the selected BlendOps workflow pack or recipe."
     },
     {
       "field": "recipe.selected",
       "domain": "recipe",
       "valueType": "boolean",
-      "allowedValues": [true, false],
+      "allowedValues": [
+        true,
+        false
+      ],
       "description": "Whether a target BlendOps recipe or pack has been selected."
     },
     {
       "field": "request.scope",
       "domain": "request",
       "valueType": "string",
-      "allowedValues": ["general_help", "single_deliverable", "multi_deliverable", "exploratory", "in_gate_trivial", "substantive_expansion", "major_expansion"],
+      "allowedValues": [
+        "general_help",
+        "single_deliverable",
+        "multi_deliverable",
+        "exploratory",
+        "in_gate_trivial",
+        "substantive_expansion",
+        "major_expansion"
+      ],
       "description": "Scope classification of the user's current request or proposed mid-flight change."
     },
     {
@@ -272,63 +404,103 @@
       "field": "runtime.conflictDetected",
       "domain": "runtime",
       "valueType": "boolean",
-      "allowedValues": [true, false],
+      "allowedValues": [
+        true,
+        false
+      ],
       "description": "Whether port 9876 contention or dual MCP bridge add-on conflict is detected."
     },
     {
       "field": "runtime.errorDetected",
       "domain": "runtime",
       "valueType": "boolean",
-      "allowedValues": [true, false],
+      "allowedValues": [
+        true,
+        false
+      ],
       "description": "Whether a runtime execution failure, scene mismatch, or output defect was observed."
     },
     {
       "field": "runtime.mode",
       "domain": "runtime",
       "valueType": "string",
-      "allowedValues": ["text-only", "runtime_requested", "mcp-connected", "mcp-live", "headless_cli", "offline", "blocked"],
+      "allowedValues": [
+        "text-only",
+        "runtime_requested",
+        "mcp-connected",
+        "mcp-live",
+        "headless_cli",
+        "offline",
+        "blocked"
+      ],
       "description": "Current operating mode of the workflow session."
     },
     {
       "field": "runtime.path",
       "domain": "runtime",
       "valueType": "string",
-      "allowedValues": ["path_1", "path_2", "cli_appendix", "unselected"],
+      "allowedValues": [
+        "path_1",
+        "path_2",
+        "cli_appendix",
+        "unselected"
+      ],
       "description": "Selected external Blender execution path (Path 1 Lab MCP 5.1+, Path 2 mcp-for-blender 3.0+, or CLI fallback appendix)."
     },
     {
       "field": "runtime.readinessVerdict",
       "domain": "runtime",
       "valueType": "string",
-      "allowedValues": ["Ready", "Partially Ready", "Blocked", "Unknown"],
-      "description": "Readiness matrix check completeness verdict from runtime-readiness."
+      "allowedValues": [
+        "Ready",
+        "Partially Ready",
+        "Blocked",
+        "Unknown"
+      ],
+      "description": "Readiness matrix check completeness verdict from blendops-connect-blender."
     },
     {
       "field": "runtime.status",
       "domain": "runtime",
       "valueType": "string",
-      "allowedValues": ["Not Run", "Attempted", "Produced", "Verified", "Failed"],
+      "allowedValues": [
+        "Not Run",
+        "Attempted",
+        "Produced",
+        "Verified",
+        "Failed"
+      ],
       "description": "Conservative runtime execution truth state under laws/evidence-before-done.md (defaults to Not Run)."
     },
     {
       "field": "runtime.verifiedReady",
       "domain": "runtime",
       "valueType": "boolean",
-      "allowedValues": [true, false],
+      "allowedValues": [
+        true,
+        false
+      ],
       "description": "Whether the target MCP or CLI runtime environment has passed readiness verification."
     },
     {
       "field": "scope.decision",
       "domain": "scope",
       "valueType": "string",
-      "allowedValues": ["decline", "add_now", "defer_to_followup"],
-      "description": "Recorded operator/user decision on a mid-workflow scope addition from scope-guard."
+      "allowedValues": [
+        "decline",
+        "add_now",
+        "defer_to_followup"
+      ],
+      "description": "Recorded operator/user decision on a mid-workflow scope addition from blendops-done-criteria."
     },
     {
       "field": "scope.driftDetected",
       "domain": "scope",
       "valueType": "boolean",
-      "allowedValues": [true, false],
+      "allowedValues": [
+        true,
+        false
+      ],
       "description": "Whether mid-flight scope expansion or unapproved deliverable creep was detected."
     },
     {
@@ -370,22 +542,37 @@
       "field": "stage.requiresRuntime",
       "domain": "stage",
       "valueType": "boolean",
-      "allowedValues": [true, false],
+      "allowedValues": [
+        true,
+        false
+      ],
       "description": "Whether the current workflow stage requires an external Blender MCP or CLI runtime."
     },
     {
       "field": "stage.status",
       "domain": "stage",
       "valueType": "string",
-      "allowedValues": ["pending", "ready", "passed", "blocked", "failed"],
+      "allowedValues": [
+        "pending",
+        "ready",
+        "passed",
+        "blocked",
+        "failed"
+      ],
       "description": "Execution or gate status of the current workflow stage."
     },
     {
       "field": "troubleshooting.divergencePhase",
       "domain": "troubleshooting",
       "valueType": "string",
-      "allowedValues": ["intent", "planning", "execution", "output", "response"],
-      "description": "Workflow phase identified by blender-troubleshooting as the root cause of divergence."
+      "allowedValues": [
+        "intent",
+        "planning",
+        "execution",
+        "output",
+        "response"
+      ],
+      "description": "Workflow phase identified by blendops-fix-problems as the root cause of divergence."
     }
   ]
 }

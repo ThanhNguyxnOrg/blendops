@@ -4,7 +4,7 @@ Status/confidence: 1.0.0, linked-only/manual
 
 ## Recommended near-term install mode
 
-Claude Desktop can use the concise prompt from [`README.md`](../../README.md#-use-in-30-seconds), which points the assistant to [`AI Agent Quickstart`](../ai-agent-quickstart.md). Expected selected mode is usually **multiple Skills ZIP preparation**, because Claude Desktop-style chats often lack target project write access.
+Claude Desktop can use the concise prompt from [`README.md`](../../README.md#use-in-30-seconds), which points the assistant to [`AI Agent Quickstart`](../ai-agent-quickstart.md). Expected selected mode is usually **multiple Skills ZIP preparation**, because Claude Desktop-style chats often lack target project write access.
 
 This is not a normal coding-agent install target. Project-local install is only appropriate if the assistant is actually operating inside a writable target project.
 
@@ -20,35 +20,35 @@ If Claude cannot fetch repository subpaths, ask the user to upload the repositor
 
 ## Multiple ZIP requirements
 
-Expected ZIP set (one per `skills/*/SKILL.md`, currently 48 — run `npm run skills:export`; do not hand-maintain the list here; inventory: `skills/README.md`):
+Expected ZIP set (one per `skills/*/SKILL.md`, currently 14 — run `npm run skills:export`; do not hand-maintain the list here; inventory: `skills/README.md`):
 
 ```txt
-# Canonical baseline snapshot (16 of 48; full set via skills:export)
+# Canonical skill snapshot (14; full set via skills:export)
 # Help / routing
-blendops-help.zip
+blendops-start.zip
 
 # Process / discipline (Superpowers + BMad inspired)
-blender-brainstorming.zip
-intent-to-3d-brief-writer.zip
-asset-discovery.zip
-blender-troubleshooting.zip
-pre-handoff-verification.zip
-bridge-conflicts.zip
+blendops-brief.zip
+blendops-brief.zip
+blendops-assets.zip
+blendops-fix-problems.zip
+blendops-final-check.zip
+blendops-connect-blender.zip
 
 # Runtime
-runtime-setup.zip
-runtime-readiness.zip
+blendops-connect-blender.zip
+blendops-connect-blender.zip
 
 # Scene planning (domain)
-product-hero-scene-planner.zip
-camera-composition.zip
-lighting-material-plan.zip
-scene-readiness.zip
+blendops-product-shot.zip
+blendops-camera.zip
+blendops-lighting-materials.zip
+blendops-final-check.zip
 
 # Evidence + handoff
-render-export-evidence.zip
-glb-web-handoff.zip
-plain-language-response.zip
+blendops-final-check.zip
+blendops-glb-web-handoff.zip
+blendops-start.zip
 ```
 
 Each ZIP must contain:

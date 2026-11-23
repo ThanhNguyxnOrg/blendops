@@ -256,7 +256,7 @@ describe('Upstream MCP Runtime Qualification, Safety Boundary Enforcement & Cont
         operations: [
           {
             operation_id: 'op.mutate.camera-transform-and-lens',
-            skill_id: 'camera-composition',
+            skill_id: 'blendops-camera',
             input: {
               camera_name: 'Camera',
               location: [0, -2.5, 0.7],
@@ -527,7 +527,7 @@ describe('Upstream MCP Runtime Qualification, Safety Boundary Enforcement & Cont
       operations: [
         {
           operation_id: 'op.inspect.blendfile-summary',
-          skill_id: 'scene-readiness',
+          skill_id: 'blendops-final-check',
           input: { include_datablock_counts: true },
         },
       ],

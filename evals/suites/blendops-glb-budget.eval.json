@@ -1,0 +1,629 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "blendops-glb-budget",
+  "category": "quality-validators",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/blendops-glb-budget/contract.json",
+  "skillMarkdownPath": "skills/blendops-glb-budget/SKILL.md",
+  "evalMarkdownPath": "skills/blendops-glb-budget/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "mobile-glb-budget-normal-in-scope-handoff",
+      "skillId": "blendops-glb-budget",
+      "scenario": "Normal in-scope execution of blendops-glb-budget (mobile-webgl-budget-validator) with contract handoff to blendops-camera",
+      "category": "normal",
+      "inputPrompt": "Use blendops-glb-budget to pin strict triangle, draw-call, texture memory, and file-size caps for an e-commerce sneaker GLB targeting mid-tier iOS Safari and Android Chrome mobile web.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (target_device_tier_and_network) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces pinned_glb_performance_budget_table, triangle_drawcall_and_texture_ceilings, compression_and_lod_requirements for role mobile-webgl-budget-validator",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blendops-camera (Scene planning (consumes pinned budget) (blendops-camera))"
+      ],
+      "requiredOutputProperties": [
+        "triangle cap",
+        "draw call limit",
+        "texture memory budget",
+        "blendops-camera",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "unbounded 8K textures safe on mobile",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-camera",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs pinned_glb_performance_budget_table, triangle_drawcall_and_texture_ceilings, compression_and_lod_requirements conforming to skills/blendops-glb-budget/SKILL.md",
+        "Matches contract handoff predicate to blendops-camera in skills/blendops-glb-budget/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "camera_planning"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only mobile-webgl-budget-validator (blendops-glb-budget)",
+          "recommendedNextAction": "Complete pinned_glb_performance_budget_table and hand off to blendops-camera (Scene planning (consumes pinned budget) (blendops-camera)).",
+          "targetHandoff": "blendops-camera",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Pinned mobile WebGL performance budget (<= 65k triangles, <= 15 draw calls, <= 2K KTX2/WebP textures, <= 5 MB compressed GLB payload) with audit gates. Delivered triangle cap, draw call limit, texture memory budget and routed to blendops-camera.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-glb-budget/SKILL.md",
+            "skills/blendops-glb-budget/EVAL.md",
+            "skills/blendops-glb-budget/contract.json",
+            "skills/blendops-glb-budget/references/budget-tiers.md",
+            "skills/blendops-glb-budget/references/degradation-plan.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "mobile-glb-budget-secondary-contract-handoff",
+      "skillId": "blendops-glb-budget",
+      "scenario": "Secondary progression contract handoff from blendops-glb-budget to blendops-lighting-materials",
+      "category": "structured_skip",
+      "inputPrompt": "While applying blendops-glb-budget, the workflow context is {\"brief.locked\":true,\"stage.current\":\"lookdev_planning\"} (Scene planning (consumes pinned budget) (blendops-lighting-materials)). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the progression handoff predicate in skills/blendops-glb-budget/contract.json",
+        "Routes to blendops-lighting-materials (Scene planning (consumes pinned budget) (blendops-lighting-materials)) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blendops-lighting-materials",
+        "progression",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "unbounded 8K textures safe on mobile",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-lighting-materials",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract progression handoff predicate match to blendops-lighting-materials"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "lookdev_planning"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blendops-glb-budget (progression handoff)",
+          "recommendedNextAction": "Follow progression handoff to blendops-lighting-materials (Scene planning (consumes pinned budget) (blendops-lighting-materials)).",
+          "targetHandoff": "blendops-lighting-materials",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered progression handoff from blendops-glb-budget to blendops-lighting-materials under context {\"brief.locked\":true,\"stage.current\":\"lookdev_planning\"}.",
+          "warnings": [
+            "Contract-governed progression handoff."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-glb-budget/contract.json",
+            "skills/blendops-glb-budget/SKILL.md",
+            "skills/blendops-glb-budget/references/budget-tiers.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "mobile-glb-budget-unmatched-handoff-and-evidence-boundary",
+      "skillId": "blendops-glb-budget",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in blendops-glb-budget",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during blendops-glb-budget with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for blendops-glb-budget and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/blendops-glb-budget/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (blendops-glb-budget)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for blendops-glb-budget.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/blendops-glb-budget/contract.json",
+            "skills/blendops-glb-budget/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "mobile-glb-budget-ambiguous-missing-required-inputs",
+      "skillId": "blendops-glb-budget",
+      "scenario": "Missing required input (target_device_tier_and_network) for blendops-glb-budget halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Pin a mobile GLB performance budget without specifying whether the target is a single hero card or a 20-object AR scene, or what minimum device tier is supported.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'target_device_tier_and_network' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing target mobile device tier and scene instance count required by blendops-glb-budget (target_device_tier_and_network)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "target_device_tier_and_network",
+        "target mobile device tier and scene instance count",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "unbounded 8K textures safe on mobile",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'target_device_tier_and_network' (target mobile device tier and scene instance count)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (blendops-glb-budget)",
+          "recommendedNextAction": "Provide the missing target mobile device tier and scene instance count (target_device_tier_and_network) before blendops-glb-budget locks pinned_glb_performance_budget_table.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted blendops-glb-budget due to missing required input 'target_device_tier_and_network' (target mobile device tier and scene instance count); no values were fabricated.",
+          "warnings": [
+            "Do not invent target mobile device tier and scene instance count when 'target_device_tier_and_network' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-glb-budget/SKILL.md",
+            "skills/blendops-glb-budget/EVAL.md",
+            "skills/blendops-glb-budget/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "mobile-glb-budget-out-of-scope-exclusion-delegation",
+      "skillId": "blendops-glb-budget",
+      "scenario": "Out-of-scope request (desktop-only renders without web handoff) is excluded from blendops-glb-budget and delegated to blendops-glb-budget",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of set explicit triangle / texture / draw-call / file-size / animation budgets for glb targeted at mobile-web before any export decision., handle this request inside blendops-glb-budget: desktop-only renders without web handoff.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/blendops-glb-budget/contract.json when desktop-only renders without web handoff",
+        "Delegates to blendops-glb-budget (Delegates out-of-scope requests to blendops-glb-budget) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blendops-glb-budget",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "unbounded 8K textures safe on mobile",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside blendops-glb-budget anyway"
+      ],
+      "expectedRoutingTarget": "blendops-glb-budget",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blendops-glb-budget per skills/blendops-glb-budget/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (blendops-glb-budget)",
+          "recommendedNextAction": "Request is out of scope for blendops-glb-budget (desktop-only renders without web handoff); delegate to blendops-glb-budget.",
+          "targetHandoff": "blendops-glb-budget",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced blendops-glb-budget exclusion boundary (Delegates out-of-scope requests to blendops-glb-budget) and delegated to blendops-glb-budget.",
+          "warnings": [
+            "blendops-glb-budget is scoped to mobile-webgl-budget-validator and does not absorb blendops-glb-budget responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-glb-budget/contract.json",
+            "skills/blendops-glb-budget/SKILL.md",
+            "skills/blendops-glb-budget/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "polycount-budget-checker-normal-in-scope-handoff",
+      "skillId": "blendops-glb-budget",
+      "scenario": "Normal in-scope execution of blendops-glb-budget (geometry-and-topology-budget-validator) with contract handoff to blendops-final-check",
+      "category": "normal",
+      "inputPrompt": "Use blendops-glb-budget to audit a 4-mesh sneaker scene (`Upper_Mesh`: 28k tris, `Sole_Mesh`: 18k tris, `Laces_Mesh`: 14k tris, `Logo_Tag`: 2k tris; total 62k tris) against a 65k total and 25k per-mesh budget.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (scene_geometry_inventory) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces polycount_and_topology_verdict_table, top_budget_offenders_ranking, decimation_or_retopology_remediation_plan for role geometry-and-topology-budget-validator",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blendops-final-check (Broad readiness review)"
+      ],
+      "requiredOutputProperties": [
+        "per-mesh triangle row",
+        "worst offender",
+        "65k total cap",
+        "blendops-final-check",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "decimated mesh automatically inside skill",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-final-check",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs polycount_and_topology_verdict_table, top_budget_offenders_ranking, decimation_or_retopology_remediation_plan conforming to skills/blendops-glb-budget/SKILL.md",
+        "Matches contract handoff predicate to blendops-final-check in skills/blendops-glb-budget/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "holistic",
+          "stage.current": "quality_validation"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only geometry-and-topology-budget-validator (blendops-glb-budget)",
+          "recommendedNextAction": "Complete polycount_and_topology_verdict_table and hand off to blendops-final-check (Broad readiness review).",
+          "targetHandoff": "blendops-final-check",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Evaluated per-mesh and total triangle counts against the 65k total / 25k per-mesh caps; flagged `Upper_Mesh` (28k > 25k cap) as worst offender with non-destructive topology hints. Delivered per-mesh triangle row, worst offender, 65k total cap and routed to blendops-final-check.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-glb-budget/SKILL.md",
+            "skills/blendops-glb-budget/EVAL.md",
+            "skills/blendops-glb-budget/contract.json",
+            "skills/blendops-glb-budget/references/instance-counting-rules.md",
+            "skills/blendops-glb-budget/references/per-mesh-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "polycount-budget-checker-secondary-contract-handoff",
+      "skillId": "blendops-glb-budget",
+      "scenario": "Secondary upstream_reference contract handoff from blendops-glb-budget to blendops-glb-budget",
+      "category": "structured_skip",
+      "inputPrompt": "While applying blendops-glb-budget, the workflow context is {\"artifact.type\":\"glb\",\"budget.pinned\":false} (Pinned budget source). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/blendops-glb-budget/contract.json",
+        "Routes to blendops-glb-budget (Pinned budget source) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blendops-glb-budget",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "decimated mesh automatically inside skill",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-glb-budget",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to blendops-glb-budget"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "artifact.type": "glb",
+          "budget.pinned": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blendops-glb-budget (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to blendops-glb-budget (Pinned budget source).",
+          "targetHandoff": "blendops-glb-budget",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from blendops-glb-budget to blendops-glb-budget under context {\"artifact.type\":\"glb\",\"budget.pinned\":false}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-glb-budget/contract.json",
+            "skills/blendops-glb-budget/SKILL.md",
+            "skills/blendops-glb-budget/references/instance-counting-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "polycount-budget-checker-unmatched-handoff-and-evidence-boundary",
+      "skillId": "blendops-glb-budget",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in blendops-glb-budget",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during blendops-glb-budget with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for blendops-glb-budget and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/blendops-glb-budget/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (blendops-glb-budget)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for blendops-glb-budget.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/blendops-glb-budget/contract.json",
+            "skills/blendops-glb-budget/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "polycount-budget-checker-ambiguous-missing-required-inputs",
+      "skillId": "blendops-glb-budget",
+      "scenario": "Missing required input (scene_geometry_inventory) for blendops-glb-budget halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Check if our polycount is within budget without providing per-mesh triangle counts or the target platform budget cap.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'scene_geometry_inventory' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing per-mesh triangle/vertex counts and pinned platform budget cap required by blendops-glb-budget (scene_geometry_inventory)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "scene_geometry_inventory",
+        "per-mesh triangle/vertex counts and pinned platform budget cap",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "decimated mesh automatically inside skill",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'scene_geometry_inventory' (per-mesh triangle/vertex counts and pinned platform budget cap)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (blendops-glb-budget)",
+          "recommendedNextAction": "Provide the missing per-mesh triangle/vertex counts and pinned platform budget cap (scene_geometry_inventory) before blendops-glb-budget locks polycount_and_topology_verdict_table.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted blendops-glb-budget due to missing required input 'scene_geometry_inventory' (per-mesh triangle/vertex counts and pinned platform budget cap); no values were fabricated.",
+          "warnings": [
+            "Do not invent per-mesh triangle/vertex counts and pinned platform budget cap when 'scene_geometry_inventory' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-glb-budget/SKILL.md",
+            "skills/blendops-glb-budget/EVAL.md",
+            "skills/blendops-glb-budget/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "polycount-budget-checker-out-of-scope-exclusion-delegation",
+      "skillId": "blendops-glb-budget",
+      "scenario": "Out-of-scope request (pinning or negotiating the performance budget itself) is excluded from blendops-glb-budget and delegated to blendops-glb-budget",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of validate per-mesh and total-scene triangle counts against the pinned budget; flag worst offenders and topology hints without modeling., handle this request inside blendops-glb-budget: pinning or negotiating the performance budget itself.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/blendops-glb-budget/contract.json when pinning or negotiating the performance budget itself",
+        "Delegates to blendops-glb-budget (use blendops-glb-budget) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blendops-glb-budget",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "decimated mesh automatically inside skill",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside blendops-glb-budget anyway"
+      ],
+      "expectedRoutingTarget": "blendops-glb-budget",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blendops-glb-budget per skills/blendops-glb-budget/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (blendops-glb-budget)",
+          "recommendedNextAction": "Request is out of scope for blendops-glb-budget (pinning or negotiating the performance budget itself); delegate to blendops-glb-budget.",
+          "targetHandoff": "blendops-glb-budget",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced blendops-glb-budget exclusion boundary (use blendops-glb-budget) and delegated to blendops-glb-budget.",
+          "warnings": [
+            "blendops-glb-budget is scoped to geometry-and-topology-budget-validator and does not absorb blendops-glb-budget responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-glb-budget/contract.json",
+            "skills/blendops-glb-budget/SKILL.md",
+            "skills/blendops-glb-budget/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

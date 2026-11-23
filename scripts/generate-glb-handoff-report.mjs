@@ -38,7 +38,7 @@ const PROTECTED_REPO_DIRS = new Set([
   'skills',
 ]);
 
-// Mid-mobile hero card planning ceilings from skills/mobile-glb-budget
+// Mid-mobile hero card planning ceilings from skills/blendops-glb-budget
 export const DEFAULT_WEB_PERFORMANCE_BUDGET = Object.freeze({
   tier: 'mid-mobile-hero-default',
   maxFileSizeBytes: 5 * 1024 * 1024, // 5 MB
@@ -213,14 +213,22 @@ export function escapeHtml(value) {
     .replace(/'/g, '&#39;');
 }
 
+function trimEdgeChars(value, chars) {
+  let start = 0;
+  let end = value.length;
+  while (start < end && chars.includes(value[start])) start++;
+  while (end > start && chars.includes(value[end - 1])) end--;
+  return value.slice(start, end);
+}
+
 function sanitizeSlug(raw, fallback = 'glb-artifact') {
   if (typeof raw !== 'string' || raw.trim().length === 0) return fallback;
   const cleaned = raw
     .toLowerCase()
     .replace(/\.(glb|gltf)$/i, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-  return cleaned.length >= 3 ? cleaned.slice(0, 80) : `${cleaned || fallback}-handoff`;
+    .replace(/[^a-z0-9]+/g, '-');
+  const trimmed = trimEdgeChars(cleaned, '-');
+  return trimmed.length >= 3 ? trimmed.slice(0, 80) : `${trimmed || fallback}-handoff`;
 }
 
 export function validateGlbWebHandoffManifest(
@@ -599,7 +607,7 @@ export function buildGlbWebHandoffManifestFromInspection(
     );
   }
   nextActions.push(
-    'Pass this handoff manifest and summary to plain-language-response when preparing the final plain-language delivery note.',
+    'Pass this handoff manifest and summary to blendops-start when preparing the final plain-language delivery note.',
   );
 
   const overallVerdict =
@@ -634,7 +642,7 @@ export function buildGlbWebHandoffManifestFromInspection(
     $schema: '../schemas/glb-web-handoff-manifest.schema.json',
     schemaVersion: '1.0.0',
     manifestId: sanitizeSlug(safeFilename),
-    skillId: 'glb-web-handoff',
+    skillId: 'blendops-glb-web-handoff',
     artifact: {
       filename: safeFilename,
       format: 'GLB 2.0',

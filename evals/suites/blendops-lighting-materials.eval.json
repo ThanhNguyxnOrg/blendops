@@ -1,0 +1,1235 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "blendops-lighting-materials",
+  "category": "scene-planners",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/blendops-lighting-materials/contract.json",
+  "skillMarkdownPath": "skills/blendops-lighting-materials/SKILL.md",
+  "evalMarkdownPath": "skills/blendops-lighting-materials/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "lighting-material-plan-normal-in-scope-handoff",
+      "skillId": "blendops-lighting-materials",
+      "scenario": "Normal in-scope execution of blendops-lighting-materials (lighting-rig-and-lookdev-deep-planner) with contract handoff to blendops-lighting-materials",
+      "category": "normal",
+      "inputPrompt": "Use blendops-lighting-materials to plan a 3-point studio area-light rig (key/fill/rim ratios 4:1:2) plus Principled BSDF brushed titanium and sapphire glass materials for our watch hero scene.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (domain_scene_plan) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces key_fill_rim_lighting_plan, pbr_material_and_roughness_spec, hdri_and_reflection_strategy for role lighting-rig-and-lookdev-deep-planner",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blendops-lighting-materials (Upstream input from (blendops-lighting-materials))"
+      ],
+      "requiredOutputProperties": [
+        "key/fill/rim ratio",
+        "Principled BSDF",
+        "roughness",
+        "blendops-lighting-materials",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "materials rendered and verified",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-lighting-materials",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs key_fill_rim_lighting_plan, pbr_material_and_roughness_spec, hdri_and_reflection_strategy conforming to skills/blendops-lighting-materials/SKILL.md",
+        "Matches contract handoff predicate to blendops-lighting-materials in skills/blendops-lighting-materials/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.colorLocked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only lighting-rig-and-lookdev-deep-planner (blendops-lighting-materials)",
+          "recommendedNextAction": "Complete key_fill_rim_lighting_plan and hand off to blendops-lighting-materials (Upstream input from (blendops-lighting-materials)).",
+          "targetHandoff": "blendops-lighting-materials",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Specified 3-point area light rig (key/fill/rim exposure ratios, studio HDRI rotation) and Principled BSDF roughness/metallic/IOR parameters. Delivered key/fill/rim ratio, Principled BSDF, roughness and routed to blendops-lighting-materials.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-lighting-materials/SKILL.md",
+            "skills/blendops-lighting-materials/EVAL.md",
+            "skills/blendops-lighting-materials/contract.json",
+            "skills/blendops-lighting-materials/references/cyberpunk-lookdev.md",
+            "skills/blendops-lighting-materials/references/lighting-patterns.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "lighting-material-plan-secondary-contract-handoff",
+      "skillId": "blendops-lighting-materials",
+      "scenario": "Secondary upstream_reference contract handoff from blendops-lighting-materials to blendops-camera",
+      "category": "structured_skip",
+      "inputPrompt": "While applying blendops-lighting-materials, the workflow context is {\"brief.locked\":true,\"stage.current\":\"camera_planning\"} (Upstream input from (blendops-camera)). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/blendops-lighting-materials/contract.json",
+        "Routes to blendops-camera (Upstream input from (blendops-camera)) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blendops-camera",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "materials rendered and verified",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-camera",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to blendops-camera"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "camera_planning"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blendops-lighting-materials (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to blendops-camera (Upstream input from (blendops-camera)).",
+          "targetHandoff": "blendops-camera",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from blendops-lighting-materials to blendops-camera under context {\"brief.locked\":true,\"stage.current\":\"camera_planning\"}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-lighting-materials/contract.json",
+            "skills/blendops-lighting-materials/SKILL.md",
+            "skills/blendops-lighting-materials/references/cyberpunk-lookdev.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "lighting-material-plan-unmatched-handoff-and-evidence-boundary",
+      "skillId": "blendops-lighting-materials",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in blendops-lighting-materials",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during blendops-lighting-materials with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for blendops-lighting-materials and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/blendops-lighting-materials/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (blendops-lighting-materials)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for blendops-lighting-materials.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/blendops-lighting-materials/contract.json",
+            "skills/blendops-lighting-materials/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "lighting-material-plan-ambiguous-missing-required-inputs",
+      "skillId": "blendops-lighting-materials",
+      "scenario": "Missing required input (domain_scene_plan) for blendops-lighting-materials halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Design the lighting rig and PBR materials for our scene right now, without specifying the subject surface materials, mood, or target render engine.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'domain_scene_plan' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing subject surface materials, lighting mood, and target render engine required by blendops-lighting-materials (domain_scene_plan)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "domain_scene_plan",
+        "subject surface materials, lighting mood, and target render engine",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "materials rendered and verified",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'domain_scene_plan' (subject surface materials, lighting mood, and target render engine)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (blendops-lighting-materials)",
+          "recommendedNextAction": "Provide the missing subject surface materials, lighting mood, and target render engine (domain_scene_plan) before blendops-lighting-materials locks key_fill_rim_lighting_plan.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted blendops-lighting-materials due to missing required input 'domain_scene_plan' (subject surface materials, lighting mood, and target render engine); no values were fabricated.",
+          "warnings": [
+            "Do not invent subject surface materials, lighting mood, and target render engine when 'domain_scene_plan' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-lighting-materials/SKILL.md",
+            "skills/blendops-lighting-materials/EVAL.md",
+            "skills/blendops-lighting-materials/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "lighting-material-plan-out-of-scope-exclusion-delegation",
+      "skillId": "blendops-lighting-materials",
+      "scenario": "Out-of-scope request (to claim final rendered quality or executed results) is excluded from blendops-lighting-materials and delegated to blendops-camera",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of build detailed lighting and material direction with portability and caveat handling for blender/web-3d outputs., handle this request inside blendops-lighting-materials: to claim final rendered quality or executed results.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/blendops-lighting-materials/contract.json when to claim final rendered quality or executed results",
+        "Delegates to blendops-camera (Delegates out-of-scope requests to blendops-camera) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blendops-camera",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "materials rendered and verified",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside blendops-lighting-materials anyway"
+      ],
+      "expectedRoutingTarget": "blendops-camera",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blendops-camera per skills/blendops-lighting-materials/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (blendops-lighting-materials)",
+          "recommendedNextAction": "Request is out of scope for blendops-lighting-materials (to claim final rendered quality or executed results); delegate to blendops-camera.",
+          "targetHandoff": "blendops-camera",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced blendops-lighting-materials exclusion boundary (Delegates out-of-scope requests to blendops-camera) and delegated to blendops-camera.",
+          "warnings": [
+            "blendops-lighting-materials is scoped to lighting-rig-and-lookdev-deep-planner and does not absorb blendops-camera responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-lighting-materials/contract.json",
+            "skills/blendops-lighting-materials/SKILL.md",
+            "skills/blendops-camera/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "lighting-quality-checker-normal-in-scope-handoff",
+      "skillId": "blendops-lighting-materials",
+      "scenario": "Normal in-scope execution of blendops-lighting-materials (exposure-ratio-and-shadow-validator) with contract handoff to blendops-final-check",
+      "category": "normal",
+      "inputPrompt": "Use blendops-lighting-materials to audit a 3-point product hero lighting plan: key light 400 W at 45 deg, fill light 100 W (4:1 ratio), rim light 200 W, studio HDRI at 0.6 strength, zero clipped highlights.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (lighting_rig_specification) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces lighting_quality_verdict_table, key_fill_rim_and_clipping_audit, lighting_remediation_instructions for role exposure-ratio-and-shadow-validator",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blendops-final-check (Broad readiness review)"
+      ],
+      "requiredOutputProperties": [
+        "key-to-fill ratio",
+        "highlight clipping",
+        "rim separation",
+        "blendops-final-check",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Lighting looks nice without per-check rows",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-final-check",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs lighting_quality_verdict_table, key_fill_rim_and_clipping_audit, lighting_remediation_instructions conforming to skills/blendops-lighting-materials/SKILL.md",
+        "Matches contract handoff predicate to blendops-final-check in skills/blendops-lighting-materials/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "holistic",
+          "stage.current": "quality_validation"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only exposure-ratio-and-shadow-validator (blendops-lighting-materials)",
+          "recommendedNextAction": "Complete lighting_quality_verdict_table and hand off to blendops-final-check (Broad readiness review).",
+          "targetHandoff": "blendops-final-check",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Evaluated 6 lighting quality rows (key-to-fill ratio, rim separation, shadow softness, highlight clipping guard, HDRI balance, mood match) with top-line Pass verdict. Delivered key-to-fill ratio, highlight clipping, rim separation and routed to blendops-final-check.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-lighting-materials/SKILL.md",
+            "skills/blendops-lighting-materials/EVAL.md",
+            "skills/blendops-lighting-materials/contract.json",
+            "skills/blendops-lighting-materials/references/hdri-balance-rules.md",
+            "skills/blendops-lighting-materials/references/intensity-ranges.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "lighting-quality-checker-secondary-contract-handoff",
+      "skillId": "blendops-lighting-materials",
+      "scenario": "Secondary retry contract handoff from blendops-lighting-materials to blendops-lighting-materials",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "While applying blendops-lighting-materials, the workflow context is {\"quality.domain\":\"lighting\",\"quality.verdict\":\"Fail\"} (Lighting re-plan). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the retry handoff predicate in skills/blendops-lighting-materials/contract.json",
+        "Routes to blendops-lighting-materials (Lighting re-plan) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blendops-lighting-materials",
+        "retry",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Lighting looks nice without per-check rows",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-lighting-materials",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract retry handoff predicate match to blendops-lighting-materials"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "lighting",
+          "quality.verdict": "Fail"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blendops-lighting-materials (retry handoff)",
+          "recommendedNextAction": "Follow retry handoff to blendops-lighting-materials (Lighting re-plan).",
+          "targetHandoff": "blendops-lighting-materials",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered retry handoff from blendops-lighting-materials to blendops-lighting-materials under context {\"quality.domain\":\"lighting\",\"quality.verdict\":\"Fail\"}.",
+          "warnings": [
+            "Bounded retry handoff to blendops-lighting-materials (maxAttempts=2)."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-lighting-materials/contract.json",
+            "skills/blendops-lighting-materials/SKILL.md",
+            "skills/blendops-lighting-materials/references/hdri-balance-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "lighting-quality-checker-unmatched-handoff-and-evidence-boundary",
+      "skillId": "blendops-lighting-materials",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in blendops-lighting-materials",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during blendops-lighting-materials with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for blendops-lighting-materials and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/blendops-lighting-materials/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (blendops-lighting-materials)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for blendops-lighting-materials.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/blendops-lighting-materials/contract.json",
+            "skills/blendops-lighting-materials/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "lighting-quality-checker-ambiguous-missing-required-inputs",
+      "skillId": "blendops-lighting-materials",
+      "scenario": "Missing required input (lighting_rig_specification) for blendops-lighting-materials halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Validate our scene lighting and mark it Pass without providing light sources, exposure ratios, shadow softness, or mood intent.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'lighting_rig_specification' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing light source inventory, key-to-fill exposure ratios, and mood reference required by blendops-lighting-materials (lighting_rig_specification)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "lighting_rig_specification",
+        "light source inventory, key-to-fill exposure ratios, and mood reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Lighting looks nice without per-check rows",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'lighting_rig_specification' (light source inventory, key-to-fill exposure ratios, and mood reference)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (blendops-lighting-materials)",
+          "recommendedNextAction": "Provide the missing light source inventory, key-to-fill exposure ratios, and mood reference (lighting_rig_specification) before blendops-lighting-materials locks lighting_quality_verdict_table.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted blendops-lighting-materials due to missing required input 'lighting_rig_specification' (light source inventory, key-to-fill exposure ratios, and mood reference); no values were fabricated.",
+          "warnings": [
+            "Do not invent light source inventory, key-to-fill exposure ratios, and mood reference when 'lighting_rig_specification' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-lighting-materials/SKILL.md",
+            "skills/blendops-lighting-materials/EVAL.md",
+            "skills/blendops-lighting-materials/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "lighting-quality-checker-out-of-scope-exclusion-delegation",
+      "skillId": "blendops-lighting-materials",
+      "scenario": "Out-of-scope request (upstream lookdev and lighting planning) is excluded from blendops-lighting-materials and delegated to blendops-lighting-materials",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of validate lighting intensity ranges, shadow softness, color temperature, and hdri use against the scene brief before render., handle this request inside blendops-lighting-materials: upstream lookdev and lighting planning.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/blendops-lighting-materials/contract.json when upstream lookdev and lighting planning",
+        "Delegates to blendops-lighting-materials (use blendops-lighting-materials) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blendops-lighting-materials",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Lighting looks nice without per-check rows",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside blendops-lighting-materials anyway"
+      ],
+      "expectedRoutingTarget": "blendops-lighting-materials",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blendops-lighting-materials per skills/blendops-lighting-materials/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (blendops-lighting-materials)",
+          "recommendedNextAction": "Request is out of scope for blendops-lighting-materials (upstream lookdev and lighting planning); delegate to blendops-lighting-materials.",
+          "targetHandoff": "blendops-lighting-materials",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced blendops-lighting-materials exclusion boundary (use blendops-lighting-materials) and delegated to blendops-lighting-materials.",
+          "warnings": [
+            "blendops-lighting-materials is scoped to exposure-ratio-and-shadow-validator and does not absorb blendops-lighting-materials responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-lighting-materials/contract.json",
+            "skills/blendops-lighting-materials/SKILL.md",
+            "skills/blendops-lighting-materials/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "material-quality-checker-normal-in-scope-handoff",
+      "skillId": "blendops-lighting-materials",
+      "scenario": "Normal in-scope execution of blendops-lighting-materials (pbr-and-shader-portability-validator) with contract handoff to blendops-final-check",
+      "category": "normal",
+      "inputPrompt": "Use blendops-lighting-materials on a glTF-mobile scene plan with 5 Principled BSDF materials (anodized aluminum, rubber sole, woven mesh, clearcoat logo, glass lens) against a 4 MP total texture budget.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (material_and_shader_inventory) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces pbr_material_verdict_table, gltf_shader_portability_risks, material_remediation_steps for role pbr-and-shader-portability-validator",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blendops-final-check (Broad readiness review)"
+      ],
+      "requiredOutputProperties": [
+        "per-material rows",
+        "albedo energy conservation",
+        "glTF 2.0 portability",
+        "blendops-final-check",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Materials look good without rows",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-final-check",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs pbr_material_verdict_table, gltf_shader_portability_risks, material_remediation_steps conforming to skills/blendops-lighting-materials/SKILL.md",
+        "Matches contract handoff predicate to blendops-final-check in skills/blendops-lighting-materials/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "holistic",
+          "stage.current": "quality_validation"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only pbr-and-shader-portability-validator (blendops-lighting-materials)",
+          "recommendedNextAction": "Complete pbr_material_verdict_table and hand off to blendops-final-check (Broad readiness review).",
+          "targetHandoff": "blendops-final-check",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Audited 5 per-material rows for albedo energy conservation, metallic/roughness PBR bounds, Non-Color normal maps, glTF 2.0 node portability, and 4 MP texture cap. Delivered per-material rows, albedo energy conservation, glTF 2.0 portability and routed to blendops-final-check.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-lighting-materials/SKILL.md",
+            "skills/blendops-lighting-materials/EVAL.md",
+            "skills/blendops-lighting-materials/contract.json",
+            "skills/blendops-lighting-materials/references/consumer-stack-rules.md",
+            "skills/blendops-lighting-materials/references/pbr-sanity-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "material-quality-checker-secondary-contract-handoff",
+      "skillId": "blendops-lighting-materials",
+      "scenario": "Secondary retry contract handoff from blendops-lighting-materials to blendops-lighting-materials",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "While applying blendops-lighting-materials, the workflow context is {\"quality.domain\":\"material\",\"quality.verdict\":\"Fail\"} (Upstream lookdev & material planning). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the retry handoff predicate in skills/blendops-lighting-materials/contract.json",
+        "Routes to blendops-lighting-materials (Upstream lookdev & material planning) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blendops-lighting-materials",
+        "retry",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Materials look good without rows",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-lighting-materials",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract retry handoff predicate match to blendops-lighting-materials"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "material",
+          "quality.verdict": "Fail"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blendops-lighting-materials (retry handoff)",
+          "recommendedNextAction": "Follow retry handoff to blendops-lighting-materials (Upstream lookdev & material planning).",
+          "targetHandoff": "blendops-lighting-materials",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered retry handoff from blendops-lighting-materials to blendops-lighting-materials under context {\"quality.domain\":\"material\",\"quality.verdict\":\"Fail\"}.",
+          "warnings": [
+            "Bounded retry handoff to blendops-lighting-materials (maxAttempts=2)."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-lighting-materials/contract.json",
+            "skills/blendops-lighting-materials/SKILL.md",
+            "skills/blendops-lighting-materials/references/consumer-stack-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "material-quality-checker-unmatched-handoff-and-evidence-boundary",
+      "skillId": "blendops-lighting-materials",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in blendops-lighting-materials",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during blendops-lighting-materials with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for blendops-lighting-materials and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/blendops-lighting-materials/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (blendops-lighting-materials)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for blendops-lighting-materials.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/blendops-lighting-materials/contract.json",
+            "skills/blendops-lighting-materials/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "material-quality-checker-ambiguous-missing-required-inputs",
+      "skillId": "blendops-lighting-materials",
+      "scenario": "Missing required input (material_and_shader_inventory) for blendops-lighting-materials halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Run blendops-lighting-materials and approve our shaders without listing the materials, shader nodes, texture resolutions, or target consumer stack.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'material_and_shader_inventory' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing per-material shader node inventory, texture resolutions, and target export pipeline required by blendops-lighting-materials (material_and_shader_inventory)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "material_and_shader_inventory",
+        "per-material shader node inventory, texture resolutions, and target export pipeline",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Materials look good without rows",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'material_and_shader_inventory' (per-material shader node inventory, texture resolutions, and target export pipeline)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (blendops-lighting-materials)",
+          "recommendedNextAction": "Provide the missing per-material shader node inventory, texture resolutions, and target export pipeline (material_and_shader_inventory) before blendops-lighting-materials locks pbr_material_verdict_table.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted blendops-lighting-materials due to missing required input 'material_and_shader_inventory' (per-material shader node inventory, texture resolutions, and target export pipeline); no values were fabricated.",
+          "warnings": [
+            "Do not invent per-material shader node inventory, texture resolutions, and target export pipeline when 'material_and_shader_inventory' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-lighting-materials/SKILL.md",
+            "skills/blendops-lighting-materials/EVAL.md",
+            "skills/blendops-lighting-materials/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "material-quality-checker-out-of-scope-exclusion-delegation",
+      "skillId": "blendops-lighting-materials",
+      "scenario": "Out-of-scope request (upstream lookdev and material planning) is excluded from blendops-lighting-materials and delegated to blendops-lighting-materials",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of validate pbr material sanity, texture budgets, and web/runtime compatibility per material before render or export., handle this request inside blendops-lighting-materials: upstream lookdev and material planning.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/blendops-lighting-materials/contract.json when upstream lookdev and material planning",
+        "Delegates to blendops-lighting-materials (use blendops-lighting-materials) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blendops-lighting-materials",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Materials look good without rows",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside blendops-lighting-materials anyway"
+      ],
+      "expectedRoutingTarget": "blendops-lighting-materials",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blendops-lighting-materials per skills/blendops-lighting-materials/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (blendops-lighting-materials)",
+          "recommendedNextAction": "Request is out of scope for blendops-lighting-materials (upstream lookdev and material planning); delegate to blendops-lighting-materials.",
+          "targetHandoff": "blendops-lighting-materials",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced blendops-lighting-materials exclusion boundary (use blendops-lighting-materials) and delegated to blendops-lighting-materials.",
+          "warnings": [
+            "blendops-lighting-materials is scoped to pbr-and-shader-portability-validator and does not absorb blendops-lighting-materials responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-lighting-materials/contract.json",
+            "skills/blendops-lighting-materials/SKILL.md",
+            "skills/blendops-lighting-materials/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "color-management-decision-normal-in-scope-handoff",
+      "skillId": "blendops-lighting-materials",
+      "scenario": "Normal in-scope execution of blendops-lighting-materials (view-transform-and-colorspace-selector) with contract handoff to blendops-render-settings",
+      "category": "normal",
+      "inputPrompt": "Apply blendops-lighting-materials for a web hero PNG output targeting an sRGB consumer pipeline on Blender 4.2+ (comparing AgX vs Filmic/Standard and per-channel sRGB vs Non-Color texture rules).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (target_delivery_pipeline) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces pinned_view_transform_and_look, display_and_working_colorspace_spec, cross_engine_and_web_color_caveats for role view-transform-and-colorspace-selector",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blendops-render-settings (Output format selection)"
+      ],
+      "requiredOutputProperties": [
+        "Display Device: sRGB",
+        "View Transform",
+        "Non-Color data texture",
+        "blendops-render-settings",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "skip texture color space rules",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-render-settings",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs pinned_view_transform_and_look, display_and_working_colorspace_spec, cross_engine_and_web_color_caveats conforming to skills/blendops-lighting-materials/SKILL.md",
+        "Matches contract handoff predicate to blendops-render-settings in skills/blendops-lighting-materials/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only view-transform-and-colorspace-selector (blendops-lighting-materials)",
+          "recommendedNextAction": "Complete pinned_view_transform_and_look and hand off to blendops-render-settings (Output format selection).",
+          "targetHandoff": "blendops-render-settings",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Pinned Display Device (sRGB), View Transform (AgX / Filmic with Medium High Contrast look), 8-bit sRGB PNG output rules, and Linear/Non-Color data texture rules. Delivered Display Device: sRGB, View Transform, Non-Color data texture and routed to blendops-render-settings.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-lighting-materials/SKILL.md",
+            "skills/blendops-lighting-materials/EVAL.md",
+            "skills/blendops-lighting-materials/contract.json",
+            "skills/blendops-lighting-materials/references/look-comparison.md",
+            "skills/blendops-lighting-materials/references/per-channel-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "color-management-decision-secondary-contract-handoff",
+      "skillId": "blendops-lighting-materials",
+      "scenario": "Secondary progression contract handoff from blendops-lighting-materials to blendops-lighting-materials",
+      "category": "structured_skip",
+      "inputPrompt": "While applying blendops-lighting-materials, the workflow context is {\"quality.domain\":\"material\",\"quality.verdict\":\"not_run\"} (Material texture color spaces). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the progression handoff predicate in skills/blendops-lighting-materials/contract.json",
+        "Routes to blendops-lighting-materials (Material texture color spaces) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blendops-lighting-materials",
+        "progression",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "skip texture color space rules",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-lighting-materials",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract progression handoff predicate match to blendops-lighting-materials"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "material",
+          "quality.verdict": "not_run"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blendops-lighting-materials (progression handoff)",
+          "recommendedNextAction": "Follow progression handoff to blendops-lighting-materials (Material texture color spaces).",
+          "targetHandoff": "blendops-lighting-materials",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered progression handoff from blendops-lighting-materials to blendops-lighting-materials under context {\"quality.domain\":\"material\",\"quality.verdict\":\"not_run\"}.",
+          "warnings": [
+            "Contract-governed progression handoff."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-lighting-materials/contract.json",
+            "skills/blendops-lighting-materials/SKILL.md",
+            "skills/blendops-lighting-materials/references/look-comparison.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "color-management-decision-unmatched-handoff-and-evidence-boundary",
+      "skillId": "blendops-lighting-materials",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in blendops-lighting-materials",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during blendops-lighting-materials with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for blendops-lighting-materials and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/blendops-lighting-materials/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (blendops-lighting-materials)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for blendops-lighting-materials.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/blendops-lighting-materials/contract.json",
+            "skills/blendops-lighting-materials/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "color-management-decision-ambiguous-missing-required-inputs",
+      "skillId": "blendops-lighting-materials",
+      "scenario": "Missing required input (target_delivery_pipeline) for blendops-lighting-materials halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Pick the Blender color management view transform and look without telling me whether the output is a web sRGB PNG, a print CMYK asset, or a linear EXR compositing pass.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'target_delivery_pipeline' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing consumer display pipeline and target output file format/bit-depth required by blendops-lighting-materials (target_delivery_pipeline)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "target_delivery_pipeline",
+        "consumer display pipeline and target output file format/bit-depth",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "skip texture color space rules",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'target_delivery_pipeline' (consumer display pipeline and target output file format/bit-depth)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (blendops-lighting-materials)",
+          "recommendedNextAction": "Provide the missing consumer display pipeline and target output file format/bit-depth (target_delivery_pipeline) before blendops-lighting-materials locks pinned_view_transform_and_look.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted blendops-lighting-materials due to missing required input 'target_delivery_pipeline' (consumer display pipeline and target output file format/bit-depth); no values were fabricated.",
+          "warnings": [
+            "Do not invent consumer display pipeline and target output file format/bit-depth when 'target_delivery_pipeline' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-lighting-materials/SKILL.md",
+            "skills/blendops-lighting-materials/EVAL.md",
+            "skills/blendops-lighting-materials/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "color-management-decision-out-of-scope-exclusion-delegation",
+      "skillId": "blendops-lighting-materials",
+      "scenario": "Out-of-scope request (Post-render color grading or soft-proofing (handled by compositor / DCC after render).) is excluded from blendops-lighting-materials and delegated to blendops-render-settings",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of pin display device, view transform, look, and sequencer per consumer pipeline (web srgb, vfx aces linear, game engine, print, glb-three.js) before render., handle this request inside blendops-lighting-materials: Post-render color grading or soft-proofing (handled by compositor / DCC after render)..",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/blendops-lighting-materials/contract.json when Post-render color grading or soft-proofing (handled by compositor / DCC after render).",
+        "Delegates to blendops-render-settings (Delegates out-of-scope requests to blendops-render-settings) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blendops-render-settings",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "skip texture color space rules",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside blendops-lighting-materials anyway"
+      ],
+      "expectedRoutingTarget": "blendops-render-settings",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blendops-render-settings per skills/blendops-lighting-materials/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (blendops-lighting-materials)",
+          "recommendedNextAction": "Request is out of scope for blendops-lighting-materials (Post-render color grading or soft-proofing (handled by compositor / DCC after render).); delegate to blendops-render-settings.",
+          "targetHandoff": "blendops-render-settings",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced blendops-lighting-materials exclusion boundary (Delegates out-of-scope requests to blendops-render-settings) and delegated to blendops-render-settings.",
+          "warnings": [
+            "blendops-lighting-materials is scoped to view-transform-and-colorspace-selector and does not absorb blendops-render-settings responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-lighting-materials/contract.json",
+            "skills/blendops-lighting-materials/SKILL.md",
+            "skills/blendops-render-settings/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

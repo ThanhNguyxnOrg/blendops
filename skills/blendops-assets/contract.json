@@ -1,0 +1,440 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "blendops-assets",
+  "version": "2.0.0",
+  "category": "asset-and-sourcing",
+  "role": "asset-discovery-license-style-fallback-and-library",
+  "purpose": "Find assets, clear licenses, check style fit, plan fallbacks, and organize a reusable asset library.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "what assets do we need",
+    "where do the models come from",
+    "asset plan before scene planning",
+    "do we generate or import",
+    "surface asset license risks before planning",
+    "is this license OK",
+    "can I use this commercially",
+    "what's the license",
+    "license check",
+    "do these assets fit together",
+    "style check the assets",
+    "scene feels like a collage",
+    "what if we can't get this asset",
+    "fallback for the model",
+    "the license blocks us",
+    "scaled-down asset",
+    "organize the assets",
+    "asset library structure",
+    "where should assets go",
+    "name our assets"
+  ],
+  "exclusions": [
+    {
+      "condition": "the user supplied all assets in the brief (skip; route directly to planner)",
+      "delegateTo": "blendops-brief",
+      "reason": "skip; route directly to planner"
+    },
+    {
+      "condition": "runtime is already executing and assets are already in the scene",
+      "delegateTo": "blendops-product-shot",
+      "reason": "route to evidence skill"
+    },
+    {
+      "condition": "the request is iteration on an existing scene (assets are already chosen)",
+      "delegateTo": "blendops-final-check",
+      "reason": "assets are already chosen"
+    },
+    {
+      "condition": "when the user wants to wait for the original asset",
+      "delegateTo": "blendops-product-shot",
+      "reason": "Delegates out-of-scope requests to blendops-product-shot"
+    },
+    {
+      "condition": "enforcing file size or polygon/asset count performance budgets",
+      "delegateTo": "blendops-glb-budget",
+      "reason": "use blendops-glb-budget"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "locked_3d_brief",
+        "type": "object",
+        "description": "Structured 3D brief listing required hero subject, props, environment, and materials"
+      },
+      {
+        "name": "target_delivery_channel",
+        "type": "string",
+        "description": "Target output surface driving geometry and texture fidelity requirements"
+      }
+    ],
+    "optional": [
+      {
+        "name": "existing_user_assets",
+        "type": "array",
+        "description": "User-supplied CAD/FBX/OBJ/GLB files or brand texture sets"
+      },
+      {
+        "name": "candidate_assets",
+        "type": "array",
+        "description": "Candidate external 3D models, textures, and HDRIs with source URLs and license labels"
+      },
+      {
+        "name": "intended_distribution_use",
+        "type": "string",
+        "description": "Target distribution context (commercial product marketing, web redistribution, internal preview)"
+      },
+      {
+        "name": "attribution_delivery_surface",
+        "type": "string",
+        "description": "Where attribution credits can be displayed if CC-BY-4.0 assets are used"
+      },
+      {
+        "name": "candidate_asset_list",
+        "type": "array",
+        "description": "Sourced 3D models, materials, and props to evaluate for visual coherence"
+      },
+      {
+        "name": "brief_style_direction",
+        "type": "string",
+        "description": "Pinned visual style, proportion language, texel density, and surface wear target from brief"
+      },
+      {
+        "name": "hero_anchor_asset",
+        "type": "string",
+        "description": "Primary hero asset used as the visual benchmark for secondary props"
+      },
+      {
+        "name": "blocked_asset_entry",
+        "type": "object",
+        "description": "Asset blocked by missing source, incompatible license, style mismatch, or budget breach"
+      },
+      {
+        "name": "blocking_reason",
+        "type": "enum",
+        "description": "Primary block reason (license_rejected, source_unavailable, style_mismatch, budget_exceeded)"
+      },
+      {
+        "name": "local_library_manifest",
+        "type": "object",
+        "description": "Optional inventory of cleared local assets from blendops-assets"
+      },
+      {
+        "name": "raw_asset_inventory",
+        "type": "array",
+        "description": "List of 3D models, PBR material sets, HDRIs, and license sidecar files to organize"
+      },
+      {
+        "name": "project_storage_scope",
+        "type": "string",
+        "description": "Whether the library is project-local or shared across multiple BlendOps packs"
+      },
+      {
+        "name": "naming_prefix_convention",
+        "type": "string",
+        "description": "Optional studio or project naming prefix for datablocks and folders"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "asset_sourcing_matrix",
+      "procedural_vs_external_split",
+      "license_and_budget_risk_register",
+      "per_asset_license_verdict_table",
+      "attribution_obligations_list",
+      "quarantined_or_blocked_assets",
+      "style_coherence_matrix",
+      "mismatched_asset_flags",
+      "remediation_or_fallback_recommendations",
+      "ranked_fallback_options",
+      "selected_replacement_plan",
+      "revalidation_routing_hooks",
+      "directory_taxonomy_plan",
+      "datablock_naming_rules",
+      "quarantine_and_license_sidecar_policy"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "blendops-brief",
+      "type": "upstream_reference",
+      "label": "**Before this skill**",
+      "when": {
+        "all": [
+          {
+            "field": "goal.clarity",
+            "operator": "equals",
+            "value": "clear"
+          },
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-scene-plan",
+      "type": "alternative",
+      "label": "**Scene planners (primary handoff with brief + asset plan)** (blendops-scene-plan)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "character_portrait"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-scene-plan",
+      "type": "alternative",
+      "label": "**Scene planners (primary handoff with brief + asset plan)** (blendops-scene-plan)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "environment_shot"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-scene-plan",
+      "type": "alternative",
+      "label": "**Scene planners (primary handoff with brief + asset plan)** (blendops-scene-plan)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "interior_archviz"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-product-shot",
+      "type": "alternative",
+      "label": "**Scene planners (primary handoff with brief + asset plan)** (blendops-product-shot)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "product_grid"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-product-shot",
+      "type": "alternative",
+      "label": "**Scene planners (primary handoff with brief + asset plan)** (blendops-product-shot)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "product_hero"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-glb-budget",
+      "type": "progression",
+      "label": "**Budget reconciliation** (blendops-glb-budget)",
+      "when": {
+        "all": [
+          {
+            "field": "artifact.type",
+            "operator": "equals",
+            "value": "glb"
+          },
+          {
+            "field": "budget.pinned",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-glb-budget",
+      "type": "progression",
+      "label": "**Budget reconciliation** (blendops-glb-budget)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "polycount"
+          },
+          {
+            "field": "budget.verdict",
+            "operator": "equals",
+            "value": "Not Run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-connect-blender",
+      "type": "upstream_reference",
+      "label": "**Generative readiness**",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.path",
+            "operator": "not_equals",
+            "value": "unselected"
+          },
+          {
+            "field": "runtime.verifiedReady",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-start",
+      "type": "conditional",
+      "label": "Stage routing & scene planning gate",
+      "when": {
+        "all": [
+          {
+            "field": "preflight.passed",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "inventory.exists",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-done-criteria",
+      "type": "boundary_delegation",
+      "label": "Scope enforcement",
+      "when": {
+        "all": [
+          {
+            "field": "scope.driftDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-final-check",
+      "type": "progression",
+      "label": "Broad scene review",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "holistic"
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "quality_validation"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-lighting-materials",
+      "type": "progression",
+      "label": "Material & lookdev boundary (blendops-lighting-materials)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "lookdev_planning"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-lighting-materials",
+      "type": "progression",
+      "label": "Material & lookdev boundary (blendops-lighting-materials)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "material"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-brief",
+      "type": "fallback",
+      "label": "Recipe split when no viable fallback exists",
+      "when": {
+        "all": [
+          {
+            "field": "fit.multiDeliverableDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    }
+  ]
+}

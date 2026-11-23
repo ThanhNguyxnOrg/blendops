@@ -45,196 +45,60 @@
       "purpose": "Manual copy install/runtime separation summary"
     },
     {
-      "path": "references/skills/acceptance-criteria-builder.md",
-      "purpose": "Generated Claude Desktop reference summary for acceptance-criteria-builder (process-discipline)"
+      "path": "references/skills/blendops-assets.md",
+      "purpose": "Generated Claude Desktop reference summary for blendops-assets (asset-and-sourcing)"
     },
     {
-      "path": "references/skills/asset-discovery.md",
-      "purpose": "Generated Claude Desktop reference summary for asset-discovery (asset-and-sourcing)"
+      "path": "references/skills/blendops-brief.md",
+      "purpose": "Generated Claude Desktop reference summary for blendops-brief (routing-and-governance)"
     },
     {
-      "path": "references/skills/asset-fallback-strategy.md",
-      "purpose": "Generated Claude Desktop reference summary for asset-fallback-strategy (asset-and-sourcing)"
+      "path": "references/skills/blendops-camera.md",
+      "purpose": "Generated Claude Desktop reference summary for blendops-camera (scene-planners)"
     },
     {
-      "path": "references/skills/asset-library-plan.md",
-      "purpose": "Generated Claude Desktop reference summary for asset-library-plan (asset-and-sourcing)"
+      "path": "references/skills/blendops-connect-blender.md",
+      "purpose": "Generated Claude Desktop reference summary for blendops-connect-blender (runtime-and-execution)"
     },
     {
-      "path": "references/skills/asset-license-checker.md",
-      "purpose": "Generated Claude Desktop reference summary for asset-license-checker (asset-and-sourcing)"
+      "path": "references/skills/blendops-done-criteria.md",
+      "purpose": "Generated Claude Desktop reference summary for blendops-done-criteria (routing-and-governance)"
     },
     {
-      "path": "references/skills/asset-style-check.md",
-      "purpose": "Generated Claude Desktop reference summary for asset-style-check (asset-and-sourcing)"
+      "path": "references/skills/blendops-final-check.md",
+      "purpose": "Generated Claude Desktop reference summary for blendops-final-check (evidence-and-handoff)"
     },
     {
-      "path": "references/skills/blender-brainstorming.md",
-      "purpose": "Generated Claude Desktop reference summary for blender-brainstorming (process-discipline)"
+      "path": "references/skills/blendops-fix-problems.md",
+      "purpose": "Generated Claude Desktop reference summary for blendops-fix-problems (quality-validators)"
     },
     {
-      "path": "references/skills/blender-recipe-decomposer.md",
-      "purpose": "Generated Claude Desktop reference summary for blender-recipe-decomposer (process-discipline)"
+      "path": "references/skills/blendops-glb-budget.md",
+      "purpose": "Generated Claude Desktop reference summary for blendops-glb-budget (quality-validators)"
     },
     {
-      "path": "references/skills/blender-troubleshooting.md",
-      "purpose": "Generated Claude Desktop reference summary for blender-troubleshooting (runtime-and-execution)"
+      "path": "references/skills/blendops-glb-web-handoff.md",
+      "purpose": "Generated Claude Desktop reference summary for blendops-glb-web-handoff (evidence-and-handoff)"
     },
     {
-      "path": "references/skills/blendops-help.md",
-      "purpose": "Generated Claude Desktop reference summary for blendops-help (routing-and-governance)"
+      "path": "references/skills/blendops-lighting-materials.md",
+      "purpose": "Generated Claude Desktop reference summary for blendops-lighting-materials (scene-planners)"
     },
     {
-      "path": "references/skills/bridge-conflicts.md",
-      "purpose": "Generated Claude Desktop reference summary for bridge-conflicts (runtime-and-execution)"
+      "path": "references/skills/blendops-product-shot.md",
+      "purpose": "Generated Claude Desktop reference summary for blendops-product-shot (scene-planners)"
     },
     {
-      "path": "references/skills/camera-composition.md",
-      "purpose": "Generated Claude Desktop reference summary for camera-composition (scene-planners)"
+      "path": "references/skills/blendops-render-settings.md",
+      "purpose": "Generated Claude Desktop reference summary for blendops-render-settings (render-and-output-decisions)"
     },
     {
-      "path": "references/skills/character-portrait.md",
-      "purpose": "Generated Claude Desktop reference summary for character-portrait (scene-planners)"
+      "path": "references/skills/blendops-scene-plan.md",
+      "purpose": "Generated Claude Desktop reference summary for blendops-scene-plan (scene-planners)"
     },
     {
-      "path": "references/skills/cli-appendix-job-outline.md",
-      "purpose": "Generated Claude Desktop reference summary for cli-appendix-job-outline (runtime-and-execution)"
-    },
-    {
-      "path": "references/skills/color-management-decision.md",
-      "purpose": "Generated Claude Desktop reference summary for color-management-decision (render-and-output-decisions)"
-    },
-    {
-      "path": "references/skills/composition-quality-checker.md",
-      "purpose": "Generated Claude Desktop reference summary for composition-quality-checker (quality-validators)"
-    },
-    {
-      "path": "references/skills/cycles-vs-eevee-decision.md",
-      "purpose": "Generated Claude Desktop reference summary for cycles-vs-eevee-decision (render-and-output-decisions)"
-    },
-    {
-      "path": "references/skills/done-criteria.md",
-      "purpose": "Generated Claude Desktop reference summary for done-criteria (process-discipline)"
-    },
-    {
-      "path": "references/skills/environment-shot.md",
-      "purpose": "Generated Claude Desktop reference summary for environment-shot (scene-planners)"
-    },
-    {
-      "path": "references/skills/glb-animation-handoff.md",
-      "purpose": "Generated Claude Desktop reference summary for glb-animation-handoff (evidence-and-handoff)"
-    },
-    {
-      "path": "references/skills/glb-web-handoff.md",
-      "purpose": "Generated Claude Desktop reference summary for glb-web-handoff (evidence-and-handoff)"
-    },
-    {
-      "path": "references/skills/intent-to-3d-brief-writer.md",
-      "purpose": "Generated Claude Desktop reference summary for intent-to-3d-brief-writer (process-discipline)"
-    },
-    {
-      "path": "references/skills/interior-scene.md",
-      "purpose": "Generated Claude Desktop reference summary for interior-scene (scene-planners)"
-    },
-    {
-      "path": "references/skills/lighting-material-plan.md",
-      "purpose": "Generated Claude Desktop reference summary for lighting-material-plan (scene-planners)"
-    },
-    {
-      "path": "references/skills/lighting-quality-checker.md",
-      "purpose": "Generated Claude Desktop reference summary for lighting-quality-checker (quality-validators)"
-    },
-    {
-      "path": "references/skills/material-quality-checker.md",
-      "purpose": "Generated Claude Desktop reference summary for material-quality-checker (quality-validators)"
-    },
-    {
-      "path": "references/skills/mobile-glb-budget.md",
-      "purpose": "Generated Claude Desktop reference summary for mobile-glb-budget (evidence-and-handoff)"
-    },
-    {
-      "path": "references/skills/output-format-decision.md",
-      "purpose": "Generated Claude Desktop reference summary for output-format-decision (render-and-output-decisions)"
-    },
-    {
-      "path": "references/skills/pack-prerequisite-checker.md",
-      "purpose": "Generated Claude Desktop reference summary for pack-prerequisite-checker (routing-and-governance)"
-    },
-    {
-      "path": "references/skills/path-one-host-outline.md",
-      "purpose": "Generated Claude Desktop reference summary for path-one-host-outline (runtime-and-execution)"
-    },
-    {
-      "path": "references/skills/plain-language-response.md",
-      "purpose": "Generated Claude Desktop reference summary for plain-language-response (evidence-and-handoff)"
-    },
-    {
-      "path": "references/skills/polycount-budget-checker.md",
-      "purpose": "Generated Claude Desktop reference summary for polycount-budget-checker (quality-validators)"
-    },
-    {
-      "path": "references/skills/pre-handoff-verification.md",
-      "purpose": "Generated Claude Desktop reference summary for pre-handoff-verification (evidence-and-handoff)"
-    },
-    {
-      "path": "references/skills/preview-report.md",
-      "purpose": "Generated Claude Desktop reference summary for preview-report (evidence-and-handoff)"
-    },
-    {
-      "path": "references/skills/product-grid-scene-planner.md",
-      "purpose": "Generated Claude Desktop reference summary for product-grid-scene-planner (scene-planners)"
-    },
-    {
-      "path": "references/skills/product-hero-scene-planner.md",
-      "purpose": "Generated Claude Desktop reference summary for product-hero-scene-planner (scene-planners)"
-    },
-    {
-      "path": "references/skills/r3f-component-plan.md",
-      "purpose": "Generated Claude Desktop reference summary for r3f-component-plan (evidence-and-handoff)"
-    },
-    {
-      "path": "references/skills/recipe-fit-assessor.md",
-      "purpose": "Generated Claude Desktop reference summary for recipe-fit-assessor (routing-and-governance)"
-    },
-    {
-      "path": "references/skills/render-export-evidence.md",
-      "purpose": "Generated Claude Desktop reference summary for render-export-evidence (evidence-and-handoff)"
-    },
-    {
-      "path": "references/skills/resolution-aspect-decision.md",
-      "purpose": "Generated Claude Desktop reference summary for resolution-aspect-decision (render-and-output-decisions)"
-    },
-    {
-      "path": "references/skills/runtime-attempt-report.md",
-      "purpose": "Generated Claude Desktop reference summary for runtime-attempt-report (runtime-and-execution)"
-    },
-    {
-      "path": "references/skills/runtime-path-picker.md",
-      "purpose": "Generated Claude Desktop reference summary for runtime-path-picker (runtime-and-execution)"
-    },
-    {
-      "path": "references/skills/runtime-readiness.md",
-      "purpose": "Generated Claude Desktop reference summary for runtime-readiness (runtime-and-execution)"
-    },
-    {
-      "path": "references/skills/runtime-setup.md",
-      "purpose": "Generated Claude Desktop reference summary for runtime-setup (runtime-and-execution)"
-    },
-    {
-      "path": "references/skills/scene-readiness.md",
-      "purpose": "Generated Claude Desktop reference summary for scene-readiness (quality-validators)"
-    },
-    {
-      "path": "references/skills/scope-guard.md",
-      "purpose": "Generated Claude Desktop reference summary for scope-guard (process-discipline)"
-    },
-    {
-      "path": "references/skills/stage-gates.md",
-      "purpose": "Generated Claude Desktop reference summary for stage-gates (process-discipline)"
-    },
-    {
-      "path": "references/skills/workflow-stage-router.md",
-      "purpose": "Generated Claude Desktop reference summary for workflow-stage-router (routing-and-governance)"
+      "path": "references/skills/blendops-start.md",
+      "purpose": "Generated Claude Desktop reference summary for blendops-start (routing-and-governance)"
     },
     {
       "path": "references/laws/evidence-before-done.md",

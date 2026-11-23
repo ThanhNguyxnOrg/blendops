@@ -45,8 +45,8 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
   const catalogSkillSet = new Set(catalogSkillIds);
   const { vocab, fieldMap: contextFieldMap, errors: vocabLoadErrors } = loadContextFieldVocabulary(root);
 
-  it('Scenario 1: all 48 real catalog skills have skills/<id>/contract.json on disk and _template is excluded', () => {
-    assert.equal(catalogSkillIds.length, 48, 'Expected exactly 48 real catalog skills');
+  it('Scenario 1: all 14 real catalog skills have skills/<id>/contract.json on disk and _template is excluded', () => {
+    assert.equal(catalogSkillIds.length, 14, 'Expected exactly 14 real catalog skills');
     assert.equal(catalogSkillIds.includes('_template'), false);
 
     for (const skillId of catalogSkillIds) {
@@ -64,7 +64,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     );
   });
 
-  it('Scenario 2: all 48 contract.json files validate cleanly against schemas/skill-contract.schema.json with Ajv2020 strict mode', () => {
+  it('Scenario 2: all 14 contract.json files validate cleanly against schemas/skill-contract.schema.json with Ajv2020 strict mode', () => {
     for (const skillId of catalogSkillIds) {
       const raw = fs.readFileSync(path.join(skillsDir, skillId, 'contract.json'), 'utf8');
       const parsed = JSON.parse(raw);
@@ -80,12 +80,11 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     }
   });
 
-  it('Scenario 3: enforces strict separation between the 4 routing participants and 44 specialist contracts', () => {
+  it('Scenario 3: enforces strict separation between the 3 routing participants and 11 specialist contracts', () => {
     assert.deepEqual(ROUTING_PARTICIPANT_IDS, [
-      'blendops-help',
-      'recipe-fit-assessor',
-      'pack-prerequisite-checker',
-      'workflow-stage-router',
+      'blendops-brief',
+      'blendops-done-criteria',
+      'blendops-start',
     ]);
 
     let routingCount = 0;
@@ -107,13 +106,13 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
         );
       }
     }
-    assert.equal(routingCount, 4);
-    assert.equal(specialistCount, 44);
+    assert.equal(routingCount, 3);
+    assert.equal(specialistCount, 11);
   });
 
   it('Scenario 4: adding routingPrecedence to a specialist contract fails schema validation and precedence ladder validation', () => {
     const specialist = JSON.parse(
-      fs.readFileSync(path.join(skillsDir, 'camera-composition', 'contract.json'), 'utf8'),
+      fs.readFileSync(path.join(skillsDir, 'blendops-camera', 'contract.json'), 'utf8'),
     );
     const mutated = {
       ...specialist,
@@ -131,7 +130,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     };
     const errs = validateContractObject(
       mutated,
-      'camera-composition',
+      'blendops-camera',
       catalogSkillSet,
       undefined,
       { rootDir: root, contextFieldMap },
@@ -151,24 +150,24 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
 
   it('Scenario 5: removing routingPrecedence from a routing participant fails schema validation and precedence ladder validation', () => {
     const participant = JSON.parse(
-      fs.readFileSync(path.join(skillsDir, 'blendops-help', 'contract.json'), 'utf8'),
+      fs.readFileSync(path.join(skillsDir, 'blendops-start', 'contract.json'), 'utf8'),
     );
     const mutated = { ...participant };
     delete mutated.routingPrecedence;
 
-    const errs = validateContractObject(mutated, 'blendops-help', catalogSkillSet, undefined, {
+    const errs = validateContractObject(mutated, 'blendops-start', catalogSkillSet, undefined, {
       rootDir: root,
       contextFieldMap,
     });
     assert.equal(
       errs.some((e) => e.includes('routingPrecedence')),
       true,
-      `Expected missing routingPrecedence error on blendops-help, got: ${errs.join('; ')}`,
+      `Expected missing routingPrecedence error on blendops-start, got: ${errs.join('; ')}`,
     );
 
     const ladderErrs = validatePrecedenceLadder([mutated]);
     assert.equal(
-      ladderErrs.some((e) => e.includes("Contract 'blendops-help' is missing a valid routingPrecedence object")),
+      ladderErrs.some((e) => e.includes("Contract 'blendops-start' is missing a valid routingPrecedence object")),
       true,
     );
   });
@@ -179,12 +178,12 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
       for (const rel of ['schemas', 'registry', 'skills']) {
         fs.cpSync(path.join(root, rel), path.join(tempDir, rel), { recursive: true });
       }
-      fs.unlinkSync(path.join(tempDir, 'skills', 'polycount-budget-checker', 'contract.json'));
+      fs.unlinkSync(path.join(tempDir, 'skills', 'blendops-glb-budget', 'contract.json'));
 
       const res = buildRegistryArtifacts(tempDir);
       assert.equal(
         res.errors.some((e) =>
-          e.includes("Missing contract.json for catalog skill 'polycount-budget-checker'"),
+          e.includes("Missing contract.json for catalog skill 'blendops-glb-budget'"),
         ),
         true,
         `Expected missing contract error, got: ${res.errors.join('; ')}`,
@@ -194,12 +193,12 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     }
   });
 
-  it('Scenario 7: all 48 contracts declare capabilityTier L0 aligned with runtime-capability-policy.json and reject mismatches', () => {
+  it('Scenario 7: all 14 contracts declare capabilityTier L0 aligned with runtime-capability-policy.json and reject mismatches', () => {
     const policy = JSON.parse(
       fs.readFileSync(path.join(root, 'registry', 'runtime-capability-policy.json'), 'utf8'),
     );
     const policyMap = new Map(policy.skills.map((s) => [s.skillId, s]));
-    assert.equal(policyMap.size, 48);
+    assert.equal(policyMap.size, 14);
 
     for (const skillId of catalogSkillIds) {
       const contract = JSON.parse(
@@ -210,12 +209,12 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     }
 
     const sample = JSON.parse(
-      fs.readFileSync(path.join(skillsDir, 'lighting-material-plan', 'contract.json'), 'utf8'),
+      fs.readFileSync(path.join(skillsDir, 'blendops-lighting-materials', 'contract.json'), 'utf8'),
     );
     const escalated = { ...sample, capabilityTier: 'L1' };
     const errs = validateContractObject(
       escalated,
-      'lighting-material-plan',
+      'blendops-lighting-materials',
       catalogSkillSet,
       undefined,
       { rootDir: root, contextFieldMap, capabilityPolicyMap: policyMap },
@@ -227,7 +226,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     );
   });
 
-  it('Scenario 8: all 48 contracts enforce outputs.truthStatePolicy runtimeDefault="Not Run", artifactDefault="Not Produced", and mutationRule="downgrade_only"', () => {
+  it('Scenario 8: all 14 contracts enforce outputs.truthStatePolicy runtimeDefault="Not Run", artifactDefault="Not Produced", and mutationRule="downgrade_only"', () => {
     for (const skillId of catalogSkillIds) {
       const contract = JSON.parse(
         fs.readFileSync(path.join(skillsDir, skillId, 'contract.json'), 'utf8'),
@@ -238,13 +237,13 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     }
 
     const sample = JSON.parse(
-      fs.readFileSync(path.join(skillsDir, 'render-export-evidence', 'contract.json'), 'utf8'),
+      fs.readFileSync(path.join(skillsDir, 'blendops-final-check', 'contract.json'), 'utf8'),
     );
     const badTruth = structuredClone(sample);
     badTruth.outputs.truthStatePolicy.artifactDefault = 'Not Run';
     const errs = validateContractObject(
       badTruth,
-      'render-export-evidence',
+      'blendops-final-check',
       catalogSkillSet,
       undefined,
       { rootDir: root, contextFieldMap },
@@ -256,7 +255,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     );
   });
 
-  it('Scenario 9: all 48 contracts have globally unique roles and 191 unique normalized trigger phrases, and reject duplicates', () => {
+  it('Scenario 9: all 14 contracts have globally unique roles and 191 unique normalized trigger phrases, and reject duplicates', () => {
     const roles = new Set();
     const triggers = new Set();
     let totalTriggerCount = 0;
@@ -276,13 +275,13 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
       }
     }
 
-    assert.equal(roles.size, 48);
+    assert.equal(roles.size, 14);
     assert.equal(totalTriggerCount, 191);
     assert.equal(triggers.size, 191);
 
     // Intra-contract case-insensitive duplicate trigger must fail
     const sample = JSON.parse(
-      fs.readFileSync(path.join(skillsDir, 'material-quality-checker', 'contract.json'), 'utf8'),
+      fs.readFileSync(path.join(skillsDir, 'blendops-lighting-materials', 'contract.json'), 'utf8'),
     );
     const dupTriggerContract = {
       ...sample,
@@ -290,7 +289,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     };
     const errs = validateContractObject(
       dupTriggerContract,
-      'material-quality-checker',
+      'blendops-lighting-materials',
       catalogSkillSet,
       undefined,
       { rootDir: root, contextFieldMap },
@@ -298,7 +297,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     assert.equal(errs.some((e) => e.includes('duplicate trigger')), true);
   });
 
-  it('Scenario 10: every exclusion delegateTo and handoff target across all 48 contracts resolves to a valid catalog skill ID without self-reference', () => {
+  it('Scenario 10: every exclusion delegateTo and handoff target across all 14 contracts resolves to a valid catalog skill ID without self-reference', () => {
     for (const skillId of catalogSkillIds) {
       const contract = JSON.parse(
         fs.readFileSync(path.join(skillsDir, skillId, 'contract.json'), 'utf8'),
@@ -316,21 +315,21 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
 
   it('Scenario 11: unknown or self-referencing exclusion delegateTo or handoff target is rejected by validateContractObject', () => {
     const sample = JSON.parse(
-      fs.readFileSync(path.join(skillsDir, 'asset-style-check', 'contract.json'), 'utf8'),
+      fs.readFileSync(path.join(skillsDir, 'blendops-assets', 'contract.json'), 'utf8'),
     );
     const badTargets = structuredClone(sample);
     badTargets.exclusions[0].delegateTo = 'non-existent-skill';
-    badTargets.handoffs[0].target = 'asset-style-check';
+    badTargets.handoffs[0].target = 'blendops-assets';
 
     const errs = validateContractObject(
       badTargets,
-      'asset-style-check',
+      'blendops-assets',
       catalogSkillSet,
       undefined,
       { rootDir: root, contextFieldMap },
     );
     assert.equal(errs.some((e) => e.includes("'non-existent-skill' is not a valid catalog skill ID")), true);
-    assert.equal(errs.some((e) => e.includes("cannot self-reference 'asset-style-check'")), true);
+    assert.equal(errs.some((e) => e.includes("cannot self-reference 'blendops-assets'")), true);
   });
 
   it('Scenario 12: registry/contract-context-fields.json validates cleanly against schemas/contract-context-fields.schema.json', () => {
@@ -341,7 +340,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     assert.equal(contextFieldMap.size, vocab.fields.length);
   });
 
-  it('Scenario 13: every when and retryPolicy.exitCondition predicate across all 371 edges in all 48 contracts conforms to the context field vocabulary', () => {
+  it('Scenario 13: every when and retryPolicy.exitCondition predicate across all 195 edges in all 14 contracts conforms to the context field vocabulary', () => {
     let totalCheckedEdges = 0;
     for (const skillId of catalogSkillIds) {
       const contract = JSON.parse(
@@ -355,19 +354,19 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
         `Unexpected context field errors in ${skillId}: ${fieldErrs.join('; ')}`,
       );
     }
-    assert.equal(totalCheckedEdges, 371);
+    assert.equal(totalCheckedEdges, 195);
   });
 
   it('Scenario 14: unknown context field in a handoff when or retryPolicy.exitCondition predicate is rejected', () => {
     const sample = JSON.parse(
-      fs.readFileSync(path.join(skillsDir, 'camera-composition', 'contract.json'), 'utf8'),
+      fs.readFileSync(path.join(skillsDir, 'blendops-camera', 'contract.json'), 'utf8'),
     );
     const mutated = structuredClone(sample);
     mutated.handoffs[0].when = {
       all: [{ field: 'unknown.domainField', operator: 'equals', value: 'passed' }],
     };
 
-    const errs = validateContractContextFields(mutated, 'camera-composition', contextFieldMap);
+    const errs = validateContractContextFields(mutated, 'blendops-camera', contextFieldMap);
     assert.equal(
       errs.some((e) => e.includes("unknown context field 'unknown.domainField'")),
       true,
@@ -376,13 +375,13 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
 
   it('Scenario 15: wrong valueType or disallowed enum value in a context field predicate is rejected', () => {
     const sample = JSON.parse(
-      fs.readFileSync(path.join(skillsDir, 'camera-composition', 'contract.json'), 'utf8'),
+      fs.readFileSync(path.join(skillsDir, 'blendops-camera', 'contract.json'), 'utf8'),
     );
     const badEnum = structuredClone(sample);
     badEnum.handoffs[0].when = {
       all: [{ field: 'gate.status', operator: 'equals', value: 'invented_gate_status' }],
     };
-    const errsEnum = validateContractContextFields(badEnum, 'camera-composition', contextFieldMap);
+    const errsEnum = validateContractContextFields(badEnum, 'blendops-camera', contextFieldMap);
     assert.equal(
       errsEnum.some((e) => e.includes('not in allowedValues')),
       true,
@@ -392,7 +391,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     badType.handoffs[0].when = {
       all: [{ field: 'brief.locked', operator: 'equals', value: 'yes' }],
     };
-    const errsType = validateContractContextFields(badType, 'camera-composition', contextFieldMap);
+    const errsType = validateContractContextFields(badType, 'blendops-camera', contextFieldMap);
     assert.equal(
       errsType.some((e) => e.includes("expects valueType 'boolean'")),
       true,
@@ -401,16 +400,32 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
 
   it('Scenario 16: retry handoff without retryPolicy or non-retry handoff with retryPolicy fails validation', () => {
     const sample = JSON.parse(
-      fs.readFileSync(path.join(skillsDir, 'composition-quality-checker', 'contract.json'), 'utf8'),
+      fs.readFileSync(path.join(skillsDir, 'blendops-camera', 'contract.json'), 'utf8'),
     );
     const missingPolicy = structuredClone(sample);
-    const retryIdx = missingPolicy.handoffs.findIndex((h) => h.type === 'retry');
-    assert.ok(retryIdx >= 0, 'composition-quality-checker must have a retry handoff');
-    delete missingPolicy.handoffs[retryIdx].retryPolicy;
+    const retryHandoff = {
+      target: 'blendops-lighting-materials',
+      type: 'retry',
+      label: 'Lighting and materials re-plan',
+      when: {
+        all: [
+          { field: 'quality.domain', operator: 'equals', value: 'composition' },
+          { field: 'quality.verdict', operator: 'equals', value: 'Fail' },
+        ],
+      },
+      retryPolicy: {
+        maxAttempts: 2,
+        exitCondition: {
+          all: [{ field: 'quality.verdict', operator: 'in', value: ['Pass', 'Warn'] }],
+        },
+      },
+    };
+    delete retryHandoff.retryPolicy;
+    missingPolicy.handoffs.push(retryHandoff);
 
     const errsMissing = validateContractObject(
       missingPolicy,
-      'composition-quality-checker',
+      'blendops-camera',
       catalogSkillSet,
       undefined,
       { rootDir: root, contextFieldMap },
@@ -428,7 +443,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     };
     const errsForbidden = validateContractObject(
       forbiddenPolicy,
-      'composition-quality-checker',
+      'blendops-camera',
       catalogSkillSet,
       undefined,
       { rootDir: root, contextFieldMap },
@@ -439,43 +454,43 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     );
   });
 
-  it('Scenario 17: compiled registry/skills.json has full-catalog coverage, 48 contracted skills, 0 uncontracted, and deterministic ordering', () => {
+  it('Scenario 17: compiled registry/skills.json has full-catalog coverage, 14 contracted skills, 0 uncontracted, and deterministic ordering', () => {
     const skillsRegistry = JSON.parse(
       fs.readFileSync(path.join(root, 'registry', 'skills.json'), 'utf8'),
     );
     assert.equal(skillsRegistry.coverage, 'full-catalog');
     assert.equal(skillsRegistry.contractStatus, 'full-catalog');
-    assert.equal(skillsRegistry.contractedSkills, 48);
+    assert.equal(skillsRegistry.contractedSkills, 14);
     assert.equal(skillsRegistry.uncontractedSkills, 0);
-    assert.equal(skillsRegistry.catalogSkills, 48);
-    assert.equal(skillsRegistry.routingPrecedenceParticipants, 4);
-    assert.equal(skillsRegistry.specialistContracts, 44);
+    assert.equal(skillsRegistry.catalogSkills, 14);
+    assert.equal(skillsRegistry.routingPrecedenceParticipants, 3);
+    assert.equal(skillsRegistry.specialistContracts, 11);
     assert.deepEqual(skillsRegistry.routingPrecedenceOrder, ROUTING_PARTICIPANT_IDS);
-    assert.equal(skillsRegistry.skills.length, 48);
+    assert.equal(skillsRegistry.skills.length, 14);
 
-    // First 4 are routing participants in rank order 1..4
+    // First 3 are routing participants in rank order 1..3
     assert.deepEqual(
-      skillsRegistry.skills.slice(0, 4).map((s) => s.id),
+      skillsRegistry.skills.slice(0, 3).map((s) => s.id),
       ROUTING_PARTICIPANT_IDS,
     );
-    // Remaining 44 are sorted lexicographically by id
-    const specialistIds = skillsRegistry.skills.slice(4).map((s) => s.id);
+    // Remaining 11 are sorted lexicographically by id
+    const specialistIds = skillsRegistry.skills.slice(3).map((s) => s.id);
     assert.deepEqual(specialistIds, [...specialistIds].sort());
   });
 
-  it('Scenario 18: compiled registry/workflow-graph.json has 48 contracted nodes, 0 catalog-only nodes, 371 edges, and 0 progression cycles', () => {
+  it('Scenario 18: compiled registry/workflow-graph.json has 14 contracted nodes, 0 catalog-only nodes, 195 edges, and 0 progression cycles', () => {
     const graph = JSON.parse(
       fs.readFileSync(path.join(root, 'registry', 'workflow-graph.json'), 'utf8'),
     );
     assert.equal(graph.coverage, 'full-catalog');
-    assert.equal(graph.contractedSkills, 48);
+    assert.equal(graph.contractedSkills, 14);
     assert.equal(graph.uncontractedSkills, 0);
-    assert.equal(graph.summary.totalNodes, 48);
-    assert.equal(graph.summary.contractedNodes, 48);
+    assert.equal(graph.summary.totalNodes, 14);
+    assert.equal(graph.summary.contractedNodes, 14);
     assert.equal(graph.summary.catalogOnlyNodes, 0);
-    assert.equal(graph.summary.routingPrecedenceParticipants, 4);
-    assert.equal(graph.summary.specialistNodes, 44);
-    assert.equal(graph.summary.totalContractedEdges, 371);
+    assert.equal(graph.summary.routingPrecedenceParticipants, 3);
+    assert.equal(graph.summary.specialistNodes, 11);
+    assert.equal(graph.summary.totalContractedEdges, 195);
     assert.equal(graph.summary.progressionCycles, 0);
     assert.equal(graph.nodes.every((n) => n.status === 'contracted'), true);
   });
@@ -502,7 +517,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     assert.ok(cycles.length >= 1, 'Expected progression cycle to be detected');
   });
 
-  it('Scenario 20: all 48 skills are connected in registry/workflow-graph.json with zero isolated nodes and reachable scope-boundary enforcer', () => {
+  it('Scenario 20: all 14 skills are connected in registry/workflow-graph.json with zero isolated nodes and reachable scope-boundary enforcer', () => {
     const graph = JSON.parse(
       fs.readFileSync(path.join(root, 'registry', 'workflow-graph.json'), 'utf8'),
     );
@@ -521,12 +536,12 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     }
 
     assert.ok(
-      (inDegree.get('scope-guard') || 0) >= 2,
-      'scope-guard must have incoming handoff edges',
+      (inDegree.get('blendops-done-criteria') || 0) >= 2,
+      'blendops-done-criteria must have incoming handoff edges',
     );
   });
 
-  it('Scenario 21: all 48 SKILL.md files contain synchronized managed sections matching their contract.json', () => {
+  it('Scenario 21: all 14 SKILL.md files contain synchronized managed sections matching their contract.json', () => {
     for (const skillId of catalogSkillIds) {
       const contract = JSON.parse(
         fs.readFileSync(path.join(skillsDir, skillId, 'contract.json'), 'utf8'),
@@ -542,7 +557,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
   });
 
   it('Scenario 22: managed section drift in any SKILL.md file is detected and rejected', () => {
-    const skillId = 'lighting-material-plan';
+    const skillId = 'blendops-lighting-materials';
     const contract = JSON.parse(
       fs.readFileSync(path.join(skillsDir, skillId, 'contract.json'), 'utf8'),
     );
@@ -554,7 +569,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     assert.notEqual(applyManagedSectionsToSkillMd(driftedMd, contract), driftedMd);
   });
 
-  it('Scenario 23: all 48 SKILL.md files use canonical relative-path handoff notation (0 bare-ID handoffs)', () => {
+  it('Scenario 23: all 14 SKILL.md files use canonical relative-path handoff notation (0 bare-ID handoffs)', () => {
     for (const skillId of catalogSkillIds) {
       const scan = scanSkillMarkdown(root, skillId);
       assert.equal(scan.hasContract, true);
@@ -567,52 +582,52 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     }
   });
 
-  it('Scenario 24: resolveRoutingWinner resolves the exact same routing winners across all 16 state vectors with 48 contracts vs 4 pilot contracts', () => {
+  it('Scenario 24: resolveRoutingWinner resolves the exact same routing winners across all 16 state vectors with 14 contracts vs 3 routing contracts', () => {
     const skillsRegistry = JSON.parse(
       fs.readFileSync(path.join(root, 'registry', 'skills.json'), 'utf8'),
     );
-    const all48Contracts = skillsRegistry.skills;
-    const pilot4Contracts = all48Contracts.filter((c) => ROUTING_PARTICIPANT_IDS.includes(c.id));
-    assert.equal(all48Contracts.length, 48);
-    assert.equal(pilot4Contracts.length, 4);
+    const all14Contracts = skillsRegistry.skills;
+    const pilot4Contracts = all14Contracts.filter((c) => ROUTING_PARTICIPANT_IDS.includes(c.id));
+    assert.equal(all14Contracts.length, 14);
+    assert.equal(pilot4Contracts.length, 3);
 
     const all16States = enumerateRoutingStateSpace({ includeContradictory: true });
     assert.equal(all16States.length, 16);
 
     for (const state of all16States) {
-      const winner48 = resolveRoutingWinner(all48Contracts, state);
+      const winner14 = resolveRoutingWinner(all14Contracts, state);
       const winner4 = resolveRoutingWinner(pilot4Contracts, state);
       assert.equal(
-        winner48,
+        winner14,
         winner4,
-        `Routing winner mismatch on state ${JSON.stringify(state)}: ${winner48} vs ${winner4}`,
+        `Routing winner mismatch on state ${JSON.stringify(state)}: ${winner14} vs ${winner4}`,
       );
     }
   });
 
-  it('Scenario 25: all 48 catalog evaluation suites (269 deterministic, contract-routing & contract-handoff cases) pass against the 48-skill registry', () => {
+  it('Scenario 25: all 14 catalog evaluation suites (269 deterministic, contract-routing & contract-handoff cases) pass against the 14-skill registry', () => {
     const evalRes = runEvalSuites({ rootDir: root, checkOnly: false });
     assert.equal(evalRes.ok, true, `Expected eval suites to pass, got: ${evalRes.errors.join('; ')}`);
-    assert.equal(evalRes.summary.suitesExecuted, 48);
+    assert.equal(evalRes.summary.suitesExecuted, 14);
     assert.equal(evalRes.summary.totalCasesExecuted, 269);
     assert.equal(evalRes.summary.passedCases, 269);
     assert.equal(evalRes.summary.failedCases, 0);
   });
 
-  it('Scenario 26: docs/audits/current/skill-inventory.json reflects 48/48 contracted skills, 48 relative-path handoffs, 0 bare-ID handoffs, and 48 KEEP skills', () => {
+  it('Scenario 26: docs/audits/current/skill-inventory.json reflects 14/14 contracted skills, 14 relative-path handoffs, 0 bare-ID handoffs, and 14 KEEP skills', () => {
     const skillInv = JSON.parse(
       fs.readFileSync(path.join(root, 'docs', 'audits', 'current', 'skill-inventory.json'), 'utf8'),
     );
-    assert.equal(skillInv.summary.totalSkills, 48);
+    assert.equal(skillInv.summary.totalSkills, 14);
     assert.equal(skillInv.summary.contractStatus, 'full-catalog');
-    assert.equal(skillInv.summary.contractedSkillsCount, 48);
+    assert.equal(skillInv.summary.contractedSkillsCount, 14);
     assert.equal(skillInv.summary.uncontractedSkillsCount, 0);
-    assert.equal(skillInv.summary.routingPrecedenceParticipantsCount, 4);
-    assert.equal(skillInv.summary.specialistContractsCount, 44);
-    assert.equal(skillInv.summary.totalWorkflowEdges, 371);
-    assert.equal(skillInv.summary.skillsUsingRelativePathHandoffNotation, 48);
+    assert.equal(skillInv.summary.routingPrecedenceParticipantsCount, 3);
+    assert.equal(skillInv.summary.specialistContractsCount, 11);
+    assert.equal(skillInv.summary.totalWorkflowEdges, 195);
+    assert.equal(skillInv.summary.skillsUsingRelativePathHandoffNotation, 14);
     assert.equal(skillInv.summary.skillsUsingBareIdHandoffNotation, 0);
-    assert.equal(skillInv.summary.dispositionBreakdown.KEEP, 48);
+    assert.equal(skillInv.summary.dispositionBreakdown.KEEP, 14);
     assert.equal(skillInv.summary.dispositionBreakdown.IMPROVE, 0);
 
     for (const s of skillInv.skills) {
@@ -664,10 +679,10 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
       execFileSync('git', ['commit', '-m', 'Initial temp commit'], { cwd: tempDir });
 
       // Remove one contract.json in tempDir
-      fs.unlinkSync(path.join(tempDir, 'skills', 'polycount-budget-checker', 'contract.json'));
+      fs.unlinkSync(path.join(tempDir, 'skills', 'blendops-glb-budget', 'contract.json'));
 
       const generated = generateCurrentAuditArtifacts(tempDir);
-      assert.equal(generated.currentSkillInventory.summary.contractedSkillsCount, 47);
+      assert.equal(generated.currentSkillInventory.summary.contractedSkillsCount, 13);
       assert.equal(generated.currentSkillInventory.summary.uncontractedSkillsCount, 1);
       const mutatedF03 = generated.findings.findings.find((f) => f.id === 'F-03');
       const mutatedF09 = generated.findings.findings.find((f) => f.id === 'F-09');
@@ -704,8 +719,8 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
       'registry/skills.json',
       'registry/workflow-graph.json',
       'scripts/test-catalog-contracts.mjs',
-      'skills/camera-composition/contract.json',
-      'skills/workflow-stage-router/contract.json',
+      'skills/blendops-camera/contract.json',
+      'skills/blendops-start/contract.json',
     ]) {
       assert.equal(
         resolved.has(expectedPath),
@@ -720,17 +735,17 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     assert.equal(scorecard.auditProvenance.auditedInputsSha256, computeAuditedInputsDigest(root));
   });
 
-  it('Scenario 30: docs:check, registry:check, evals:check, and skills:export all pass across the 48-skill catalog', () => {
+  it('Scenario 30: docs:check, registry:check, evals:check, and skills:export all pass across the 14-skill catalog', () => {
     const docsRes = runDocsCheck(root);
     assert.equal(docsRes.ok, true, `docs:check failed: ${docsRes.errors.join('; ')}`);
-    assert.equal(docsRes.catalogSkillCount, 48);
+    assert.equal(docsRes.catalogSkillCount, 14);
 
     const regCheckOut = execFileSync(
       process.execPath,
       [path.join(root, 'scripts', 'build-registry.mjs'), '--check'],
       { cwd: root, encoding: 'utf8' },
     );
-    assert.match(regCheckOut, /48 contracted skills, 371 edges/);
+    assert.match(regCheckOut, /14 contracted skills, 195 edges/);
 
     const tempExportRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-catalog-export-'));
     try {
@@ -739,12 +754,12 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
         [path.join(root, 'scripts', 'export-claude-skills.mjs'), '--output-root', tempExportRoot],
         { cwd: root, encoding: 'utf8' },
       );
-      assert.match(exportOut, /Exported 48 Claude skill zips/i);
+      assert.match(exportOut, /Exported 14 Claude skill zips/i);
 
       const manifest = JSON.parse(
         fs.readFileSync(path.join(tempExportRoot, 'manifest.json'), 'utf8'),
       );
-      assert.equal(manifest.skillCount, 48);
+      assert.equal(manifest.skillCount, 14);
       assert.deepEqual(manifest.skills, catalogSkillIds);
       for (const skillId of catalogSkillIds) {
         assert.equal(

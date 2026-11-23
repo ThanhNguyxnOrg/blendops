@@ -32,7 +32,7 @@ Run this check **before** doing anything else. Pick exactly one mode:
 | Your environment right now | Mode |
 |---|---|
 | You can read/write files in a target project (Claude Code, Cursor, Codex, OpenCode, Cline, Continue, Zed, goose, Gemini CLI, Antigravity, GitHub Copilot, generic CLI agent inside a repo) | **Mode A** — install project-locally |
-| You are in a chat-only UI with no project filesystem write access (Claude Desktop chat, Claude.ai web, ChatGPT web/app, any browser chat UI) | **Mode B** — output one ZIP per canonical skill from `skills/*/SKILL.md` (currently 48) for the user to manually upload |
+| You are in a chat-only UI with no project filesystem write access (Claude Desktop chat, Claude.ai web, ChatGPT web/app, any browser chat UI) | **Mode B** — output one ZIP per canonical skill from `skills/*/SKILL.md` (currently 14) for the user to manually upload |
 | You cannot fetch the BlendOps repo, cannot write files, AND cannot output ZIPs / file contents | **Mode C** — ask one concise question |
 
 Decision rules (no optimism):
@@ -83,7 +83,7 @@ Create one ZIP per canonical skill from:
 skills/*/SKILL.md
 ```
 
-Expected output shape: **one ZIP per `skills/*/SKILL.md`** (currently 48 — 16 baseline + 32 expansion across Batches 1–8: web 3D handoff deep, quality validators, domain scene planners, process discipline, asset/sourcing, color/format/output decisions, recipe/pack ops, runtime path discipline). Run `npm run skills:export` to generate them deterministically into `dist/claude-skills/desktop-zips/`, plus the separate shared catalog archive `dist/shared-catalog/blendops-knowledge-and-recipes.zip` (for Claude Project Knowledge / chat file attachment; contains zero `SKILL.md` files). The full skill inventory lives in [`skills/README.md`](../skills/README.md).
+Expected output shape: **one ZIP per `skills/*/SKILL.md`** (currently 14 — 16 baseline + 32 expansion across Batches 1–8: web 3D handoff deep, quality validators, domain scene planners, process discipline, asset/sourcing, color/format/output decisions, recipe/pack ops, runtime path discipline). Run `npm run skills:export` to generate them deterministically into `dist/claude-skills/desktop-zips/`, plus the separate shared catalog archive `dist/shared-catalog/blendops-knowledge-and-recipes.zip` (for Claude Project Knowledge / chat file attachment; contains zero `SKILL.md` files). The full skill inventory lives in [`skills/README.md`](../skills/README.md).
 
 Each ZIP must contain exactly one skill directory:
 

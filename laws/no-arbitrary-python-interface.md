@@ -5,7 +5,7 @@ Status: 1.0.0
 ## Purpose
 Prevent arbitrary-code style final interfaces in user-facing BlendOps outputs.
 
-This law governs the product surface, not execution sandboxing: it bans "paste this Python" as the user-facing flow, but it does not cover operator-side sandbox hygiene (trusted environment, secrets handling). Sandbox guidance lives in `runtime-readiness` and `runtime-attempt-report`.
+This law governs the product surface, not execution sandboxing: it bans "paste this Python" as the user-facing flow, but it does not cover operator-side sandbox hygiene (trusted environment, secrets handling). Sandbox guidance lives in `blendops-connect-blender` and `blendops-final-check`.
 
 ## Applies to
 All skills/workflows/pack outputs.

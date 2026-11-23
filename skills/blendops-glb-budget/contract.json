@@ -1,0 +1,370 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "blendops-glb-budget",
+  "version": "2.0.0",
+  "category": "quality-validators",
+  "role": "glb-polycount-texture-and-mobile-budget",
+  "purpose": "Set and check polycount, texture, and file-size budgets for GLB delivery on web and mobile.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "what's a good polycount for mobile",
+    "how big can the GLB be",
+    "will this load on iPhone",
+    "what should I aim for on a phone",
+    "is the polycount okay",
+    "check triangle budget",
+    "what's blowing the budget",
+    "topology issue?"
+  ],
+  "exclusions": [
+    {
+      "condition": "offline pre-rendered video (no real-time budget needed)",
+      "delegateTo": "blendops-lighting-materials",
+      "reason": "no real-time budget needed"
+    },
+    {
+      "condition": "replacing engineering load testing (this skill sets a planning budget, not a real-world benchmark)",
+      "delegateTo": "blendops-glb-web-handoff",
+      "reason": "this skill sets a planning budget, not a real-world benchmark"
+    },
+    {
+      "condition": "material validation",
+      "delegateTo": "blendops-lighting-materials",
+      "reason": "use blendops-lighting-materials"
+    },
+    {
+      "condition": "lighting validation",
+      "delegateTo": "blendops-lighting-materials",
+      "reason": "use blendops-lighting-materials"
+    },
+    {
+      "condition": "composition validation",
+      "delegateTo": "blendops-camera",
+      "reason": "use blendops-camera"
+    },
+    {
+      "condition": "broad scene readiness review",
+      "delegateTo": "blendops-final-check",
+      "reason": "use blendops-final-check"
+    },
+    {
+      "condition": "classifying render or export artifact evidence",
+      "delegateTo": "blendops-final-check",
+      "reason": "use blendops-final-check"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "target_device_tier_and_network",
+        "type": "string",
+        "description": "Target mobile/web hardware tier (iOS Safari, mid-range Android, desktop WebGL) and load budget"
+      },
+      {
+        "name": "scene_deliverable_type",
+        "type": "string",
+        "description": "Whether the GLB is a single hero product, multi-item configurator, or animated character"
+      }
+    ],
+    "optional": [
+      {
+        "name": "compression_pipeline_support",
+        "type": "object",
+        "description": "Whether the host app supports Draco, Meshopt, or KTX2 BasisU transcoding"
+      },
+      {
+        "name": "scene_geometry_inventory",
+        "type": "array",
+        "description": "Per-object triangle, vertex, modifier stack, and subdivision level counts"
+      },
+      {
+        "name": "pinned_geometry_budget",
+        "type": "object",
+        "description": "Target triangle and draw-call ceilings from blendops-glb-budget or brief"
+      },
+      {
+        "name": "deformation_or_rig_requirements",
+        "type": "object",
+        "description": "Optional skeletal deformation or silhouette curvature constraints"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "pinned_glb_performance_budget_table",
+      "triangle_drawcall_and_texture_ceilings",
+      "compression_and_lod_requirements",
+      "polycount_and_topology_verdict_table",
+      "top_budget_offenders_ranking",
+      "decimation_or_retopology_remediation_plan"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "blendops-camera",
+      "type": "conditional",
+      "label": "Scene planning (consumes pinned budget) (blendops-camera)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "camera_planning"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-lighting-materials",
+      "type": "conditional",
+      "label": "Scene planning (consumes pinned budget) (blendops-lighting-materials)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "lookdev_planning"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-scene-plan",
+      "type": "alternative",
+      "label": "Scene planning (consumes pinned budget) (blendops-scene-plan)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "character_portrait"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-scene-plan",
+      "type": "alternative",
+      "label": "Scene planning (consumes pinned budget) (blendops-scene-plan)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "environment_shot"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-scene-plan",
+      "type": "alternative",
+      "label": "Scene planning (consumes pinned budget) (blendops-scene-plan)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "interior_archviz"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-product-shot",
+      "type": "alternative",
+      "label": "Scene planning (consumes pinned budget) (blendops-product-shot)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "product_grid"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-product-shot",
+      "type": "alternative",
+      "label": "Scene planning (consumes pinned budget) (blendops-product-shot)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "product_hero"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-final-check",
+      "type": "conditional",
+      "label": "Count and texture budget validation (blendops-final-check)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "holistic"
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "quality_validation"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-lighting-materials",
+      "type": "conditional",
+      "label": "Count and texture budget validation (blendops-lighting-materials)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "material"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-final-check",
+      "type": "conditional",
+      "label": "Measured export compliance",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "post_execution_audit"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-glb-web-handoff",
+      "type": "progression",
+      "label": "Web delivery handoff (consumes pinned budget)",
+      "when": {
+        "all": [
+          {
+            "field": "artifact.type",
+            "operator": "equals",
+            "value": "glb"
+          },
+          {
+            "field": "handoff.consumerStack",
+            "operator": "equals",
+            "value": "web_glb"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-glb-web-handoff",
+      "type": "progression",
+      "label": "Animation contracts (owns animation contract details within pinned channel/bone/morph ceilings)",
+      "when": {
+        "all": [
+          {
+            "field": "artifact.hasAnimation",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "animation_handoff"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-lighting-materials",
+      "type": "upstream_reference",
+      "label": "Lighting validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "lighting"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-camera",
+      "type": "upstream_reference",
+      "label": "Composition validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "composition"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -184,6 +184,14 @@ export const REQUIRED_RECIPE_IDS = [
   'recipe.web-ready-asset-optimization'
 ];
 
+function trimEdgeChars(value, chars) {
+  let start = 0;
+  let end = value.length;
+  while (start < end && chars.includes(value[start])) start++;
+  while (end > start && chars.includes(value[end - 1])) end--;
+  return value.slice(start, end);
+}
+
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
@@ -290,7 +298,7 @@ export function tokenize(text) {
   const baseTokens = folded
     .replace(/[^a-z0-9+#.-]+/g, ' ')
     .split(/\s+/)
-    .map((t) => t.replace(/^[.-]+|[.-]+$/g, ''))
+    .map((t) => trimEdgeChars(t, '.-'))
     .filter((t) => t.length >= 2 && !STOP_WORDS.has(t));
 
   // Expand Vietnamese domain phrases deterministically
@@ -325,7 +333,7 @@ export function deriveSkillWorkflowStage(skill) {
     cat === 'routing-and-governance' ||
     cat === 'brief-and-scope' ||
     cat === 'recipe-and-pack-governance' ||
-    id === 'blender-brainstorming'
+    id === 'blendops-brief'
   ) {
     return 'discover-and-plan';
   }
@@ -338,7 +346,7 @@ export function deriveSkillWorkflowStage(skill) {
   if (cat === 'scene-and-domain-planning' || cat === 'color-and-render-decisions') {
     return 'stage-camera-lighting-and-lookdev';
   }
-  if (cat === 'quality-and-budget-validation' || id === 'blender-troubleshooting') {
+  if (cat === 'quality-and-budget-validation' || id === 'blendops-fix-problems') {
     return 'inspect-and-validate';
   }
   if (cat === 'web-and-glb-handoff' || cat === 'evidence-and-reporting') {
@@ -436,14 +444,14 @@ function inspectReferenceMarkdownFile(rootDir, relPath) {
 // Cross-skill reference files that touch domain concepts shared across multiple skills and are flagged
 // for periodic human semantic review rather than claiming 100% automated semantic deduplication.
 const SEMANTIC_REVIEW_CANDIDATE_REFS = new Set([
-  'skills/product-hero-scene-planner/references/scene-plan-schema.md',
-  'skills/r3f-component-plan/references/suspense-placement-rules.md',
-  'skills/r3f-component-plan/references/usegltf-caching-rules.md',
-  'skills/render-export-evidence/references/evidence-record-templates.md',
-  'skills/render-export-evidence/references/truth-label-decision-tree.md',
-  'skills/resolution-aspect-decision/references/aspect-defaults.md',
-  'skills/resolution-aspect-decision/references/print-vs-screen-rules.md',
-  'skills/scene-readiness/references/quality-rubric.md'
+  'skills/blendops-product-shot/references/scene-plan-schema.md',
+  'skills/blendops-glb-web-handoff/references/suspense-placement-rules.md',
+  'skills/blendops-glb-web-handoff/references/usegltf-caching-rules.md',
+  'skills/blendops-final-check/references/evidence-record-templates.md',
+  'skills/blendops-final-check/references/truth-label-decision-tree.md',
+  'skills/blendops-camera/references/aspect-defaults.md',
+  'skills/blendops-camera/references/print-vs-screen-rules.md',
+  'skills/blendops-final-check/references/quality-rubric.md'
 ]);
 
 /**
@@ -503,8 +511,7 @@ function classifyReferenceFile(rootDir, relPath, promotedMap, humanReviewsMap = 
   }
 
   if (
-    relPath.startsWith('skills/recipe-fit-assessor/references/') ||
-    relPath.startsWith('skills/blender-recipe-decomposer/references/')
+    relPath.startsWith('skills/blendops-brief/references/')
   ) {
     return {
       path: relPath,
@@ -539,20 +546,10 @@ function classifyReferenceFile(rootDir, relPath, promotedMap, humanReviewsMap = 
   }
 
   if (
-    relPath.startsWith('skills/workflow-stage-router/references/') ||
-    relPath.startsWith('skills/pack-prerequisite-checker/references/') ||
-    relPath.startsWith('skills/acceptance-criteria-builder/references/') ||
-    relPath.startsWith('skills/stage-gates/references/') ||
-    relPath.startsWith('skills/done-criteria/references/') ||
-    relPath.startsWith('skills/scope-guard/references/') ||
-    relPath.startsWith('skills/blendops-help/references/') ||
-    relPath.startsWith('skills/runtime-path-picker/references/') ||
-    relPath.startsWith('skills/runtime-setup/references/') ||
-    relPath.startsWith('skills/runtime-readiness/references/') ||
-    relPath.startsWith('skills/bridge-conflicts/references/') ||
-    relPath.startsWith('skills/path-one-host-outline/references/') ||
-    relPath.startsWith('skills/cli-appendix-job-outline/references/') ||
-    relPath.startsWith('skills/runtime-attempt-report/references/')
+    relPath.startsWith('skills/blendops-start/references/') ||
+    relPath.startsWith('skills/blendops-done-criteria/references/') ||
+    relPath.startsWith('skills/blendops-connect-blender/references/') ||
+    relPath.startsWith('skills/blendops-final-check/references/')
   ) {
     return {
       path: relPath,
@@ -769,7 +766,7 @@ export function renderSkillArchitectureAuditMarkdown(auditData) {
   const lines = [
     '# BlendOps — Skill Architecture & Reference Classification Audit',
     '',
-    '> Generated deterministically by `scripts/build-knowledge-catalog.mjs`. Maps all 48 canonical skills from `registry/skills.json` and `registry/runtime-capability-policy.json`, and classifies all 151 `skills/*/references/*.md` files across the 5-layer architecture.',
+    '> Generated deterministically by `scripts/build-knowledge-catalog.mjs`. Maps all 14 canonical skills from `registry/skills.json` and `registry/runtime-capability-policy.json`, and classifies all 199 `skills/*/references/*.md` files across the 5-layer architecture.',
     '',
     '## 1. Five-Layer Architecture Summary',
     '',
@@ -781,7 +778,7 @@ export function renderSkillArchitectureAuditMarkdown(auditData) {
     `| **D. Runtime / Production Layer** | \`registry/runtime-capability-policy.json\`, \`docs/runtime-stack-strategy.md\` | External boundary (Path 1 Lab MCP 5.1+, Path 2 \`mcp-for-blender\` 3.0+, CLI appendix) | External execution bridges; BlendOps owns zero runtime servers or add-ons |`,
     `| **E. Evaluation & Evidence Layer** | \`evals/suites/\`, \`evals/catalog-retrieval-evals.json\`, \`evals/scene-specs/\`, \`docs/evals/\` | Offline contract + retrieval + planner evals passing; runtime = \`${auditData.five_layer_architecture.evaluation_and_evidence_layer.runtime_execution_truth_state}\`, artifacts = \`${auditData.five_layer_architecture.evaluation_and_evidence_layer.artifact_production_truth_state}\` | Separates schema validity, source backing, version checks, runtime execution, and visual critique |`,
     '',
-    '## 2. Skill Reference Classification & Methodology Summary (151 Files)',
+    '## 2. Skill Reference Classification & Methodology Summary (199 Files)',
     '',
     `- **Derivation Rule for Workflow Stages**: ${auditData.workflow_stage_derivation_rule}`,
     `- **Classification Methodology**: ${auditData.classification_methodology.summary}`,
@@ -795,9 +792,9 @@ export function renderSkillArchitectureAuditMarkdown(auditData) {
     `| \`recipe_specific_procedure\` | ${auditData.summary.reference_classification_breakdown.recipe_specific_procedure} | \`rule_based_governance_and_recipe_mapping\` | Recipe discovery catalog and recipe decomposition rules synchronized with \`registry/recipe-catalog.json\` |`,
     `| \`historical_or_eval_evidence\` | ${auditData.summary.reference_classification_breakdown.historical_or_eval_evidence} | Stored in \`docs/evals/\` (${auditData.classification_methodology.historical_eval_evidence_files_in_docs_evals} files) | Historical evaluation and runtime evidence records live under \`docs/evals/\` rather than inside \`skills/*/references/\` |`,
     `| \`outdated_or_duplicated\` | ${auditData.summary.reference_classification_breakdown.outdated_or_duplicated} | Exact hash & promotion audit | Zero exact duplicate reference files; ${auditData.summary.needs_semantic_review_count} adjacent checklist files tracked under \`needs_semantic_review\` |`,
-    `| **Total** | **${auditData.summary.total_skill_references_classified}** | **100% accounted for** | **All 151 \`skills/*/references/*.md\` files classified with zero \`undefined\` fields** |`,
+    `| **Total** | **${auditData.summary.total_skill_references_classified}** | **100% accounted for** | **All 199 \`skills/*/references/*.md\` files classified with zero \`undefined\` fields** |`,
     '',
-    '## 3. Complete 48-Skill Architecture Matrix',
+    '## 3. Complete 14-Skill Architecture Matrix',
     '',
     '| # | Skill ID | Category | Derived Stage | Capability Tier (Ceiling) | Role Classification | Disposition | Linked Knowledge | Linked Recipes | Refs |',
     '| ---: | :--- | :--- | :--- | :--- | :--- | :--- | ---: | ---: | ---: |'
@@ -1526,7 +1523,7 @@ export function searchCatalog(rootDir = DEFAULT_ROOT, query = '', options = {}) 
   const rawSimpleTokens = foldedRawQuery
     .replace(/[^a-z0-9+#.-]+/g, ' ')
     .split(/\s+/)
-    .map((t) => t.replace(/^[.-]+|[.-]+$/g, ''))
+    .map((t) => trimEdgeChars(t, '.-'))
     .filter((t) => t.length >= 2 && !STOP_WORDS.has(t));
 
   const queryTokens = tokenize(query);
@@ -2054,7 +2051,7 @@ export function buildSharedCatalogFilesMap(rootDir = DEFAULT_ROOT) {
   const skillsData = readJson(path.join(rootDir, 'registry/skills.json'));
   const skillsSummary = {
     schemaVersion: '1.0.0',
-    description: 'Compact canonical 48-skill summary for offline project-local and shared-catalog resolution.',
+    description: 'Compact canonical 14-skill summary for offline project-local and shared-catalog resolution.',
     skills: skillsData.skills.map((s) => ({
       id: s.id,
       version: s.version || '1.0.0',
@@ -2147,7 +2144,7 @@ export function buildSharedCatalogFilesMap(rootDir = DEFAULT_ROOT) {
     '- `knowledge-catalog.json` — 30 canonical knowledge records across 11 3D/Blender domains.',
     '- `recipe-catalog.json` — 10 composable multi-stage construction recipes linking required skills, knowledge records, stage gates, validation criteria, and failure recovery modes.',
     '- `catalog-index.json` — Prebuilt deterministic bilingual (English + Vietnamese) search and cross-reference index.',
-    '- `skills-summary.json` — Compact metadata for all 48 canonical BlendOps skills so local resolution works standalone without requiring the full BlendOps git repository.',
+    '- `skills-summary.json` — Compact metadata for all 14 canonical BlendOps skills so local resolution works standalone without requiring the full BlendOps git repository.',
     '- `runtime-operations.json` — 18 canonical typed runtime operations (`op.inspect.*`, `op.mutate.*`, `op.export.*`, `op.import.*`), upstream tool qualification matrix, and blocked L3 interfaces.',
     '- `runtime-capability-policy.json` — Governed runtime capability tiers (`L0`–`L3`) and enforcement policy.',
     '- `schemas/` — JSON Schema Draft 2020-12 definitions for sources, knowledge records, recipes, SceneSpec, ExecutionPlan, RuntimeSession, RuntimeOperations, OperationExecutionLedger, RuntimeEvidencePacket, RuntimeCapabilityPolicy, and RuntimeQualificationReport.',

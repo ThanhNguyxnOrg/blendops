@@ -130,7 +130,7 @@ export function classifyTrackedFile(relPath, pkgFiles = []) {
     referencedByCi = true;
   } else if (relPath === 'skills.sh.json') {
     classification = 'configuration';
-    purpose = 'Canonical skills.sh repository grouping and catalog customization manifest for all 48 skills';
+    purpose = 'Canonical skills.sh repository grouping and catalog customization manifest for all 14 skills';
     owningSubsystem = 'skills-catalog';
     referencedByCi = true;
   } else if (
@@ -234,7 +234,7 @@ export function classifyTrackedFile(relPath, pkgFiles = []) {
       purpose = 'Authoring template for canonical BlendOps skills and evaluations';
     } else if (relPath === 'skills/README.md') {
       classification = 'documentation';
-      purpose = 'Canonical index and authoring guide for all 48 BlendOps skills';
+      purpose = 'Canonical index and authoring guide for all 14 BlendOps skills';
     } else if (relPath.endsWith('/SKILL.md')) {
       classification = 'canonical_source';
       purpose = 'Canonical Anthropic-compliant skill specification and operating playbook';
@@ -329,7 +329,7 @@ export function classifyTrackedFile(relPath, pkgFiles = []) {
       relPath === 'docs/audits/skill-architecture-audit.md'
     ) {
       classification = 'generated_artifact';
-      purpose = `Deterministically generated 48-skill and 151-reference architecture reconciliation audit (${path.basename(relPath)})`;
+      purpose = `Deterministically generated 14-skill and 199-reference architecture reconciliation audit (${path.basename(relPath)})`;
       isGenerated = true;
       generatorScript = 'scripts/build-knowledge-catalog.mjs';
     } else if (relPath.startsWith('docs/audits/current/')) {
@@ -352,7 +352,7 @@ export function classifyTrackedFile(relPath, pkgFiles = []) {
       relPath === 'docs/evals/README.md'
         ? 'Index and policy guide for runtime, install, and package readiness evaluation records'
         : `Evaluation packet or recorded verification evidence (${path.basename(relPath)})`;
-  } else if (relPath.startsWith('docs/examples/glb-web-handoff/')) {
+  } else if (relPath.startsWith('docs/examples/blendops-glb-web-handoff/')) {
     owningSubsystem = 'glb-web-handoff-toolkit';
     referencedByCi = true;
     if (relPath.endsWith('README.md')) {
@@ -698,7 +698,7 @@ export function buildRepositoryArchitectureReport(rootDir = DEFAULT_ROOT) {
       totalTrackedFiles: fileEntries.length,
       npmPackageIncludedFiles: npmIncludedCount,
       generatedTrackedFiles: generatedCount,
-      canonicalSkillsCount: 48,
+      canonicalSkillsCount: 14,
       lawsCount: 4,
       packsCount: 1,
       bundlesCount: 3,
@@ -718,7 +718,7 @@ export function buildRepositoryArchitectureReport(rootDir = DEFAULT_ROOT) {
       exactDuplicateGroups,
       nearDuplicateGeneratedFamilies: [
         {
-          pattern: 'bundles/claude-desktop-manual/references/skills/*.md (48 files) & bundles/skill-package/blendops/references/skill-*.md (48 files)',
+          pattern: 'bundles/claude-desktop-manual/references/skills/*.md (14 files) & bundles/skill-package/blendops/references/skill-*.md (14 files)',
           generatorScript: 'scripts/generate-bundle-reference-summaries.mjs',
           rationale:
             'Dual-profile reference summaries required by the Claude Desktop manual bundle and the standalone uploadable skill package; verified 100% semantically equivalent to skills/*/SKILL.md and contract.json in CI.',

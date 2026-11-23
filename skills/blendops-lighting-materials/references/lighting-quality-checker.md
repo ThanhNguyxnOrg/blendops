@@ -1,0 +1,224 @@
+
+# blendops-lighting-materials (reference for `blendops-lighting-materials`)
+
+> Detailed playbook carried over from the former `blendops-lighting-materials` skill. Load it from [`../SKILL.md`](../SKILL.md) when this part of the job is in scope.
+
+## Purpose
+Run a focused pass/warn/fail check on the scene's lighting setup per light — covering intensity ranges, shadow softness, color temperature, HDRI / explicit-light balance, and mood match — without expanding into material, composition, or lookdev planning concerns.
+
+## Quick start
+- enumerate every explicit light and HDRI in the scene plan or measured scene
+- check intensity ranges per light
+- check shadow softness consistency
+- check color temperature consistency
+- check HDRI presence + balance with explicit lights
+- check mood match against the brief
+- emit per-light verdicts (`Pass / Warn / Fail`) with remediation hints only + a top-line status
+
+## When to use
+- before render
+- after a lighting change request
+- as a sub-check during full quality review
+- when the rendered preview looks "off" but the issue is unclear
+
+## When not to use
+
+## Trigger phrases
+
+## Prerequisites / readiness
+- light list known (from `blendops-lighting-materials` scene plan or measured scene snapshot)
+- consumer target known (render or export target)
+- mood / look brief known (from `blendops-brief`)
+
+## Input schema
+
+### Required inputs
+
+| Input | Why it is required |
+|---|---|
+| Light list (type, position, strength, color, soft size) | Scope of the check |
+| Mood / look brief | Determines whether the lighting matches intent |
+| Consumer target | Cycles vs Eevee vs glTF affects allowed light types |
+
+### Optional inputs
+
+| Input | Use |
+|---|---|
+| HDRI file path or name | Identifies environment lighting |
+| Reference image | Allows intensity / mood cross-check |
+
+### Assumptions to confirm
+- Intensity units (Watts / Lumens / Sun strength) are consistent across the scene.
+- Color temperature is in Kelvin where applicable; mixed Kelvin and RGB color modes need explicit annotation.
+- HDRI is real-world calibrated (typical 0.5–2.0 strength), not arbitrarily boosted.
+
+## Output schema
+
+### Primary output
+A per-light verdict table: name, type, intensity, color, shadow softness, verdict (`Pass / Warn / Fail`), and remediation hints (hints only, never direct edits or execution).
+
+### Secondary output
+- top-line status (`Pass / Warn / Fail`) computed from per-light rows
+- mood / look match: `Yes / No / Unknown`
+- worst-offender highlighting
+
+### Evidence / caveat output
+Validation verdicts (`Pass / Warn / Fail`) are separate from runtime and artifact truth states. Truth states are downgrade-only (never upgrade), and `Artifact status` defaults to `Not Produced` unless concrete output evidence exists (classified via `blendops-final-check`).
+
+```txt
+Runtime status: Not Run | Attempted | Produced | Verified | Failed
+Artifact status: Not Produced | Produced | Verified | Failed
+Evidence used: <links, paths, logs, or "none">
+Limitations: <known gaps>
+```
+
+## Required laws
+- `../../laws/evidence-before-done.md`
+- `../../laws/non-blender-user-language.md`
+- `../../laws/no-arbitrary-python-interface.md`
+- `../../laws/official-runtime-only.md`
+
+## Official runtime boundary
+
+This skill validates plans or measured scene snapshots only. It never modifies lights, runs Blender, or renders. Use measured scene description (plan output, runtime tool snapshot) — never invent values.
+
+For runtime path attribution, see `../../docs/runtime-stack-strategy.md`.
+
+## Operating procedure
+1. Read the light list from the `blendops-lighting-materials` plan or measured scene snapshot.
+2. For each light, evaluate intensity range (see `references/intensity-ranges.md`).
+3. Evaluate shadow softness consistency (see `references/shadow-softness-rules.md`).
+4. Evaluate color temperature consistency.
+5. Evaluate HDRI strength + explicit-light balance (see `references/hdri-balance-rules.md`).
+6. Cross-check overall setup with the mood brief from `blendops-brief`.
+7. Assign per-light verdict (`Pass / Warn / Fail`) and provide brief remediation hints only (never edit lights).
+8. Compute top-line status, highlight worst offenders, and record downgrade-only truth states (`Artifact status: Not Produced` by default unless concrete output evidence exists).
+9. Hand off to `blendops-final-check` (broad review), `blendops-lighting-materials` (re-plan), `blendops-lighting-materials` (materials), `blendops-camera` (framing), or `blendops-final-check` (artifact evidence classification).
+
+## Decision tree
+
+```txt
+Scene has only HDRI, no explicit light when brief requires strong key separation?
+  → Warn (HDRI/explicit-light balance flag; verify intent)
+HDRI strength overpowers explicit lights?
+  → Warn (balance issue); add remediation hint to rebalance HDRI vs key light
+Multiple explicit lights stacked above target intensity range?
+  → Warn or Fail depending on severity; add remediation hint to reduce intensities
+Shadows hard when mood brief specifies soft lighting (or vice versa)?
+  → Fail (shadow softness + mood mismatch)
+Inconsistent or unannotated color temperatures across lights?
+  → Warn (color temperature consistency flag)
+```
+
+## Playbooks
+
+### Playbook A: Product hero with HDRI + 3-point lighting
+HDRI ~0.7–1.2; key area light ~50–500W; fill ~10–20% of key; rim for separation. Verdicts per light + balance check.
+
+### Playbook B: Cinematic moody scene
+Single key + practical lights; HDRI ~0.2 (mostly ambient fill); shadows hard or soft per brief; verify mood match.
+
+### Playbook C: Outdoor sunlight
+Sun strength ~1–5; HDRI environment map for ambient; verify shadow direction matches sun direction; verify color temperature (~5500–6500K daylight).
+
+## Mode handling
+
+### Text-only mode
+Verdicts (`Pass / Warn / Fail`) are based on the plan or spec only. Set `Runtime status: Not Run` and `Artifact status: Not Produced`.
+
+### Runtime-ready mode
+Verdicts are based on a measured scene snapshot; cite the inspection source used. Truth states are downgrade-only — never upgrade `Runtime status` or `Artifact status` inside this skill, and leave `Artifact status: Not Produced` unless concrete output evidence already exists and is classified via `blendops-final-check`.
+
+### Blocked runtime mode
+Skip rows that depend on missing live measurement, mark limitations explicitly, and downgrade truth states (`Not Run` / `Not Produced` / `Failed` as applicable).
+
+## Validation checklist
+- [ ] Every light listed
+- [ ] Intensity column filled
+- [ ] Color column filled (Kelvin or RGB)
+- [ ] Shadow softness column filled
+- [ ] HDRI presence noted (or "none")
+- [ ] Per-light verdict assigned
+- [ ] Mood match assessed
+- [ ] Top-line status derived from rows
+- [ ] Honest evidence label
+
+## Pass / Warn / Fail rubric
+
+| Verdict | Criteria |
+|---|---|
+| Pass | All lights pass intensity / shadow / color sanity; HDRI balanced; mood match Yes. |
+| Warn | Plausibility flags (HDRI alone, mixed color modes, intensity at edges of range) but no hard violations. |
+| Fail | Mood mismatch (e.g. soft brief but hard shadows); unsupported light type for chosen export; intensity clearly off (factor of 10+); shadow direction inconsistent. |
+
+## Failure handling
+- Missing light data → Fail with note.
+- Mood unclear → mark Mood match Unknown; do not Pass.
+- User pushes for "Pass" without checks → restate requirement.
+
+## Troubleshooting
+
+| Problem | Remediation hint (lighting only) |
+|---|---|
+| Scene lighting too dark | Hint to recheck explicit light intensity ranges and HDRI balance in `blendops-lighting-materials` (route color/exposure questions to `blendops-lighting-materials`). |
+| Scene lighting too bright | Hint to lower competing explicit light intensities or HDRI strength (route render clamping questions to `blendops-render-settings`). |
+| Shadows missing or harsh | Hint to check per-light shadow softness settings and key-to-fill intensity ratio. |
+| Unintended color cast | Hint to check HDRI tint and color temperature consistency across key, fill, and rim lights. |
+| Framing or surface response feels wrong | Out of scope — route framing/camera issues to `blendops-camera` and shader issues to `blendops-lighting-materials`. |
+
+## Best practices
+- Pair every Fail with the rule that triggered it.
+- Cross-check intensity sums against the scene's overall exposure target.
+- Always evaluate HDRI + explicit lights as a system, not separately.
+- Keep this skill narrow — do not creep into material or composition.
+
+## Good examples
+- "HDRI: studio.exr @ 1.0 (Pass); Key area light 250W, 5500K, 0.6m soft (Pass); Fill area 50W, 5500K, 0.8m soft (Pass); Rim area 80W, 5000K, 0.4m soft (Pass). Mood match: Yes (soft hero). Top-line: Pass. Runtime status: Not Run | Artifact status: Not Produced."
+
+## Bad examples
+- "Lighting looks fine." — missing per-light rows, mood match, and top-line status.
+- Upgrading `Artifact status` to `Verified` or `Produced` inside a lighting check without concrete output evidence classified by `blendops-final-check`.
+- Editing light power or running Blender scripts instead of giving remediation hints.
+
+## User-facing response template
+
+```txt
+Consumer target: <target>
+Mood / look: <one-line summary>
+
+| Light | Type | Intensity | Color | Shadow softness | Verdict | Remediation hint |
+|---|---|---|---|---|---|---|
+| <name> | <type / HDRI> | <value> | <color temp / value> | <softness> | <Pass / Warn / Fail> | <hint only, no edits> |
+
+HDRI balance: <name + strength + balance note, or "none">
+Mood match: Yes / No / Unknown
+Top-line: <Pass / Warn / Fail>
+Worst offenders: <list or "none">
+
+Runtime status: Not Run | Attempted | Produced | Verified | Failed
+Artifact status: Not Produced | Produced | Verified | Failed
+Evidence used: <links, paths, logs, or "none">
+Limitations: <known gaps>
+Next: blendops-final-check | blendops-lighting-materials | blendops-lighting-materials | blendops-camera | blendops-final-check
+```
+
+## Anti-patterns
+- Editing lights or generating full lighting recipes inside this skill (use `blendops-lighting-materials`).
+- Inventing light intensity, color, or softness values.
+- Upgrading Runtime or Artifact truth states (truth states are downgrade-only; artifacts stay `Not Produced` unless concrete evidence exists).
+- Mixing material checks (`blendops-lighting-materials`), camera/framing checks (`blendops-camera`), or artifact evidence classification (`blendops-final-check`) into lighting validation.
+
+## Cross-skill handoff
+
+## Non-goals
+- Edit lights.
+- Generate light setup recipes.
+- Replace `blendops-final-check`.
+- Run Blender.
+
+## References
+- `references/intensity-ranges.md`
+- `references/shadow-softness-rules.md`
+- `references/hdri-balance-rules.md`
+- `../../laws/evidence-before-done.md`
+- `../../docs/skill-system.md`

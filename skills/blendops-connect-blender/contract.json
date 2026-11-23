@@ -1,0 +1,292 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "blendops-connect-blender",
+  "version": "2.0.0",
+  "category": "runtime-and-execution",
+  "role": "runtime-path-setup-readiness-and-bridge-conflicts",
+  "purpose": "Pick a runtime path (Lab MCP, mcp-for-blender, or CLI fallback), guide setup, check readiness, and resolve bridge conflicts.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "check runtime readiness",
+    "is runtime available",
+    "can we run this now",
+    "run the readiness matrix for our chosen Blender path",
+    "set up Blender runtime prerequisites",
+    "what are the Blender runtime setup boundaries",
+    "prepare Official Blender Lab MCP setup prerequisites",
+    "runtime prerequisites and version minimums",
+    "which MCP should I use",
+    "Lab MCP or mcp-for-blender",
+    "Path 1 or Path 2",
+    "CLI vs MCP",
+    "Connector vs Cursor MCP",
+    "how do I host Lab MCP",
+    "Claude Desktop Connector vs manual MCP client",
+    "what hosts work with Path 1",
+    "tool surface looks wrong",
+    "smoke test passed yesterday but recipe fails today",
+    "Lab MCP and ahujasid both installed",
+    "Claude Desktop and Cursor both pointing at Blender",
+    "port 9876 already in use",
+    "single-bridge constraint violation",
+    "headless blender",
+    "batch render CLI",
+    "blender --background",
+    "render farm outline"
+  ],
+  "exclusions": [
+    {
+      "condition": "halting on contradictory constraints before handoff",
+      "delegateTo": "blendops-final-check",
+      "reason": "Delegates out-of-scope requests to blendops-final-check"
+    },
+    {
+      "condition": "the bridge matrix is clean and only one path is active, but smoke tests still fail",
+      "delegateTo": "blendops-fix-problems",
+      "reason": "route to blendops-fix-problems"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "selected_runtime_path",
+        "type": "string",
+        "description": "Target runtime path to verify (Path 1 Official Blender Lab MCP 5.1+, Path 2 mcp-for-blender 3.0+, or CLI appendix)"
+      },
+      {
+        "name": "observed_environment_signals",
+        "type": "object",
+        "description": "Observed Blender version, enabled add-on state, MCP host configuration, and tool surface signals"
+      }
+    ],
+    "optional": [
+      {
+        "name": "port_or_session_diagnostics",
+        "type": "object",
+        "description": "Optional port 9876 listener status or active Blender session count"
+      },
+      {
+        "name": "host_client_environment",
+        "type": "string",
+        "description": "User MCP host application (Claude Desktop Connector, Claude Code, Cursor, Windsurf, or manual client)"
+      },
+      {
+        "name": "installed_blender_version",
+        "type": "string",
+        "description": "Installed Blender version used to check the Blender 5.1+ floor for Path 1 vs 3.0+ for Path 2"
+      },
+      {
+        "name": "blender_version_posture",
+        "type": "string",
+        "description": "Installed or available Blender version (e.g., 5.1+, 4.2 LTS, 3.6 LTS, or unknown)"
+      },
+      {
+        "name": "host_environment_category",
+        "type": "string",
+        "description": "Available MCP client host (Claude Desktop Connector, manual MCP IDE client, or headless CI)"
+      },
+      {
+        "name": "organizational_policy_constraints",
+        "type": "string",
+        "description": "Optional security or IT constraints restricting third-party add-ons or interactive GUI sessions"
+      },
+      {
+        "name": "path_one_host_option",
+        "type": "string",
+        "description": "Selected Path 1 host mode: option (a) Anthropic Connector in Claude Desktop or option (b) manual MCP client"
+      },
+      {
+        "name": "blender_5_1_addon_posture",
+        "type": "object",
+        "description": "Confirmation that Official Blender Lab MCP add-on in Blender 5.1+ is required by both host options"
+      },
+      {
+        "name": "mcp_client_name",
+        "type": "string",
+        "description": "Specific MCP client for host option (b) such as Cursor, Claude Code, or Zed"
+      },
+      {
+        "name": "target_blender_instance",
+        "type": "string",
+        "description": "Running Blender session identifier or binary path experiencing bridge or port collisions"
+      },
+      {
+        "name": "configured_mcp_hosts_and_addons",
+        "type": "object",
+        "description": "Inventory of enabled Blender add-ons (Lab MCP vs mcp-for-blender) and active MCP client connections"
+      },
+      {
+        "name": "port_9876_diagnostics",
+        "type": "string",
+        "description": "Optional socket/port binding diagnostics around default port 9876"
+      },
+      {
+        "name": "target_blend_scene_and_outputs",
+        "type": "object",
+        "description": "Source .blend file expectations and target render/export output deliverables"
+      },
+      {
+        "name": "execution_environment_constraints",
+        "type": "string",
+        "description": "Headless CI, render node, or local batch constraints selected via blendops-connect-blender"
+      },
+      {
+        "name": "frame_range_or_batch_items",
+        "type": "array",
+        "description": "Optional frame range or batch variant list for headless execution"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "runtime_readiness_matrix",
+      "readiness_verdict_and_missing_prerequisites",
+      "preserved_not_run_truth_state_block",
+      "step_by_step_setup_prerequisites",
+      "path_version_and_host_boundary_notes",
+      "readiness_verification_handoff",
+      "single_recommended_runtime_path",
+      "rejected_paths_comparison_table",
+      "path_specific_caveat_and_next_skill",
+      "path_one_host_architecture_outline",
+      "connector_not_standalone_boundary_check",
+      "host_to_readiness_handoff",
+      "bridge_conflict_diagnosis_matrix",
+      "single_bridge_isolation_steps",
+      "post_resolution_readiness_recheck_route",
+      "headless_cli_job_outline",
+      "appendix_governance_and_backup_gates",
+      "expected_output_evidence_hooks"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "blendops-product-shot",
+      "type": "alternative",
+      "label": "If Ready / Partially Ready and moving to scene planning (blendops-product-shot)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "product_hero"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-start",
+      "type": "conditional",
+      "label": "If Ready / Partially Ready and moving to scene planning (blendops-start)",
+      "when": {
+        "all": [
+          {
+            "field": "preflight.passed",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "inventory.exists",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-final-check",
+      "type": "fallback",
+      "label": "Contradictory constraints failure exit",
+      "when": {
+        "any": [
+          {
+            "field": "gate.status",
+            "operator": "equals",
+            "value": "failed"
+          },
+          {
+            "field": "runtime.mode",
+            "operator": "equals",
+            "value": "blocked"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-fix-problems",
+      "type": "fallback",
+      "label": "If the bridge matrix is clean but failures persist",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.errorDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-render-settings",
+      "type": "conditional",
+      "label": "Export format choices",
+      "when": {
+        "all": [
+          {
+            "field": "decision.formatLocked",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-final-check",
+      "type": "progression",
+      "label": "Actual CLI output evidence recording",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "post_execution_audit"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-final-check",
+      "type": "progression",
+      "label": "Runtime attempt reporting",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.status",
+            "operator": "in",
+            "value": [
+              "Attempted",
+              "Produced",
+              "Verified",
+              "Failed"
+            ]
+          },
+          {
+            "field": "request.topic",
+            "operator": "equals",
+            "value": "attempt_report"
+          }
+        ]
+      }
+    }
+  ]
+}

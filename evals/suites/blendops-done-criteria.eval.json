@@ -1,0 +1,1594 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "blendops-done-criteria",
+  "category": "routing-and-governance",
+  "isContractedSkill": true,
+  "isRoutingParticipant": true,
+  "contractPath": "skills/blendops-done-criteria/contract.json",
+  "skillMarkdownPath": "skills/blendops-done-criteria/SKILL.md",
+  "evalMarkdownPath": "skills/blendops-done-criteria/EVAL.md",
+  "sourceEvalTier": "routing_contract_pilot",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Passed",
+    "contractHandoff": "Not Applicable",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "pack-prereq-incomplete-brief-no-go",
+      "skillId": "blendops-done-criteria",
+      "scenario": "Selected product-hero-v0 pack with missing brief slots triggers No-Go and routes to blendops-brief",
+      "category": "normal",
+      "inputPrompt": "We picked product-hero-v0 and have a mood + silhouette, but constraints, acceptance criteria, and owner slots are missing. Are we ready to start?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Emits Prerequisite Matrix and No-Go verdict due to incomplete 8-slot brief",
+        "Routes to blendops-brief as single next skill"
+      ],
+      "requiredOutputProperties": [
+        "no-go",
+        "blendops-brief",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Ready to model",
+        "Artifact: Produced",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-brief",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Prerequisite matrix",
+        "No-Go decision + fallback handoff to blendops-brief"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        },
+        "handoffContext": {
+          "brief.complete": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only pack preflight check",
+          "recommendedNextAction": "No-Go: complete the missing brief slots in blendops-brief before scene planning.",
+          "targetHandoff": "blendops-brief",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Emitted No-Go prerequisite matrix and routed to blendops-brief.",
+          "warnings": [
+            "Cannot declare Go when required brief slots are missing."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-done-criteria/EVAL.md",
+            "skills/blendops-done-criteria/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "pack-prereq-runtime-unverified-routes-to-readiness",
+      "skillId": "blendops-done-criteria",
+      "scenario": "User requests live runtime execution for product-hero-v0 but runtime readiness is unverified",
+      "category": "evidence_boundary",
+      "inputPrompt": "Our product-hero-v0 brief is complete and we want live MCP execution in Blender now, check prerequisites.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Flags runtime row as Needs Input / Unverified",
+        "Routes to blendops-connect-blender before any scene execution"
+      ],
+      "requiredOutputProperties": [
+        "blendops-connect-blender",
+        "Needs input",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "Runtime: Verified",
+        "Blender is connected and ready"
+      ],
+      "expectedRoutingTarget": "blendops-connect-blender",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Conditional handoff to blendops-connect-blender"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        },
+        "handoffContext": {
+          "runtime.mode": "runtime_requested",
+          "runtime.verifiedReady": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only pack preflight check",
+          "recommendedNextAction": "Runtime row Needs input: run blendops-connect-blender before attempting MCP execution.",
+          "targetHandoff": "blendops-connect-blender",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Gated pack execution on blendops-connect-blender.",
+          "warnings": [
+            "Runtime status remains Not Run during preflight verification."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-done-criteria/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "pack-prereq-unlicensed-external-assets",
+      "skillId": "blendops-done-criteria",
+      "scenario": "Brief includes external 3D meshes with unknown license status",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "We picked product-hero-v0 and downloaded three third-party sneaker meshes from a forum without license files. Are prerequisites met?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Flags external asset license row as blocked",
+        "Routes to blendops-assets before scene planning"
+      ],
+      "requiredOutputProperties": [
+        "blendops-assets",
+        "license",
+        "No-Go"
+      ],
+      "forbiddenOutputProperties": [
+        "license does not matter",
+        "Go to blendops-product-shot"
+      ],
+      "expectedRoutingTarget": "blendops-assets",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Conditional handoff to blendops-assets"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        },
+        "handoffContext": {
+          "assets.externalUsed": true,
+          "assets.licenseCleared": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only pack preflight check",
+          "recommendedNextAction": "No-Go: run blendops-assets to verify provenance and license compatibility for external meshes.",
+          "targetHandoff": "blendops-assets",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Blocked preflight on unverified third-party asset licenses and routed to blendops-assets.",
+          "warnings": [
+            "Unverified external assets cannot enter commercial scene planning."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-done-criteria/contract.json",
+            "skills/blendops-assets/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "pack-prereq-all-green-go-product-hero",
+      "skillId": "blendops-done-criteria",
+      "scenario": "All prerequisites satisfied for product-hero-v0 emits Go and hands off to blendops-product-shot",
+      "category": "normal",
+      "inputPrompt": "8-slot brief is locked, CC0 assets are verified, and mode is text-only planning for product-hero-v0. Run preflight.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Emits Go verdict on the prerequisite matrix",
+        "Hands off to blendops-product-shot"
+      ],
+      "requiredOutputProperties": [
+        "Go",
+        "blendops-product-shot",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Verified"
+      ],
+      "expectedRoutingTarget": "blendops-product-shot",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Go verdict + handoff to blendops-product-shot"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        },
+        "handoffContext": {
+          "preflight.verdict": "go",
+          "recipe.domain": "product_hero"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only pack preflight check",
+          "recommendedNextAction": "Go: all text-only planning prerequisites satisfied; advance to blendops-product-shot.",
+          "targetHandoff": "blendops-product-shot",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Preflight matrix passed (Go); routed to blendops-product-shot.",
+          "warnings": [],
+          "evidenceCitations": [
+            "packs/product-hero-v0/PACK.md",
+            "skills/blendops-done-criteria/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "pack-prereq-bridge-conflict-fallback",
+      "skillId": "blendops-done-criteria",
+      "scenario": "Preflight detects active MCP bridge conflict on port 9876",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "We are running preflight for product-hero-v0 but both Lab MCP and community mcp-for-blender are active.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Blocks preflight with No-Go due to dual MCP bridge conflict",
+        "Routes to blendops-connect-blender"
+      ],
+      "requiredOutputProperties": [
+        "blendops-connect-blender",
+        "No-Go",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "Go to blendops-product-shot",
+        "Runtime: Verified"
+      ],
+      "expectedRoutingTarget": "blendops-connect-blender",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Fallback handoff to blendops-connect-blender"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        },
+        "handoffContext": {
+          "runtime.conflictDetected": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only pack preflight check",
+          "recommendedNextAction": "No-Go: resolve the dual MCP bridge conflict via blendops-connect-blender before starting the pack.",
+          "targetHandoff": "blendops-connect-blender",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Preflight blocked on dual-bridge conflict; routed to blendops-connect-blender.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/blendops-done-criteria/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "done-criteria-normal-in-scope-handoff",
+      "skillId": "blendops-done-criteria",
+      "scenario": "Normal in-scope execution of blendops-done-criteria (done-condition-and-iteration-cap-pinner) with contract handoff to blendops-done-criteria",
+      "category": "normal",
+      "inputPrompt": "Use blendops-done-criteria on our cyberpunk shoe product-hero-v0 recipe to pin one measurable done condition, an iteration cap of 3 lookdev passes, and 4 explicit out-of-scope items.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (locked_3d_brief) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces definition_of_done_checklist, max_iteration_caps_per_stage, halt_and_escalation_triggers for role done-condition-and-iteration-cap-pinner",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blendops-done-criteria (Per-stage workflow gates)"
+      ],
+      "requiredOutputProperties": [
+        "single measurable stop condition",
+        "out-of-scope list",
+        "iteration cap",
+        "blendops-done-criteria",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "done when it looks good",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-done-criteria",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs definition_of_done_checklist, max_iteration_caps_per_stage, halt_and_escalation_triggers conforming to skills/blendops-done-criteria/SKILL.md",
+        "Matches contract handoff predicate to blendops-done-criteria in skills/blendops-done-criteria/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "stage_gates"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only done-condition-and-iteration-cap-pinner (blendops-done-criteria)",
+          "recommendedNextAction": "Complete definition_of_done_checklist and hand off to blendops-done-criteria (Per-stage workflow gates).",
+          "targetHandoff": "blendops-done-criteria",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Pinned single measurable stop condition, 3-pass lookdev iteration cap, and 4 explicit out-of-scope exclusions before execution. Delivered single measurable stop condition, out-of-scope list, iteration cap and routed to blendops-done-criteria.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-done-criteria/SKILL.md",
+            "skills/blendops-done-criteria/EVAL.md",
+            "skills/blendops-done-criteria/contract.json",
+            "skills/blendops-done-criteria/references/done-vs-perfect.md",
+            "skills/blendops-done-criteria/references/out-of-scope-patterns.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "done-criteria-secondary-contract-handoff",
+      "skillId": "blendops-done-criteria",
+      "scenario": "Secondary upstream_reference contract handoff from blendops-done-criteria to blendops-brief",
+      "category": "structured_skip",
+      "inputPrompt": "While applying blendops-done-criteria, the workflow context is {\"goal.clarity\":\"clear\",\"brief.locked\":false} (Intent brief). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/blendops-done-criteria/contract.json",
+        "Routes to blendops-brief (Intent brief) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blendops-brief",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "done when it looks good",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-brief",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to blendops-brief"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "goal.clarity": "clear",
+          "brief.locked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blendops-done-criteria (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to blendops-brief (Intent brief).",
+          "targetHandoff": "blendops-brief",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from blendops-done-criteria to blendops-brief under context {\"goal.clarity\":\"clear\",\"brief.locked\":false}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-done-criteria/contract.json",
+            "skills/blendops-done-criteria/SKILL.md",
+            "skills/blendops-done-criteria/references/done-vs-perfect.md"
+          ]
+        },
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        }
+      }
+    },
+    {
+      "id": "done-criteria-unmatched-handoff-and-evidence-boundary",
+      "skillId": "blendops-done-criteria",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in blendops-done-criteria",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during blendops-done-criteria with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for blendops-done-criteria and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/blendops-done-criteria/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (blendops-done-criteria)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for blendops-done-criteria.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/blendops-done-criteria/contract.json",
+            "skills/blendops-done-criteria/EVAL.md"
+          ]
+        },
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        }
+      }
+    },
+    {
+      "id": "done-criteria-ambiguous-missing-required-inputs",
+      "skillId": "blendops-done-criteria",
+      "scenario": "Missing required input (locked_3d_brief) for blendops-done-criteria halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Define the stop condition for our Blender project without telling me what deliverable is being produced or what quality bar applies.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'locked_3d_brief' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing target deliverable specification and acceptance quality bar required by blendops-done-criteria (locked_3d_brief)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "locked_3d_brief",
+        "target deliverable specification and acceptance quality bar",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "done when it looks good",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'locked_3d_brief' (target deliverable specification and acceptance quality bar)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (blendops-done-criteria)",
+          "recommendedNextAction": "Provide the missing target deliverable specification and acceptance quality bar (locked_3d_brief) before blendops-done-criteria locks definition_of_done_checklist.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted blendops-done-criteria due to missing required input 'locked_3d_brief' (target deliverable specification and acceptance quality bar); no values were fabricated.",
+          "warnings": [
+            "Do not invent target deliverable specification and acceptance quality bar when 'locked_3d_brief' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-done-criteria/SKILL.md",
+            "skills/blendops-done-criteria/EVAL.md",
+            "skills/blendops-done-criteria/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "done-criteria-out-of-scope-exclusion-delegation",
+      "skillId": "blendops-done-criteria",
+      "scenario": "Out-of-scope request (pure exploration or brainstorming) is excluded from blendops-done-criteria and delegated to blendops-brief",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of define explicit \"done\" conditions for a blender recipe before starting work, so the agent stops at the right point instead of drifting into endless polish., handle this request inside blendops-done-criteria: pure exploration or brainstorming.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/blendops-done-criteria/contract.json when pure exploration or brainstorming",
+        "Delegates to blendops-brief (use blendops-brief; goal is divergence) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blendops-brief",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "done when it looks good",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside blendops-done-criteria anyway"
+      ],
+      "expectedRoutingTarget": "blendops-brief",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blendops-brief per skills/blendops-done-criteria/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (blendops-done-criteria)",
+          "recommendedNextAction": "Request is out of scope for blendops-done-criteria (pure exploration or brainstorming); delegate to blendops-brief.",
+          "targetHandoff": "blendops-brief",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced blendops-done-criteria exclusion boundary (use blendops-brief; goal is divergence) and delegated to blendops-brief.",
+          "warnings": [
+            "blendops-done-criteria is scoped to done-condition-and-iteration-cap-pinner and does not absorb blendops-brief responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-done-criteria/contract.json",
+            "skills/blendops-done-criteria/SKILL.md",
+            "skills/blendops-brief/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "stage-gates-normal-in-scope-handoff",
+      "skillId": "blendops-done-criteria",
+      "scenario": "Normal in-scope execution of blendops-done-criteria (stage-gate-checklist-enforcer) with contract handoff to blendops-done-criteria",
+      "category": "normal",
+      "inputPrompt": "Use blendops-done-criteria to enforce stage-by-stage gate sign-off for our product-hero-v0 recipe from brief lock through camera, lighting, quality validation, and final handoff.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (active_workflow_stages) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces stage_gate_checklists, entry_and_exit_preconditions, gate_failure_routing_rules for role stage-gate-checklist-enforcer",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blendops-done-criteria (Scope creep protection)"
+      ],
+      "requiredOutputProperties": [
+        "stage gate",
+        "halt-on-fail",
+        "entry precondition",
+        "blendops-done-criteria",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "skip failed gate",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-done-criteria",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs stage_gate_checklists, entry_and_exit_preconditions, gate_failure_routing_rules conforming to skills/blendops-done-criteria/SKILL.md",
+        "Matches contract handoff predicate to blendops-done-criteria in skills/blendops-done-criteria/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "scope.driftDetected": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only stage-gate-checklist-enforcer (blendops-done-criteria)",
+          "recommendedNextAction": "Complete stage_gate_checklists and hand off to blendops-done-criteria (Scope creep protection).",
+          "targetHandoff": "blendops-done-criteria",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Generated 6-stage gate checklist with explicit entry preconditions, pass criteria, and halt-on-fail rules for product-hero-v0. Delivered stage gate, halt-on-fail, entry precondition and routed to blendops-done-criteria.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-done-criteria/SKILL.md",
+            "skills/blendops-done-criteria/EVAL.md",
+            "skills/blendops-done-criteria/contract.json",
+            "skills/blendops-done-criteria/references/failed-gate-handling.md",
+            "skills/blendops-done-criteria/references/gate-template.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "stage-gates-secondary-contract-handoff",
+      "skillId": "blendops-done-criteria",
+      "scenario": "Secondary fallback contract handoff from blendops-done-criteria to blendops-fix-problems",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "While applying blendops-done-criteria, the workflow context is {\"runtime.errorDetected\":true} (Repeated gate failures). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the fallback handoff predicate in skills/blendops-done-criteria/contract.json",
+        "Routes to blendops-fix-problems (Repeated gate failures) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blendops-fix-problems",
+        "fallback",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "skip failed gate",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-fix-problems",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract fallback handoff predicate match to blendops-fix-problems"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "runtime.errorDetected": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blendops-done-criteria (fallback handoff)",
+          "recommendedNextAction": "Follow fallback handoff to blendops-fix-problems (Repeated gate failures).",
+          "targetHandoff": "blendops-fix-problems",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered fallback handoff from blendops-done-criteria to blendops-fix-problems under context {\"runtime.errorDetected\":true}.",
+          "warnings": [
+            "Contract-governed fallback handoff."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-done-criteria/contract.json",
+            "skills/blendops-done-criteria/SKILL.md",
+            "skills/blendops-done-criteria/references/failed-gate-handling.md"
+          ]
+        },
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        }
+      }
+    },
+    {
+      "id": "stage-gates-unmatched-handoff-and-evidence-boundary",
+      "skillId": "blendops-done-criteria",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in blendops-done-criteria",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during blendops-done-criteria with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for blendops-done-criteria and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/blendops-done-criteria/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (blendops-done-criteria)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for blendops-done-criteria.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/blendops-done-criteria/contract.json",
+            "skills/blendops-done-criteria/EVAL.md"
+          ]
+        },
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        }
+      }
+    },
+    {
+      "id": "stage-gates-ambiguous-missing-required-inputs",
+      "skillId": "blendops-done-criteria",
+      "scenario": "Missing required input (active_workflow_stages) for blendops-done-criteria halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Run the checklist workflow and mark our stages complete, even though we have not specified which recipe pack we are running or which stage gates have evidence.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'active_workflow_stages' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing active recipe pack and current stage gate status ledger required by blendops-done-criteria (active_workflow_stages)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "active_workflow_stages",
+        "active recipe pack and current stage gate status ledger",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "skip failed gate",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'active_workflow_stages' (active recipe pack and current stage gate status ledger)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (blendops-done-criteria)",
+          "recommendedNextAction": "Provide the missing active recipe pack and current stage gate status ledger (active_workflow_stages) before blendops-done-criteria locks stage_gate_checklists.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted blendops-done-criteria due to missing required input 'active_workflow_stages' (active recipe pack and current stage gate status ledger); no values were fabricated.",
+          "warnings": [
+            "Do not invent active recipe pack and current stage gate status ledger when 'active_workflow_stages' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-done-criteria/SKILL.md",
+            "skills/blendops-done-criteria/EVAL.md",
+            "skills/blendops-done-criteria/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "stage-gates-out-of-scope-exclusion-delegation",
+      "skillId": "blendops-done-criteria",
+      "scenario": "Out-of-scope request (single-step requests) is excluded from blendops-done-criteria and delegated to blendops-brief",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of define explicit per-stage gates and acceptance checklists before any modeling, render, or export work — work only proceeds gate by gate., handle this request inside blendops-done-criteria: single-step requests.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/blendops-done-criteria/contract.json when single-step requests",
+        "Delegates to blendops-brief (Delegates out-of-scope requests to blendops-brief) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blendops-brief",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "skip failed gate",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside blendops-done-criteria anyway"
+      ],
+      "expectedRoutingTarget": "blendops-brief",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blendops-brief per skills/blendops-done-criteria/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (blendops-done-criteria)",
+          "recommendedNextAction": "Request is out of scope for blendops-done-criteria (single-step requests); delegate to blendops-brief.",
+          "targetHandoff": "blendops-brief",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced blendops-done-criteria exclusion boundary (Delegates out-of-scope requests to blendops-brief) and delegated to blendops-brief.",
+          "warnings": [
+            "blendops-done-criteria is scoped to stage-gate-checklist-enforcer and does not absorb blendops-brief responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-done-criteria/contract.json",
+            "skills/blendops-done-criteria/SKILL.md",
+            "skills/blendops-brief/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "acceptance-criteria-builder-normal-in-scope-handoff",
+      "skillId": "blendops-done-criteria",
+      "scenario": "Normal in-scope execution of blendops-done-criteria (measurable-acceptance-table-builder) with contract handoff to blendops-done-criteria",
+      "category": "normal",
+      "inputPrompt": "Use blendops-done-criteria to turn our locked cyberpunk sneaker product-hero-v0 brief (16:9 PNG + web GLB under 10 MB) into a measurable Pass/Warn/Fail acceptance table before camera and lighting planning.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (locked_3d_brief) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces measurable_acceptance_criteria_table, pass_warn_fail_thresholds, evidence_hook_mappings for role measurable-acceptance-table-builder",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blendops-done-criteria (Done / stop condition)"
+      ],
+      "requiredOutputProperties": [
+        "Pass/Warn/Fail",
+        "verification method",
+        "measurable threshold",
+        "blendops-done-criteria",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "looks good",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-done-criteria",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs measurable_acceptance_criteria_table, pass_warn_fail_thresholds, evidence_hook_mappings conforming to skills/blendops-done-criteria/SKILL.md",
+        "Matches contract handoff predicate to blendops-done-criteria in skills/blendops-done-criteria/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "stop_condition"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only measurable-acceptance-table-builder (blendops-done-criteria)",
+          "recommendedNextAction": "Complete measurable_acceptance_criteria_table and hand off to blendops-done-criteria (Done / stop condition).",
+          "targetHandoff": "blendops-done-criteria",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Built measurable 7-row Pass/Warn/Fail acceptance criteria table with explicit verification methods and thresholds for product-hero-v0. Delivered Pass/Warn/Fail, verification method, measurable threshold and routed to blendops-done-criteria.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-done-criteria/SKILL.md",
+            "skills/blendops-done-criteria/EVAL.md",
+            "skills/blendops-done-criteria/contract.json",
+            "skills/blendops-done-criteria/references/brief-to-criteria-mapper.md",
+            "skills/blendops-done-criteria/references/checklist-patterns.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "acceptance-criteria-builder-secondary-contract-handoff",
+      "skillId": "blendops-done-criteria",
+      "scenario": "Secondary upstream_reference contract handoff from blendops-done-criteria to blendops-brief",
+      "category": "structured_skip",
+      "inputPrompt": "While applying blendops-done-criteria, the workflow context is {\"goal.clarity\":\"clear\",\"brief.locked\":false} (Brief source). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/blendops-done-criteria/contract.json",
+        "Routes to blendops-brief (Brief source) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blendops-brief",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "looks good",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-brief",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to blendops-brief"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "goal.clarity": "clear",
+          "brief.locked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blendops-done-criteria (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to blendops-brief (Brief source).",
+          "targetHandoff": "blendops-brief",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from blendops-done-criteria to blendops-brief under context {\"goal.clarity\":\"clear\",\"brief.locked\":false}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-done-criteria/contract.json",
+            "skills/blendops-done-criteria/SKILL.md",
+            "skills/blendops-done-criteria/references/brief-to-criteria-mapper.md"
+          ]
+        },
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        }
+      }
+    },
+    {
+      "id": "acceptance-criteria-builder-unmatched-handoff-and-evidence-boundary",
+      "skillId": "blendops-done-criteria",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in blendops-done-criteria",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during blendops-done-criteria with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for blendops-done-criteria and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/blendops-done-criteria/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (blendops-done-criteria)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for blendops-done-criteria.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/blendops-done-criteria/contract.json",
+            "skills/blendops-done-criteria/EVAL.md"
+          ]
+        },
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        }
+      }
+    },
+    {
+      "id": "acceptance-criteria-builder-ambiguous-missing-required-inputs",
+      "skillId": "blendops-done-criteria",
+      "scenario": "Missing required input (locked_3d_brief) for blendops-done-criteria halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Build an acceptance criteria table for our 3D project, even though we have not locked the 8-slot brief, target resolution, or consumer delivery format yet.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'locked_3d_brief' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing locked 8-slot brief and target delivery constraints required by blendops-done-criteria (locked_3d_brief)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "locked_3d_brief",
+        "locked 8-slot brief and target delivery constraints",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "looks good",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'locked_3d_brief' (locked 8-slot brief and target delivery constraints)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (blendops-done-criteria)",
+          "recommendedNextAction": "Provide the missing locked 8-slot brief and target delivery constraints (locked_3d_brief) before blendops-done-criteria locks measurable_acceptance_criteria_table.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted blendops-done-criteria due to missing required input 'locked_3d_brief' (locked 8-slot brief and target delivery constraints); no values were fabricated.",
+          "warnings": [
+            "Do not invent locked 8-slot brief and target delivery constraints when 'locked_3d_brief' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-done-criteria/SKILL.md",
+            "skills/blendops-done-criteria/EVAL.md",
+            "skills/blendops-done-criteria/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "acceptance-criteria-builder-out-of-scope-exclusion-delegation",
+      "skillId": "blendops-done-criteria",
+      "scenario": "Out-of-scope request (pure exploration without a locked deliverable) is excluded from blendops-done-criteria and delegated to blendops-brief",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of turn a locked 3d brief plus chosen recipe into a measurable acceptance checklist with evidence hooks., handle this request inside blendops-done-criteria: pure exploration without a locked deliverable.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/blendops-done-criteria/contract.json when pure exploration without a locked deliverable",
+        "Delegates to blendops-brief (use blendops-brief) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blendops-brief",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "looks good",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside blendops-done-criteria anyway"
+      ],
+      "expectedRoutingTarget": "blendops-brief",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blendops-brief per skills/blendops-done-criteria/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (blendops-done-criteria)",
+          "recommendedNextAction": "Request is out of scope for blendops-done-criteria (pure exploration without a locked deliverable); delegate to blendops-brief.",
+          "targetHandoff": "blendops-brief",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced blendops-done-criteria exclusion boundary (use blendops-brief) and delegated to blendops-brief.",
+          "warnings": [
+            "blendops-done-criteria is scoped to measurable-acceptance-table-builder and does not absorb blendops-brief responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-done-criteria/contract.json",
+            "skills/blendops-done-criteria/SKILL.md",
+            "skills/blendops-brief/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "scope-guard-normal-in-scope-handoff",
+      "skillId": "blendops-done-criteria",
+      "scenario": "Normal in-scope execution of blendops-done-criteria (scope-creep-and-change-request-guard) with contract handoff to blendops-final-check",
+      "category": "normal",
+      "inputPrompt": "Mid-recipe during our single product-hero-v0 watch render, the stakeholder asks: \"Can you also add 4 strap color variants and a 15-second exploded-view animation?\" Apply blendops-done-criteria.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (locked_baseline_brief) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces scope_classification_verdict, impact_on_locked_brief_and_budget, defer_split_or_reopen_decision for role scope-creep-and-change-request-guard",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blendops-final-check (Delivery gate after scope and gates settle)"
+      ],
+      "requiredOutputProperties": [
+        "decline / add-now / defer",
+        "scope expansion",
+        "decision required",
+        "blendops-final-check",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "silently absorbed into current scope",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-final-check",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs scope_classification_verdict, impact_on_locked_brief_and_budget, defer_split_or_reopen_decision conforming to skills/blendops-done-criteria/SKILL.md",
+        "Matches contract handoff predicate to blendops-final-check in skills/blendops-done-criteria/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "stage.current": "final_verification"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only scope-creep-and-change-request-guard (blendops-done-criteria)",
+          "recommendedNextAction": "Complete scope_classification_verdict and hand off to blendops-final-check (Delivery gate after scope and gates settle).",
+          "targetHandoff": "blendops-final-check",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Flagged mid-flight scope expansion (4 color variants + exploded animation), presented 3 explicit options (decline / add-now / defer), and recommended deferring to a follow-up recipe. Delivered decline / add-now / defer, scope expansion, decision required and routed to blendops-final-check.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-done-criteria/SKILL.md",
+            "skills/blendops-done-criteria/EVAL.md",
+            "skills/blendops-done-criteria/contract.json",
+            "skills/blendops-done-criteria/references/options-language-template.md",
+            "skills/blendops-done-criteria/references/recurring-creep-patterns.md"
+          ]
+        },
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        }
+      }
+    },
+    {
+      "id": "scope-guard-secondary-contract-handoff",
+      "skillId": "blendops-done-criteria",
+      "scenario": "Secondary upstream_reference contract handoff from blendops-done-criteria to blendops-brief",
+      "category": "structured_skip",
+      "inputPrompt": "While applying blendops-done-criteria, the workflow context is {\"goal.clarity\":\"clear\",\"brief.locked\":false} (Original brief). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/blendops-done-criteria/contract.json",
+        "Routes to blendops-brief (Original brief) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blendops-brief",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "silently absorbed into current scope",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-brief",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to blendops-brief"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "goal.clarity": "clear",
+          "brief.locked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blendops-done-criteria (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to blendops-brief (Original brief).",
+          "targetHandoff": "blendops-brief",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from blendops-done-criteria to blendops-brief under context {\"goal.clarity\":\"clear\",\"brief.locked\":false}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-done-criteria/contract.json",
+            "skills/blendops-done-criteria/SKILL.md",
+            "skills/blendops-done-criteria/references/options-language-template.md"
+          ]
+        },
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        }
+      }
+    },
+    {
+      "id": "scope-guard-unmatched-handoff-and-evidence-boundary",
+      "skillId": "blendops-done-criteria",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in blendops-done-criteria",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during blendops-done-criteria with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for blendops-done-criteria and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/blendops-done-criteria/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (blendops-done-criteria)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for blendops-done-criteria.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/blendops-done-criteria/contract.json",
+            "skills/blendops-done-criteria/EVAL.md"
+          ]
+        },
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        }
+      }
+    },
+    {
+      "id": "scope-guard-ambiguous-missing-required-inputs",
+      "skillId": "blendops-done-criteria",
+      "scenario": "Missing required input (locked_baseline_brief) for blendops-done-criteria halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Enforce scope boundaries on a stakeholder change request when neither the original locked brief nor the requested addition has been described.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'locked_baseline_brief' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing baseline locked brief scope and specific stakeholder change request required by blendops-done-criteria (locked_baseline_brief)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "locked_baseline_brief",
+        "baseline locked brief scope and specific stakeholder change request",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "silently absorbed into current scope",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'locked_baseline_brief' (baseline locked brief scope and specific stakeholder change request)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (blendops-done-criteria)",
+          "recommendedNextAction": "Provide the missing baseline locked brief scope and specific stakeholder change request (locked_baseline_brief) before blendops-done-criteria locks scope_classification_verdict.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted blendops-done-criteria due to missing required input 'locked_baseline_brief' (baseline locked brief scope and specific stakeholder change request); no values were fabricated.",
+          "warnings": [
+            "Do not invent baseline locked brief scope and specific stakeholder change request when 'locked_baseline_brief' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-done-criteria/SKILL.md",
+            "skills/blendops-done-criteria/EVAL.md",
+            "skills/blendops-done-criteria/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "scope-guard-out-of-scope-exclusion-delegation",
+      "skillId": "blendops-done-criteria",
+      "scenario": "Out-of-scope request (early planning before scope is pinned) is excluded from blendops-done-criteria and delegated to blendops-done-criteria",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of detect mid-recipe scope creep and push back constructively before the recipe drifts; require explicit user agreement before scope expansion., handle this request inside blendops-done-criteria: early planning before scope is pinned.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/blendops-done-criteria/contract.json when early planning before scope is pinned",
+        "Delegates to blendops-done-criteria (use blendops-brief and blendops-done-criteria) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blendops-done-criteria",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "silently absorbed into current scope",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside blendops-done-criteria anyway"
+      ],
+      "expectedRoutingTarget": "blendops-done-criteria",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blendops-done-criteria per skills/blendops-done-criteria/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (blendops-done-criteria)",
+          "recommendedNextAction": "Request is out of scope for blendops-done-criteria (early planning before scope is pinned); delegate to blendops-done-criteria.",
+          "targetHandoff": "blendops-done-criteria",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced blendops-done-criteria exclusion boundary (use blendops-brief and blendops-done-criteria) and delegated to blendops-done-criteria.",
+          "warnings": [
+            "blendops-done-criteria is scoped to scope-creep-and-change-request-guard and does not absorb blendops-done-criteria responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-done-criteria/contract.json",
+            "skills/blendops-done-criteria/SKILL.md",
+            "skills/blendops-done-criteria/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -22,10 +22,9 @@ const DEFAULT_CAPABILITY_POLICY_PATH = path.join(
 );
 
 export const ROUTING_PARTICIPANT_IDS = Object.freeze([
-  'blendops-help',
-  'recipe-fit-assessor',
-  'pack-prerequisite-checker',
-  'workflow-stage-router',
+  'blendops-brief',
+  'blendops-done-criteria',
+  'blendops-start',
 ]);
 const ROUTING_PARTICIPANT_SET = new Set(ROUTING_PARTICIPANT_IDS);
 
@@ -413,7 +412,7 @@ export function validateContractObject(
       if (h && typeof h === 'object' && typeof h.target === 'string') {
         if (!catalogSkillSet.has(h.target)) {
           errors.push(
-            `${prefix} at /handoffs/${i}/target (handoffs[${i}].target): '${h.target}' does not exist in the 48-skill catalog`,
+            `${prefix} at /handoffs/${i}/target (handoffs[${i}].target): '${h.target}' does not exist in the 14-skill catalog`,
           );
         }
         if (h.target === expectedId) {
@@ -713,7 +712,7 @@ export function resolveRoutingWinner(contracts, state) {
     return null;
   }
 
-  // Only the 4 routing participants with valid routingPrecedence participate in global precedence resolution
+  // Only the 3 routing participants with valid routingPrecedence participate in global precedence resolution
   const routingParticipants = contracts.filter(
     (c) =>
       c &&
@@ -918,7 +917,7 @@ export function buildRegistryArtifacts(rootDir) {
 
   errors.push(...validatePrecedenceLadder(validContracts));
 
-  // Deterministic contract ordering: routing participants first by rank (1..4), then specialist skills lexicographically by id
+  // Deterministic contract ordering: routing participants first by rank (1..3), then specialist skills lexicographically by id
   const sortedValidContracts = [...validContracts].sort((a, b) => {
     const aHasRank = Boolean(a.routingPrecedence && Number.isInteger(a.routingPrecedence.rank));
     const bHasRank = Boolean(b.routingPrecedence && Number.isInteger(b.routingPrecedence.rank));

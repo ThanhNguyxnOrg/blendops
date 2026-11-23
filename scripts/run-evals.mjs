@@ -246,7 +246,7 @@ export function validateEvalSuiteObject(
   }
 
   if (catalogSkillSet && !catalogSkillSet.has(expectedSkillId)) {
-    errors.push(`${prefix}: skillId '${expectedSkillId}' does not exist in the 48-skill catalog`);
+    errors.push(`${prefix}: skillId '${expectedSkillId}' does not exist in the 14-skill catalog`);
   }
 
   const expectedContractPath = `skills/${expectedSkillId}/contract.json`;
@@ -566,7 +566,7 @@ export function evaluateSingleCase(
     failures.push(...ctxErrors);
   }
 
-  // 7. Contract routing & handoff predicate evaluation for contract_routing cases (4 routing participants only)
+  // 7. Contract routing & handoff predicate evaluation for contract_routing cases (3 routing participants only)
   if (evalCase.evaluationType === 'contract_routing') {
     if (!ROUTING_PARTICIPANT_SET.has(evalCase.skillId)) {
       failures.push(
@@ -616,7 +616,7 @@ export function evaluateSingleCase(
     }
   }
 
-  // 8. Contract handoff predicate evaluation for contract_handoff cases (44 specialist skills)
+  // 8. Contract handoff predicate evaluation for contract_handoff cases (11 specialist skills)
   if (evalCase.evaluationType === 'contract_handoff') {
     if (ROUTING_PARTICIPANT_SET.has(evalCase.skillId)) {
       failures.push(
@@ -1120,7 +1120,7 @@ function main() {
       process.exit(1);
     }
     console.log(
-      `evals:check passed (${res.summary.machineReadableSuites}/${res.summary.catalogSkills} suites, ${res.summary.totalCases} machine-readable cases validated against Draft 2020-12 Ajv schema; ${res.summary.proseOnlySkillsPendingMigration}/48 prose-only EVAL.md skills remaining).`,
+      `evals:check passed (${res.summary.machineReadableSuites}/${res.summary.catalogSkills} suites, ${res.summary.totalCases} machine-readable cases validated against Draft 2020-12 Ajv schema; ${res.summary.proseOnlySkillsPendingMigration}/14 prose-only EVAL.md skills remaining).`,
     );
     return;
   }
@@ -1139,7 +1139,7 @@ function main() {
   }
 
   console.log(
-    `evals:run passed: ${res.summary.suitesExecuted} suite(s), ${res.summary.passedCases}/${res.summary.totalCasesExecuted} deterministic cases Passed | live_model: ${res.summary.liveModelStatus} | blender_runtime: ${res.summary.blenderRuntimeStatus} | ${res.summary.unmigratedProseSkills}/48 prose-only EVAL.md skills pending migration.`,
+    `evals:run passed: ${res.summary.suitesExecuted} suite(s), ${res.summary.passedCases}/${res.summary.totalCasesExecuted} deterministic cases Passed | live_model: ${res.summary.liveModelStatus} | blender_runtime: ${res.summary.blenderRuntimeStatus} | ${res.summary.unmigratedProseSkills}/14 prose-only EVAL.md skills pending migration.`,
   );
 }
 

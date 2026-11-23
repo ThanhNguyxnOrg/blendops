@@ -267,7 +267,7 @@ const SECRET_KEY_PATTERN =
   /(password|passwd|secret|token|api[-_]?key|authorization|bearer|private[-_]?key|client[-_]?secret|credential|session[-_]?key|access[-_]?key|auth[-_]?header|cookie|set[-_]?cookie)/i;
 const SECRET_VALUE_PATTERN =
   /(Bearer\s+[A-Za-z0-9._~+/=-]{6,}|Basic\s+[A-Za-z0-9+/=]{8,}|sk-[A-Za-z0-9_-]{10,}|ghp_[A-Za-z0-9]{10,}|github_pat_[A-Za-z0-9_]{10,}|xox[baprs]-[A-Za-z0-9-]{10,}|AIza[0-9A-Za-z-_]{12,}|eyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,})/g;
-const URL_USERINFO_PATTERN = /([a-zA-Z][a-zA-Z0-9+.-]*:\/\/)([^/\s:@]+:[^/\s@]+)@/g;
+const URL_USERINFO_PATTERN = /(?<![a-zA-Z0-9+.-])([a-zA-Z][a-zA-Z0-9+.-]*:\/\/)([^/\s:@]+:[^/\s@]+)@/g;
 const URL_QUERY_SECRET_PATTERN =
   /([?&](?:token|api_key|apikey|access_token|refresh_token|secret|password|passwd|auth|key|credential|client_secret|sig|signature)=)([^&#\s"']+)/gi;
 const INLINE_ASSIGN_SECRET_PATTERN =
@@ -501,7 +501,7 @@ export function validateStdioCommandConfig(config = {}) {
     const msg = 'STDIO transport forbids shell=true; subprocesses must be spawned with explicit executable and argument array.';
     return { valid: false, command: null, args: [], cwd: null, env: {}, sanitizedEnv: {}, shell: false, reason: msg, error: msg };
   }
-  if (/[;&|`$><\n\r]/.test(command) || /\s+-c\s+/i.test(command)) {
+  if (/[;&|`$><\n\r]/.test(command) || /\s-c\s/i.test(command)) {
     const msg = `STDIO command '${redactStringSecrets(command).value}' contains forbidden shell metacharacters or inline shell flags.`;
     return { valid: false, command: null, args: [], cwd: null, env: {}, sanitizedEnv: {}, shell: false, reason: msg, error: msg };
   }
@@ -3905,11 +3905,11 @@ export function runExecutionPreflight(options = {}) {
       if (
         !clearance ||
         clearance.status !== 'Cleared' ||
-        clearance.verifiedBySkill !== 'asset-license-checker'
+        clearance.verifiedBySkill !== 'blendops-assets'
       ) {
         assetLicenseCleared = false;
         blockingReasons.push(
-          `Operation '${operationId}' requires Cleared asset license verification from asset-license-checker.`,
+          `Operation '${operationId}' requires Cleared asset license verification from blendops-assets.`,
         );
       }
     }
@@ -4113,7 +4113,7 @@ function verifyOperationPostconditions(op, input, readbackData) {
     const found = (readbackData?.objects || []).some((o) => o.name === targetName);
     const clearOk =
       input.license_clearance?.status === 'Cleared' &&
-      input.license_clearance?.verified_by_skill === 'asset-license-checker';
+      input.license_clearance?.verified_by_skill === 'blendops-assets';
     checks.push(
       {
         check_id: 'post.imported_objects_present',
@@ -4124,7 +4124,7 @@ function verifyOperationPostconditions(op, input, readbackData) {
       {
         check_id: 'post.asset_license_recorded',
         passed: clearOk,
-        expected: 'Cleared by asset-license-checker',
+        expected: 'Cleared by blendops-assets',
         actual: input.license_clearance?.status ?? null,
       },
     );
@@ -4361,7 +4361,7 @@ export function executeTypedOperationSequence(options = {}) {
         const policy = JSON.parse(fs.readFileSync(paths.capabilityPolicyPath, 'utf8'));
         const capCheck = evaluateRuntimeCapabilityInvocation(
           {
-            skillId: 'product-hero-scene-planner',
+            skillId: 'blendops-product-shot',
             requestedOperationTier: 'L1',
             grantedTier: 'L1',
             mutatesScene: true,
@@ -4732,7 +4732,7 @@ export function executeTypedOperationSequence(options = {}) {
     $schema: '../schemas/runtime-evidence-packet.schema.json',
     schemaVersion: '1.0.0',
     packetId: `packet-${sha256Hex(`${session.session_id}:${startedAt}`).slice(0, 12)}`,
-    skillId: 'product-hero-scene-planner',
+    skillId: 'blendops-product-shot',
     isStaticFixture: isMock || !runtimeClient,
     runtimeEvidence: {
       runtimePath: packetRuntimeStatus === 'Not Run' ? 'none' : session.runtime_path,
@@ -5596,17 +5596,17 @@ export function runRuntimeQualificationAndSmoke(options = {}) {
     const l0SmokeSteps = [
       {
         operation_id: 'op.inspect.blendfile-summary',
-        skill_id: 'scene-readiness',
+        skill_id: 'blendops-final-check',
         input: { include_datablock_counts: true },
       },
       {
         operation_id: 'op.inspect.object-list',
-        skill_id: 'scene-readiness',
+        skill_id: 'blendops-final-check',
         input: { filter_type: 'ALL' },
       },
       {
         operation_id: 'op.inspect.camera-and-lighting',
-        skill_id: 'camera-composition',
+        skill_id: 'blendops-camera',
         input: { camera_name: 'Camera', light_names: ['KeyLight'] },
       },
     ].filter((s) => session.supported_operations.includes(s.operation_id));
@@ -5702,7 +5702,7 @@ export function runRuntimeQualificationAndSmoke(options = {}) {
           operations: [
             {
               operation_id: 'op.mutate.camera-transform-and-lens',
-              skill_id: 'camera-composition',
+              skill_id: 'blendops-camera',
               input: {
                 camera_name: 'Camera',
                 location: [0.1, -2.5, 0.5],
@@ -6969,17 +6969,17 @@ export function runProductSceneVerticalSlice(options = {}) {
   const operations = options.operations || [
     {
       operation_id: 'op.inspect.blendfile-summary',
-      skill_id: 'scene-readiness',
+      skill_id: 'blendops-final-check',
       input: { include_datablock_counts: true },
     },
     {
       operation_id: 'op.inspect.object-list',
-      skill_id: 'scene-readiness',
+      skill_id: 'blendops-final-check',
       input: { filter_type: 'ALL' },
     },
     {
       operation_id: 'op.inspect.camera-and-lighting',
-      skill_id: 'camera-composition',
+      skill_id: 'blendops-camera',
       input: {
         camera_name: 'Camera',
         light_names: ['KeyLight', 'FillLight', 'RimLight'],
@@ -6987,7 +6987,7 @@ export function runProductSceneVerticalSlice(options = {}) {
     },
     {
       operation_id: 'op.mutate.camera-transform-and-lens',
-      skill_id: 'camera-composition',
+      skill_id: 'blendops-camera',
       input: {
         camera_name: 'Camera',
         location: [0.15, -2.45, 0.52],
@@ -6999,7 +6999,7 @@ export function runProductSceneVerticalSlice(options = {}) {
     },
     {
       operation_id: 'op.mutate.light-parameters',
-      skill_id: 'lighting-material-plan',
+      skill_id: 'blendops-lighting-materials',
       input: {
         light_name: 'KeyLight',
         energy_watts: 320,
@@ -7616,12 +7616,12 @@ export function runRuntimeAndExecutionCliSubcommand(argv = [], options = {}) {
           operations: [
             {
               operation_id: 'op.inspect.blendfile-summary',
-              skill_id: 'scene-readiness',
+              skill_id: 'blendops-final-check',
               input: { include_datablock_counts: true },
             },
             {
               operation_id: 'op.inspect.object-list',
-              skill_id: 'scene-readiness',
+              skill_id: 'blendops-final-check',
               input: { filter_type: 'ALL' },
             },
           ],

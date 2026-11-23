@@ -66,9 +66,9 @@ BlendOps is listed at [skills.sh/ThanhNguyxnOrg/blendops](https://www.skills.sh/
 npx skills add ThanhNguyxnOrg/blendops
 ```
 
-The Skills CLI guides you through selecting skills and supported agent targets. The root `skills.sh.json` supplies the eight display groups used by the repository listing. It is repository metadata, not a ZIP or package that needs a separate upload. Keep the GitHub repository public and maintain valid canonical `SKILL.md` files and grouping metadata; there is no separate skills.sh package upload or npm stage/approve step.
+The Skills CLI guides you through selecting skills and supported agent targets. The root `skills.sh.json` supplies the four display groups used by the repository listing. It is repository metadata, not a ZIP or package that needs a separate upload. Keep the GitHub repository public and maintain valid canonical `SKILL.md` files and grouping metadata; there is no separate skills.sh package upload or npm stage/approve step.
 
-The skills.sh page displays live catalog metrics. Those metrics are not the canonical source-of-truth skill count. BlendOps' canonical inventory remains **48 skills**, documented in [`skills/README.md`](../skills/README.md) and grouped in [`skills.sh.json`](../skills.sh.json).
+The skills.sh page displays live catalog metrics. Those metrics are not the canonical source-of-truth skill count. BlendOps' canonical inventory remains **14 skills**, documented in [`skills/README.md`](../skills/README.md) and grouped in [`skills.sh.json`](../skills.sh.json).
 
 ---
 

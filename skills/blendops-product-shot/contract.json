@@ -1,0 +1,345 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "blendops-product-shot",
+  "version": "2.0.0",
+  "category": "scene-planners",
+  "role": "product-hero-and-product-grid-scene-planner",
+  "purpose": "Plan single-product hero shots and multi-product grid or catalog scenes, including staging, camera, lighting, and output targets.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "plan a product hero scene",
+    "turn this into a Blender plan",
+    "prepare cyberpunk shoe scene plan",
+    "grid of products",
+    "lineup of",
+    "catalog showing N items",
+    "comparison render"
+  ],
+  "exclusions": [
+    {
+      "condition": "to execute Blender commands, write Python, or claim generated artifacts",
+      "delegateTo": "blendops-brief",
+      "reason": "Delegates out-of-scope requests to blendops-brief"
+    },
+    {
+      "condition": "to skip unresolved critical ambiguity or hide missing inputs",
+      "delegateTo": "blendops-camera",
+      "reason": "Delegates out-of-scope requests to blendops-camera"
+    },
+    {
+      "condition": "when raw user intent still needs initial brief normalization",
+      "delegateTo": "blendops-brief",
+      "reason": "use blendops-brief first"
+    },
+    {
+      "condition": "when deep-diving camera/framing mechanics",
+      "delegateTo": "blendops-camera",
+      "reason": "use blendops-lighting-materials"
+    },
+    {
+      "condition": "when writing measurable pass/fail acceptance tables",
+      "delegateTo": "blendops-done-criteria",
+      "reason": "use blendops-final-check"
+    },
+    {
+      "condition": "character portrait",
+      "delegateTo": "blendops-scene-plan",
+      "reason": "use blendops-scene-plan"
+    },
+    {
+      "condition": "outdoor environment scene",
+      "delegateTo": "blendops-scene-plan",
+      "reason": "use blendops-scene-plan"
+    },
+    {
+      "condition": "interior room scene",
+      "delegateTo": "blendops-scene-plan",
+      "reason": "use blendops-scene-plan"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "locked_3d_brief",
+        "type": "object",
+        "description": "Locked 8-slot 3D brief defining the hero product, hero feature callout, mood, and output channel"
+      },
+      {
+        "name": "sourced_product_asset_status",
+        "type": "object",
+        "description": "Hero product model posture and material readiness from blendops-assets"
+      }
+    ],
+    "optional": [
+      {
+        "name": "pack_context",
+        "type": "string",
+        "description": "Optional pack reference such as packs/product-hero-v0/PACK.md"
+      },
+      {
+        "name": "product_variant_inventory",
+        "type": "array",
+        "description": "List of product SKUs or variants with real-world dimensions for relative scale normalization"
+      },
+      {
+        "name": "catalog_aspect_and_margin_rules",
+        "type": "object",
+        "description": "Optional e-commerce card aspect ratio and uniform padding requirements"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "hero_product_staging_and_pedestal_plan",
+      "camera_and_lookdev_handoff_inputs",
+      "scene_quality_validation_hooks",
+      "multi_product_grid_layout_matrix",
+      "scale_normalization_and_spacing_spec",
+      "uniform_catalog_camera_and_lighting_hooks"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "blendops-brief",
+      "type": "upstream_reference",
+      "label": "Upstream input (if raw prompt needs structuring)",
+      "when": {
+        "all": [
+          {
+            "field": "goal.clarity",
+            "operator": "equals",
+            "value": "clear"
+          },
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-camera",
+      "type": "progression",
+      "label": "Next (deep-dive framing & camera)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "camera_planning"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-lighting-materials",
+      "type": "progression",
+      "label": "Next (deep-dive lookdev & lighting)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "lookdev_planning"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-done-criteria",
+      "type": "fallback",
+      "label": "Then (measurable pass/fail rows)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "acceptance_criteria"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-done-criteria",
+      "type": "upstream_reference",
+      "label": "Then (pin done condition)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "stop_condition"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-final-check",
+      "type": "progression",
+      "label": "Later (post-build readiness review)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "holistic"
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "quality_validation"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-glb-web-handoff",
+      "type": "conditional",
+      "label": "Delivery handoff (when web/render output is targeted) (blendops-glb-web-handoff)",
+      "when": {
+        "all": [
+          {
+            "field": "artifact.type",
+            "operator": "equals",
+            "value": "glb"
+          },
+          {
+            "field": "handoff.consumerStack",
+            "operator": "equals",
+            "value": "web_glb"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-final-check",
+      "type": "conditional",
+      "label": "Delivery handoff (when web/render output is targeted) (blendops-final-check)",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "post_execution_audit"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-assets",
+      "type": "upstream_reference",
+      "label": "Asset discovery",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "assets.discoveryComplete",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-render-settings",
+      "type": "progression",
+      "label": "Variant / SKU file output format",
+      "when": {
+        "all": [
+          {
+            "field": "decision.formatLocked",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-camera",
+      "type": "progression",
+      "label": "Composition validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "composition"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-lighting-materials",
+      "type": "progression",
+      "label": "Lighting validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "lighting"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-lighting-materials",
+      "type": "progression",
+      "label": "Material validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "material"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    }
+  ]
+}

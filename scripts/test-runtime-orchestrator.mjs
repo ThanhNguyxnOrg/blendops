@@ -288,17 +288,17 @@ describe('Blender Production Layer & Safe Runtime Integration', () => {
       operations: [
         {
           operation_id: 'op.inspect.blendfile-summary',
-          skill_id: 'scene-readiness',
+          skill_id: 'blendops-final-check',
           input: { include_datablock_counts: true },
         },
         {
           operation_id: 'op.inspect.object-list',
-          skill_id: 'scene-readiness',
+          skill_id: 'blendops-final-check',
           input: { filter_type: 'ALL' },
         },
         {
           operation_id: 'op.inspect.camera-and-lighting',
-          skill_id: 'camera-composition',
+          skill_id: 'blendops-camera',
           input: { camera_name: 'Camera', light_names: ['KeyLight', 'FillLight', 'RimLight'] },
         },
       ],
@@ -359,7 +359,7 @@ describe('Blender Production Layer & Safe Runtime Integration', () => {
       operations: [
         {
           operation_id: 'op.export.glb-asset',
-          skill_id: 'glb-web-handoff',
+          skill_id: 'blendops-glb-web-handoff',
           input: {
             output_path: path.join(suiteTmpDir, 'out.glb'),
             export_format: 'GLB',
@@ -384,7 +384,7 @@ describe('Blender Production Layer & Safe Runtime Integration', () => {
       operations: [
         {
           operation_id: 'op.mutate.camera-transform-and-lens',
-          skill_id: 'camera-composition',
+          skill_id: 'blendops-camera',
           input: {
             camera_name: 'Camera',
             location: [0, -3.2, 1.4],
@@ -414,7 +414,7 @@ describe('Blender Production Layer & Safe Runtime Integration', () => {
       operations: [
         {
           operation_id: 'op.mutate.camera-transform-and-lens',
-          skill_id: 'camera-composition',
+          skill_id: 'blendops-camera',
           input: {
             camera_name: 'Camera',
             location: [0, -3.2, 1.4],
@@ -444,7 +444,7 @@ describe('Blender Production Layer & Safe Runtime Integration', () => {
       operations: [
         {
           operation_id: 'op.mutate.camera-transform-and-lens',
-          skill_id: 'camera-composition',
+          skill_id: 'blendops-camera',
           input: {
             camera_name: 'Camera',
             location: [0, -3.2, 1.4],
@@ -478,7 +478,7 @@ describe('Blender Production Layer & Safe Runtime Integration', () => {
       operations: [
         {
           operation_id: 'op.mutate.camera-transform-and-lens',
-          skill_id: 'camera-composition',
+          skill_id: 'blendops-camera',
           input: {
             camera_name: 'Camera',
             location: [0, -3.2, 1.4],
@@ -501,7 +501,7 @@ describe('Blender Production Layer & Safe Runtime Integration', () => {
     });
     const identicalStep = {
       operation_id: 'op.mutate.camera-transform-and-lens',
-      skill_id: 'camera-composition',
+      skill_id: 'blendops-camera',
       input: {
         camera_name: 'Camera',
         location: [0, -3.2, 1.4],
@@ -538,7 +538,7 @@ describe('Blender Production Layer & Safe Runtime Integration', () => {
       operations: [
         {
           operation_id: 'op.mutate.camera-transform-and-lens',
-          skill_id: 'camera-composition',
+          skill_id: 'blendops-camera',
           input: {
             camera_name: 'Camera',
             location: [0, -3.2, 1.4],
@@ -573,7 +573,7 @@ describe('Blender Production Layer & Safe Runtime Integration', () => {
       operations: [
         {
           operation_id: 'op.mutate.light-parameters',
-          skill_id: 'lighting-material-plan',
+          skill_id: 'blendops-lighting-materials',
           input: {
             light_name: 'KeyLight',
             energy_watts: 350,
@@ -601,7 +601,7 @@ describe('Blender Production Layer & Safe Runtime Integration', () => {
       operations: [
         {
           operation_id: 'op.mutate.camera-transform-and-lens',
-          skill_id: 'camera-composition',
+          skill_id: 'blendops-camera',
           input: {
             camera_name: 'Camera',
             location: [0, -3.2, 1.4],
@@ -611,7 +611,7 @@ describe('Blender Production Layer & Safe Runtime Integration', () => {
         },
         {
           operation_id: 'op.mutate.light-parameters',
-          skill_id: 'lighting-material-plan',
+          skill_id: 'blendops-lighting-materials',
           input: {
             light_name: 'KeyLight',
             energy_watts: 350,

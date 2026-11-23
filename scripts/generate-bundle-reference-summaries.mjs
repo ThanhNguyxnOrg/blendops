@@ -10,14 +10,13 @@ const __dirname = path.dirname(__filename);
 const REPO_ROOT = path.resolve(__dirname, '..');
 const DEFAULT_ROOT = process.cwd();
 
-export const EXPECTED_CANONICAL_SKILL_COUNT = 48;
+export const EXPECTED_CANONICAL_SKILL_COUNT = 14;
 export const VALID_CAPABILITY_TIERS = new Set(['L0', 'L1', 'L2', 'L3']);
 export const VALID_GATE_GOAL_CLARITIES = new Set(['ambiguous_or_mixed', 'clear', 'any']);
 export const ROUTING_PARTICIPANT_IDS = new Set([
-  'blendops-help',
-  'recipe-fit-assessor',
-  'pack-prerequisite-checker',
-  'workflow-stage-router',
+  'blendops-brief',
+  'blendops-done-criteria',
+  'blendops-start',
 ]);
 export const VALID_HANDOFF_TYPES = new Set([
   'progression',
@@ -183,7 +182,21 @@ function parseFrontmatter(markdownText, relPath, errors) {
 }
 
 function stripHtmlComments(text) {
-  return String(text || '').replace(/<!--[\s\S]*?-->/g, '');
+  const src = String(text || '');
+  let out = '';
+  let i = 0;
+  while (i < src.length) {
+    const open = src.indexOf('<!--', i);
+    if (open === -1) {
+      out += src.slice(i);
+      break;
+    }
+    out += src.slice(i, open);
+    const close = src.indexOf('-->', open + 4);
+    if (close === -1) break;
+    i = close + 3;
+  }
+  return out;
 }
 
 function normalizeInlineMarkdown(text, skillId) {
@@ -1821,7 +1834,7 @@ export function checkBundleReferenceSummaries(rootDir = DEFAULT_ROOT, options = 
     }
   }
 
-  // Verify all 96 expected summary files exist and match byte-for-byte
+  // Verify all 28 expected summary files exist and match byte-for-byte
   for (const [relPath, expectedContent] of plan.expectedFiles.entries()) {
     let absPath;
     try {

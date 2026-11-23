@@ -21,11 +21,11 @@ Use this workflow when a non-Blender user asks for a product hero 3D output with
 
 ## Skills composed
 
-- [../../skills/runtime-setup/SKILL.md](../../skills/runtime-setup/SKILL.md)
-- [../../skills/product-hero-scene-planner/SKILL.md](../../skills/product-hero-scene-planner/SKILL.md)
-- [../../skills/scene-readiness/SKILL.md](../../skills/scene-readiness/SKILL.md)
-- [../../skills/glb-web-handoff/SKILL.md](../../skills/glb-web-handoff/SKILL.md)
-- [../../skills/plain-language-response/SKILL.md](../../skills/plain-language-response/SKILL.md)
+- [../../skills/blendops-connect-blender/SKILL.md](../../skills/blendops-connect-blender/SKILL.md)
+- [../../skills/blendops-product-shot/SKILL.md](../../skills/blendops-product-shot/SKILL.md)
+- [../../skills/blendops-final-check/SKILL.md](../../skills/blendops-final-check/SKILL.md)
+- [../../skills/blendops-glb-web-handoff/SKILL.md](../../skills/blendops-glb-web-handoff/SKILL.md)
+- [../../skills/blendops-start/SKILL.md](../../skills/blendops-start/SKILL.md)
 
 ## Stages
 

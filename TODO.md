@@ -1,9 +1,9 @@
 # BlendOps Roadmap
 
-_Last updated for **v1.0.0** (48 canonical skills, 151 reference guides, 26 install target docs, 35+ CLI targets via `--with-skills-dir` + `skills.sh.json`, 269 deterministic eval cases, 17 CI test suites)._
+_Last updated for **v1.0.0** (14 canonical skills, 199 reference guides, 26 install target docs, 35+ CLI targets via `--with-skills-dir` + `skills.sh.json`, 269 deterministic eval cases, 17 CI test suites)._
 
 > [!NOTE]
-> BlendOps publishes one thing: a **skills layer** (**48 skills** + **151 reference guides** + 4 laws + 1 pack + 3 bundles + **26 install target docs** / **35+ CLI targets** via `--with-skills-dir` + deterministic catalog & CLI + ZIP/package generation + automated CI guards). The layer is **complete and production-ready at `v1.0.0`**.
+> BlendOps publishes one thing: a **skills layer** (**14 skills** + **199 reference guides** + 4 laws + 1 pack + 3 bundles + **26 install target docs** / **35+ CLI targets** via `--with-skills-dir` + deterministic catalog & CLI + ZIP/package generation + automated CI guards). The layer is **complete and production-ready at `v1.0.0`**.
 >
 > Everything related to actually running Blender — the Blender executable, the MCP servers, the MCP hosts, the CLI — is **upstream**, owned by Blender Foundation / Anthropic / the `ahujasid` community. BlendOps **redirects** users to the right upstream docs per install target. Path 1 + Path 2 are **user-reported verified by the repo owner**; CLI is **documented upstream as a first-class Blender CLI surface**, with one scoped [CLI eval record](docs/evals/cli-fallback-mech-prop.md).
 >
@@ -18,9 +18,9 @@ _Last updated for **v1.0.0** (48 canonical skills, 151 reference guides, 26 inst
 | Layer | Runnable? | Why |
 |---|---|---|
 | Content install (clone → paste prompt → agent installs project-locally OR prepares Skills ZIPs) | ✅ Yes | `docs/ai-agent-quickstart.md` + 3-mode auto-detect flow + 26 install targets + 35+ CLI targets. |
-| Skill ZIP / package generation | ✅ Yes | `npm run skills:export` → 48 ZIPs in `dist/claude-skills/desktop-zips/` + canonical portable skill at `bundles/skill-package/blendops/`. |
+| Skill ZIP / package generation | ✅ Yes | `npm run skills:export` → 14 ZIPs in `dist/claude-skills/desktop-zips/` + canonical portable skill at `bundles/skill-package/blendops/`. |
 | Skill upload to Claude Desktop / Claude.ai / ChatGPT Skills UI | ✅ Yes (UI drag-drop = user's manual action, not a publisher gap) | `npm run skills:export` produces compliant Anthropic Skills (≤200-char description, no `version:` / `status:` keys) and an OpenAI YAML manifest. |
-| CI guards | ✅ Yes | `npm run ci` validates active Markdown docs, knowledge/recipe catalogs, 48 contracts, 269 deterministic evals, repository architecture, and all 17 `node --test` suites. |
+| CI guards | ✅ Yes | `npm run ci` validates active Markdown docs, knowledge/recipe catalogs, 14 contracts, 269 deterministic evals, repository architecture, and all 17 `node --test` suites. |
 | `v1.0.0` release | ✅ Ready | Skills layer, contracts, evals, CLI, and release inspection server are complete and verified. |
 
 ### Runtime paths (BlendOps redirects to — owned by upstream, not this repo)
@@ -41,7 +41,7 @@ _Last updated for **v1.0.0** (48 canonical skills, 151 reference guides, 26 inst
 | `blendops` CLI & project-local installer | ✅ Published as `blendops@1.0.0` on npm. GitHub Agent Skills source is listed on skills.sh. | `docs/install/installer-spec.md` |
 | Marketplace / plugin listing | Future distribution work. Gated on upstream listing acceptance. | — |
 
-**Bottom line**: clone the repo → run `npx skills add ThanhNguyxnOrg/blendops` or `npm run skills:install` → plan a scene with **48 skills** → follow per-target install doc to enable an upstream runtime path → drive Blender via Path 1 / Path 2 (both user-reported verified by the repo owner — operator statement) or CLI (upstream-documented).
+**Bottom line**: clone the repo → run `npx skills add ThanhNguyxnOrg/blendops` or `npm run skills:install` → plan a scene with **14 skills** → follow per-target install doc to enable an upstream runtime path → drive Blender via Path 1 / Path 2 (both user-reported verified by the repo owner — operator statement) or CLI (upstream-documented).
 
 ---
 
@@ -51,24 +51,24 @@ _Last updated for **v1.0.0** (48 canonical skills, 151 reference guides, 26 inst
 - [x] Product-layer boundaries, external runtime model (2 MCP execution paths + CLI fallback appendix), safety model (`docs/safety-model.md`), and workflow contract (`docs/workflow-contract.md`).
 - [x] Canonical 4 shared guardrail laws (`laws/`), initial `product-hero-v0` pack (`packs/product-hero-v0/PACK.md`), canonical workflows (`docs/workflows/`), and cyberpunk shoe golden path (`docs/golden-path-cyberpunk-shoe.md`).
 
-### Full-Catalog Skill Layer (48/48 Skills, Contracts & Reference Hardening)
+### Full-Catalog Skill Layer (14/14 Skills, Contracts & Reference Hardening)
 - [x] Canonical template (`skills/_template/SKILL.md`), depth standard (`skill-reviews/depth-standard.md`), and 9 review gates (`skill-reviews/review-gates.md`).
-- [x] Complete 48-skill catalog (16 baseline skills + 32 expansion skills across Web 3D, Quality Validation, Domain Planners, Process Discipline, Asset/Sourcing, Color/Format/Output, Recipe/Pack Ops, Runtime Path Discipline).
-- [x] Full-catalog machine-readable `contract.json` coverage (48/48 skills, 371 edges, 16-state routing precedence determinism) and deterministic `SKILL.md` managed sections (`scripts/build-registry.mjs`).
-- [x] Deep enrichment across all **151/151 skill reference guides** (principled BSDF tables, multi-engine export parity, 6-gate mesh/UV QA rules, reference-silhouette checks, Superpowers-style verification rubrics).
+- [x] Complete 14-skill catalog (16 baseline skills + 32 expansion skills across Web 3D, Quality Validation, Domain Planners, Process Discipline, Asset/Sourcing, Color/Format/Output, Recipe/Pack Ops, Runtime Path Discipline).
+- [x] Full-catalog machine-readable `contract.json` coverage (14/14 skills, 195 edges, 16-state routing precedence determinism) and deterministic `SKILL.md` managed sections (`scripts/build-registry.mjs`).
+- [x] Deep enrichment across all **199/199 skill reference guides** (principled BSDF tables, multi-engine export parity, 6-gate mesh/UV QA rules, reference-silhouette checks, Superpowers-style verification rubrics).
 
 ### Knowledge, Recipes, SceneSpec Compiler & Behavioral Evals
 - [x] Architecture Reconciliation & Knowledge/Recipe Foundation: 20-source citation registry (`registry/knowledge-sources.json`), 30-record domain knowledge catalog (`registry/knowledge-catalog.json`), 10-record recipe catalog (`registry/recipe-catalog.json`), bilingual retrieval index (`registry/catalog-index.json`), and 90/90 retrieval eval suite (`evals/catalog-retrieval-evals.json`).
 - [x] Deterministic `SceneSpec` → `ExecutionPlan` compiler & skill harmonizer (`scripts/compile-scene-plan.mjs`), Ajv Draft 2020-12 schema suite (`schemas/*.schema.json`), and shared catalog ZIP export (`dist/shared-catalog/blendops-knowledge-and-recipes.zip`).
-- [x] Full-catalog machine-readable evaluation suites (`evals/suites/*.eval.json`, 48/48 skills, 269/269 deterministic cases passing via `npm run evals:run`).
+- [x] Full-catalog machine-readable evaluation suites (`evals/suites/*.eval.json`, 14/14 skills, 269/269 deterministic cases passing via `npm run evals:run`).
 
 ### Safe Runtime Governance, MCP Qualification & Async Client
 - [x] Typed 18-operation runtime registry (`registry/runtime-operations.json`), capability tiers (`L0`–`L3`), fail-closed pre-mutation `.blend` checkpoints, and rollback protocol (`scripts/runtime-orchestrator.mjs`).
 - [x] `@modelcontextprotocol/sdk` async STDIO + Streamable HTTP client (`connectMcpRuntimeClient`), 7-state lifecycle, SHA-256 tool-contract fingerprinting, secret redaction, and deterministic CLI exit codes `0..7`.
 
 ### GLB 2.0 Web Handoff, Installer, CLI & Distribution
-- [x] GLB 2.0 container inspector (`scripts/inspect-glb.mjs`), web handoff report generator (`scripts/generate-glb-handoff-report.mjs`), Three.js & React Three Fiber viewer examples (`docs/examples/glb-web-handoff/`).
-- [x] Transactional project-local installer (`scripts/install-skills.mjs`), distributable CLI (`bin/blendops.mjs`), deterministic 48-skill ZIP/folder exporter (`scripts/export-claude-skills.mjs`), and 96 deterministic bundle reference summaries (`scripts/generate-bundle-reference-summaries.mjs`).
+- [x] GLB 2.0 container inspector (`scripts/inspect-glb.mjs`), web handoff report generator (`scripts/generate-glb-handoff-report.mjs`), Three.js & React Three Fiber viewer examples (`docs/examples/blendops-glb-web-handoff/`).
+- [x] Transactional project-local installer (`scripts/install-skills.mjs`), distributable CLI (`bin/blendops.mjs`), deterministic 14-skill ZIP/folder exporter (`scripts/export-claude-skills.mjs`), and 96 deterministic bundle reference summaries (`scripts/generate-bundle-reference-summaries.mjs`).
 - [x] Root `skills.sh.json` 8-group catalog, `vercel-labs/skills` Lockfile v2 (`skills-lock.json` `computedHash`), `--with-skills-dir` + `--skill <slug>` across `26` install target docs and `35+` CLI targets.
 - [x] Complete repository inventory classification & reference integrity verification (`scripts/validate-repository-architecture.mjs`, `.gitattributes`, `.editorconfig`, clean `v1.0.0` audit snapshots under `docs/audits/current/`).
 

@@ -40,7 +40,7 @@
       "id": "L2",
       "rank": 2,
       "name": "File Export & External Asset Import",
-      "summary": "Permits rendering still/turntable outputs, exporting .glb containers to an allowlisted output directory, and importing external 3D/material assets cleared by asset-license-checker.",
+      "summary": "Permits rendering still/turntable outputs, exporting .glb containers to an allowlisted output directory, and importing external 3D/material assets cleared by blendops-assets.",
       "allowSceneMutation": true,
       "allowFileExport": true,
       "allowExternalAssetImport": true,
@@ -90,7 +90,25 @@
   },
   "skills": [
     {
-      "skillId": "acceptance-criteria-builder",
+      "skillId": "blendops-glb-budget",
+      "capabilityTier": "L0",
+      "governedRuntimeCeiling": "L2",
+      "requiresPreMutationBackupWhenExecuted": true,
+      "requiresAssetLicenseClearance": true,
+      "requiresExplicitOperatorConfirmation": false,
+      "userFacingPythonAllowed": false
+    },
+    {
+      "skillId": "blendops-render-settings",
+      "capabilityTier": "L0",
+      "governedRuntimeCeiling": "L2",
+      "requiresPreMutationBackupWhenExecuted": true,
+      "requiresAssetLicenseClearance": true,
+      "requiresExplicitOperatorConfirmation": false,
+      "userFacingPythonAllowed": false
+    },
+    {
+      "skillId": "blendops-done-criteria",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L0",
       "requiresPreMutationBackupWhenExecuted": false,
@@ -99,7 +117,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "asset-fallback-strategy",
+      "skillId": "blendops-glb-web-handoff",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L2",
       "requiresPreMutationBackupWhenExecuted": true,
@@ -108,61 +126,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "asset-library-plan",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L2",
-      "requiresPreMutationBackupWhenExecuted": true,
-      "requiresAssetLicenseClearance": true,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "asset-license-checker",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L2",
-      "requiresPreMutationBackupWhenExecuted": true,
-      "requiresAssetLicenseClearance": true,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "asset-style-check",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L2",
-      "requiresPreMutationBackupWhenExecuted": true,
-      "requiresAssetLicenseClearance": true,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "asset-discovery",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L2",
-      "requiresPreMutationBackupWhenExecuted": true,
-      "requiresAssetLicenseClearance": true,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "blender-brainstorming",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "stage-gates",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "camera-composition",
+      "skillId": "blendops-camera",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L1",
       "requiresPreMutationBackupWhenExecuted": true,
@@ -171,7 +135,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "lighting-material-plan",
+      "skillId": "blendops-lighting-materials",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L1",
       "requiresPreMutationBackupWhenExecuted": true,
@@ -180,61 +144,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "blender-recipe-decomposer",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "scene-readiness",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "scope-guard",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "done-criteria",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "blender-troubleshooting",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "blendops-help",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "character-portrait",
+      "skillId": "blendops-product-shot",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L1",
       "requiresPreMutationBackupWhenExecuted": true,
@@ -243,7 +153,25 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "cli-appendix-job-outline",
+      "skillId": "blendops-scene-plan",
+      "capabilityTier": "L0",
+      "governedRuntimeCeiling": "L1",
+      "requiresPreMutationBackupWhenExecuted": true,
+      "requiresAssetLicenseClearance": false,
+      "requiresExplicitOperatorConfirmation": false,
+      "userFacingPythonAllowed": false
+    },
+    {
+      "skillId": "blendops-brief",
+      "capabilityTier": "L0",
+      "governedRuntimeCeiling": "L0",
+      "requiresPreMutationBackupWhenExecuted": false,
+      "requiresAssetLicenseClearance": false,
+      "requiresExplicitOperatorConfirmation": false,
+      "userFacingPythonAllowed": false
+    },
+    {
+      "skillId": "blendops-connect-blender",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L3",
       "requiresPreMutationBackupWhenExecuted": true,
@@ -252,43 +180,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "color-management-decision",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L1",
-      "requiresPreMutationBackupWhenExecuted": true,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "composition-quality-checker",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "cycles-vs-eevee-decision",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L1",
-      "requiresPreMutationBackupWhenExecuted": true,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "environment-shot",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L1",
-      "requiresPreMutationBackupWhenExecuted": true,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "glb-animation-handoff",
+      "skillId": "blendops-assets",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L2",
       "requiresPreMutationBackupWhenExecuted": true,
@@ -297,227 +189,29 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "mobile-glb-budget",
+      "skillId": "blendops-fix-problems",
+      "capabilityTier": "L0",
+      "governedRuntimeCeiling": "L0",
+      "requiresPreMutationBackupWhenExecuted": false,
+      "requiresAssetLicenseClearance": false,
+      "requiresExplicitOperatorConfirmation": false,
+      "userFacingPythonAllowed": false
+    },
+    {
+      "skillId": "blendops-start",
+      "capabilityTier": "L0",
+      "governedRuntimeCeiling": "L0",
+      "requiresPreMutationBackupWhenExecuted": false,
+      "requiresAssetLicenseClearance": false,
+      "requiresExplicitOperatorConfirmation": false,
+      "userFacingPythonAllowed": false
+    },
+    {
+      "skillId": "blendops-final-check",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L2",
       "requiresPreMutationBackupWhenExecuted": true,
       "requiresAssetLicenseClearance": true,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "glb-web-handoff",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L2",
-      "requiresPreMutationBackupWhenExecuted": true,
-      "requiresAssetLicenseClearance": true,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "intent-to-3d-brief-writer",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "interior-scene",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L1",
-      "requiresPreMutationBackupWhenExecuted": true,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "lighting-quality-checker",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "material-quality-checker",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "plain-language-response",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "runtime-readiness",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "runtime-setup",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "output-format-decision",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L2",
-      "requiresPreMutationBackupWhenExecuted": true,
-      "requiresAssetLicenseClearance": true,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "pack-prerequisite-checker",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "path-one-host-outline",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "polycount-budget-checker",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "pre-handoff-verification",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "preview-report",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "product-grid-scene-planner",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L1",
-      "requiresPreMutationBackupWhenExecuted": true,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "product-hero-scene-planner",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L1",
-      "requiresPreMutationBackupWhenExecuted": true,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "recipe-fit-assessor",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "render-export-evidence",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L2",
-      "requiresPreMutationBackupWhenExecuted": true,
-      "requiresAssetLicenseClearance": true,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "resolution-aspect-decision",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L1",
-      "requiresPreMutationBackupWhenExecuted": true,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "runtime-attempt-report",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "bridge-conflicts",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "runtime-path-picker",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "r3f-component-plan",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "workflow-stage-router",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
-      "requiresAssetLicenseClearance": false,
       "requiresExplicitOperatorConfirmation": false,
       "userFacingPythonAllowed": false
     }

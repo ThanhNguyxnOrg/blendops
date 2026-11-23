@@ -1,0 +1,931 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "blendops-glb-web-handoff",
+  "category": "evidence-and-handoff",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/blendops-glb-web-handoff/contract.json",
+  "skillMarkdownPath": "skills/blendops-glb-web-handoff/SKILL.md",
+  "evalMarkdownPath": "skills/blendops-glb-web-handoff/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "glb-web-handoff-normal-in-scope-handoff",
+      "skillId": "blendops-glb-web-handoff",
+      "scenario": "Normal in-scope execution of blendops-glb-web-handoff (web-glb-delivery-packager) with contract handoff to blendops-start",
+      "category": "normal",
+      "inputPrompt": "Use blendops-glb-web-handoff to package the delivery specification for a 4.2 MB Draco-compressed sneaker `.glb` targeting `<model-viewer>` and React Three Fiber with neutral studio environment lighting.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (verified_or_planned_glb_artifact) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces web_glb_delivery_handoff_packet, scale_orientation_and_compression_manifest, viewer_integration_caveats for role web-glb-delivery-packager",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blendops-start (Final user-facing response wording)"
+      ],
+      "requiredOutputProperties": [
+        "Draco / Meshopt compression",
+        "Y-up meter scale",
+        "viewer integration checklist",
+        "blendops-start",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "GLB verified in live browser without file",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-start",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs web_glb_delivery_handoff_packet, scale_orientation_and_compression_manifest, viewer_integration_caveats conforming to skills/blendops-glb-web-handoff/SKILL.md",
+        "Matches contract handoff predicate to blendops-start in skills/blendops-glb-web-handoff/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "stage.current": "final_communication"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only web-glb-delivery-packager (blendops-glb-web-handoff)",
+          "recommendedNextAction": "Complete web_glb_delivery_handoff_packet and hand off to blendops-start (Final user-facing response wording).",
+          "targetHandoff": "blendops-start",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Authored web GLB handoff specification covering Draco/Meshopt compression requirements, Y-up meter scale normalization, camera orbit bounds, and consumer integration checklist. Delivered Draco / Meshopt compression, Y-up meter scale, viewer integration checklist and routed to blendops-start.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-glb-web-handoff/SKILL.md",
+            "skills/blendops-glb-web-handoff/EVAL.md",
+            "skills/blendops-glb-web-handoff/contract.json",
+            "skills/blendops-glb-web-handoff/references/artifact-status-language.md",
+            "skills/blendops-glb-web-handoff/references/glb-handoff-checklist.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "glb-web-handoff-secondary-contract-handoff",
+      "skillId": "blendops-glb-web-handoff",
+      "scenario": "Secondary upstream_reference contract handoff from blendops-glb-web-handoff to blendops-final-check",
+      "category": "structured_skip",
+      "inputPrompt": "While applying blendops-glb-web-handoff, the workflow context is {\"quality.domain\":\"holistic\",\"stage.current\":\"quality_validation\"} (Upstream scene readiness validation). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/blendops-glb-web-handoff/contract.json",
+        "Routes to blendops-final-check (Upstream scene readiness validation) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blendops-final-check",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "GLB verified in live browser without file",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-final-check",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to blendops-final-check"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "holistic",
+          "stage.current": "quality_validation"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blendops-glb-web-handoff (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to blendops-final-check (Upstream scene readiness validation).",
+          "targetHandoff": "blendops-final-check",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from blendops-glb-web-handoff to blendops-final-check under context {\"quality.domain\":\"holistic\",\"stage.current\":\"quality_validation\"}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-glb-web-handoff/contract.json",
+            "skills/blendops-glb-web-handoff/SKILL.md",
+            "skills/blendops-glb-web-handoff/references/artifact-status-language.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "glb-web-handoff-unmatched-handoff-and-evidence-boundary",
+      "skillId": "blendops-glb-web-handoff",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in blendops-glb-web-handoff",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during blendops-glb-web-handoff with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for blendops-glb-web-handoff and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/blendops-glb-web-handoff/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (blendops-glb-web-handoff)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for blendops-glb-web-handoff.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/blendops-glb-web-handoff/contract.json",
+            "skills/blendops-glb-web-handoff/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "glb-web-handoff-ambiguous-missing-required-inputs",
+      "skillId": "blendops-glb-web-handoff",
+      "scenario": "Missing required input (verified_or_planned_glb_artifact) for blendops-glb-web-handoff halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Create the web GLB handoff spec without telling me the consumer web stack, compression support, or asset coordinate scale.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'verified_or_planned_glb_artifact' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing target web viewer stack (R3F vs model-viewer vs Babylon) and compression loader support required by blendops-glb-web-handoff (verified_or_planned_glb_artifact)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "verified_or_planned_glb_artifact",
+        "target web viewer stack (R3F vs model-viewer vs Babylon) and compression loader support",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "GLB verified in live browser without file",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'verified_or_planned_glb_artifact' (target web viewer stack (R3F vs model-viewer vs Babylon) and compression loader support)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (blendops-glb-web-handoff)",
+          "recommendedNextAction": "Provide the missing target web viewer stack (R3F vs model-viewer vs Babylon) and compression loader support (verified_or_planned_glb_artifact) before blendops-glb-web-handoff locks web_glb_delivery_handoff_packet.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted blendops-glb-web-handoff due to missing required input 'verified_or_planned_glb_artifact' (target web viewer stack (R3F vs model-viewer vs Babylon) and compression loader support); no values were fabricated.",
+          "warnings": [
+            "Do not invent target web viewer stack (R3F vs model-viewer vs Babylon) and compression loader support when 'verified_or_planned_glb_artifact' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-glb-web-handoff/SKILL.md",
+            "skills/blendops-glb-web-handoff/EVAL.md",
+            "skills/blendops-glb-web-handoff/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "glb-web-handoff-out-of-scope-exclusion-delegation",
+      "skillId": "blendops-glb-web-handoff",
+      "scenario": "Out-of-scope request (to claim GLB or export success without concrete evidence) is excluded from blendops-glb-web-handoff and delegated to blendops-final-check",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of prepare truthful glb/web handoff output with explicit artifact status, assumptions, and caveats., handle this request inside blendops-glb-web-handoff: to claim GLB or export success without concrete evidence.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/blendops-glb-web-handoff/contract.json when to claim GLB or export success without concrete evidence",
+        "Delegates to blendops-final-check (Delegates out-of-scope requests to blendops-final-check) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blendops-final-check",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "GLB verified in live browser without file",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside blendops-glb-web-handoff anyway"
+      ],
+      "expectedRoutingTarget": "blendops-final-check",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blendops-final-check per skills/blendops-glb-web-handoff/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (blendops-glb-web-handoff)",
+          "recommendedNextAction": "Request is out of scope for blendops-glb-web-handoff (to claim GLB or export success without concrete evidence); delegate to blendops-final-check.",
+          "targetHandoff": "blendops-final-check",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced blendops-glb-web-handoff exclusion boundary (Delegates out-of-scope requests to blendops-final-check) and delegated to blendops-final-check.",
+          "warnings": [
+            "blendops-glb-web-handoff is scoped to web-glb-delivery-packager and does not absorb blendops-final-check responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-glb-web-handoff/contract.json",
+            "skills/blendops-glb-web-handoff/SKILL.md",
+            "skills/blendops-final-check/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "glb-animation-handoff-normal-in-scope-handoff",
+      "skillId": "blendops-glb-web-handoff",
+      "scenario": "Normal in-scope execution of blendops-glb-web-handoff (rig-and-animation-clip-handoff-planner) with contract handoff to blendops-glb-web-handoff",
+      "category": "normal",
+      "inputPrompt": "Use blendops-glb-web-handoff to specify the NLA clip contract (`Idle_Loop`, `Hover_Open`), 30 fps frame baking rules, and bone/morph target constraints for an interactive web GLB product showcase.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (animation_clip_inventory) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces per_clip_animation_contract_table, root_motion_and_interpolation_pins, consumer_playback_verification_checklist for role rig-and-animation-clip-handoff-planner",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blendops-glb-web-handoff (Web delivery handoff)"
+      ],
+      "requiredOutputProperties": [
+        "NLA action clip",
+        "keyframe baking",
+        "joint limit",
+        "blendops-glb-web-handoff",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "unbaked Blender constraints work in glTF",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-glb-web-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs per_clip_animation_contract_table, root_motion_and_interpolation_pins, consumer_playback_verification_checklist conforming to skills/blendops-glb-web-handoff/SKILL.md",
+        "Matches contract handoff predicate to blendops-glb-web-handoff in skills/blendops-glb-web-handoff/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "artifact.type": "glb",
+          "handoff.consumerStack": "web_glb"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only rig-and-animation-clip-handoff-planner (blendops-glb-web-handoff)",
+          "recommendedNextAction": "Complete per_clip_animation_contract_table and hand off to blendops-glb-web-handoff (Web delivery handoff).",
+          "targetHandoff": "blendops-glb-web-handoff",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Defined NLA animation clip table (`Idle_Loop`, `Hover_Open`), keyframe baking at 30 fps, skinning joint limits, and consumer playback trigger contract. Delivered NLA action clip, keyframe baking, joint limit and routed to blendops-glb-web-handoff.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-glb-web-handoff/SKILL.md",
+            "skills/blendops-glb-web-handoff/EVAL.md",
+            "skills/blendops-glb-web-handoff/contract.json",
+            "skills/blendops-glb-web-handoff/references/animation-types.md",
+            "skills/blendops-glb-web-handoff/references/transition-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "glb-animation-handoff-secondary-contract-handoff",
+      "skillId": "blendops-glb-web-handoff",
+      "scenario": "Secondary upstream_reference contract handoff from blendops-glb-web-handoff to blendops-scene-plan",
+      "category": "structured_skip",
+      "inputPrompt": "While applying blendops-glb-web-handoff, the workflow context is {\"brief.locked\":true,\"recipe.domain\":\"character_portrait\"} (Missing clip list / scene plan (blendops-scene-plan)). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/blendops-glb-web-handoff/contract.json",
+        "Routes to blendops-scene-plan (Missing clip list / scene plan (blendops-scene-plan)) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blendops-scene-plan",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "unbaked Blender constraints work in glTF",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-scene-plan",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to blendops-scene-plan"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "recipe.domain": "character_portrait"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blendops-glb-web-handoff (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to blendops-scene-plan (Missing clip list / scene plan (blendops-scene-plan)).",
+          "targetHandoff": "blendops-scene-plan",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from blendops-glb-web-handoff to blendops-scene-plan under context {\"brief.locked\":true,\"recipe.domain\":\"character_portrait\"}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-glb-web-handoff/contract.json",
+            "skills/blendops-glb-web-handoff/SKILL.md",
+            "skills/blendops-glb-web-handoff/references/animation-types.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "glb-animation-handoff-unmatched-handoff-and-evidence-boundary",
+      "skillId": "blendops-glb-web-handoff",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in blendops-glb-web-handoff",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during blendops-glb-web-handoff with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for blendops-glb-web-handoff and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/blendops-glb-web-handoff/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (blendops-glb-web-handoff)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for blendops-glb-web-handoff.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/blendops-glb-web-handoff/contract.json",
+            "skills/blendops-glb-web-handoff/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "glb-animation-handoff-ambiguous-missing-required-inputs",
+      "skillId": "blendops-glb-web-handoff",
+      "scenario": "Missing required input (animation_clip_inventory) for blendops-glb-web-handoff halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Prepare the glTF animation handoff packet without telling me what animation clips exist, whether rigging uses armatures or shape keys, or what web engine plays them.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'animation_clip_inventory' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing animation clip inventory, rig/deformer type, and consumer runtime playback engine required by blendops-glb-web-handoff (animation_clip_inventory)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "animation_clip_inventory",
+        "animation clip inventory, rig/deformer type, and consumer runtime playback engine",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "unbaked Blender constraints work in glTF",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'animation_clip_inventory' (animation clip inventory, rig/deformer type, and consumer runtime playback engine)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (blendops-glb-web-handoff)",
+          "recommendedNextAction": "Provide the missing animation clip inventory, rig/deformer type, and consumer runtime playback engine (animation_clip_inventory) before blendops-glb-web-handoff locks per_clip_animation_contract_table.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted blendops-glb-web-handoff due to missing required input 'animation_clip_inventory' (animation clip inventory, rig/deformer type, and consumer runtime playback engine); no values were fabricated.",
+          "warnings": [
+            "Do not invent animation clip inventory, rig/deformer type, and consumer runtime playback engine when 'animation_clip_inventory' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-glb-web-handoff/SKILL.md",
+            "skills/blendops-glb-web-handoff/EVAL.md",
+            "skills/blendops-glb-web-handoff/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "glb-animation-handoff-out-of-scope-exclusion-delegation",
+      "skillId": "blendops-glb-web-handoff",
+      "scenario": "Out-of-scope request (static GLBs with no animation) is excluded from blendops-glb-web-handoff and delegated to blendops-glb-web-handoff",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of document glb animation contract (skeletal vs morph, fps, looping, root motion, blend transitions) with truthful caveats for web playback., handle this request inside blendops-glb-web-handoff: static GLBs with no animation.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/blendops-glb-web-handoff/contract.json when static GLBs with no animation",
+        "Delegates to blendops-glb-web-handoff (Delegates out-of-scope requests to blendops-glb-web-handoff) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blendops-glb-web-handoff",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "unbaked Blender constraints work in glTF",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside blendops-glb-web-handoff anyway"
+      ],
+      "expectedRoutingTarget": "blendops-glb-web-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blendops-glb-web-handoff per skills/blendops-glb-web-handoff/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (blendops-glb-web-handoff)",
+          "recommendedNextAction": "Request is out of scope for blendops-glb-web-handoff (static GLBs with no animation); delegate to blendops-glb-web-handoff.",
+          "targetHandoff": "blendops-glb-web-handoff",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced blendops-glb-web-handoff exclusion boundary (Delegates out-of-scope requests to blendops-glb-web-handoff) and delegated to blendops-glb-web-handoff.",
+          "warnings": [
+            "blendops-glb-web-handoff is scoped to rig-and-animation-clip-handoff-planner and does not absorb blendops-glb-web-handoff responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-glb-web-handoff/contract.json",
+            "skills/blendops-glb-web-handoff/SKILL.md",
+            "skills/blendops-glb-web-handoff/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "r3f-component-plan-normal-in-scope-handoff",
+      "skillId": "blendops-glb-web-handoff",
+      "scenario": "Normal in-scope execution of blendops-glb-web-handoff (r3f-component-contract-architect) with contract handoff to blendops-start",
+      "category": "normal",
+      "inputPrompt": "Use blendops-glb-web-handoff to produce the React Three Fiber component contract spec for a hero-card sneaker GLB delivery (single instance, `Idle_Loop` + `Hover_Open` actions, `useGLTF.preload`, Suspense boundary).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (glb_delivery_contract) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces r3f_component_props_and_ref_spec, suspense_caching_and_dispose_contract, consumer_call_site_usage_outline for role r3f-component-contract-architect",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blendops-start (Final user-facing response)"
+      ],
+      "requiredOutputProperties": [
+        "props table",
+        "Suspense boundary",
+        "useGLTF.preload",
+        "blendops-start",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "full 100-line production React component implementation",
+        "60fps guaranteed",
+        "Artifact: Verified",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-start",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs r3f_component_props_and_ref_spec, suspense_caching_and_dispose_contract, consumer_call_site_usage_outline conforming to skills/blendops-glb-web-handoff/SKILL.md",
+        "Matches contract handoff predicate to blendops-start in skills/blendops-glb-web-handoff/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "stage.current": "final_communication"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only r3f-component-contract-architect (blendops-glb-web-handoff)",
+          "recommendedNextAction": "Complete r3f_component_props_and_ref_spec and hand off to blendops-start (Final user-facing response).",
+          "targetHandoff": "blendops-start",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Specified React Three Fiber component interface (props table, ref `playAction` handle, `Suspense` boundary, `useGLTF.preload` caching policy, disposal rules, and pseudocode usage outline without generating app code). Delivered props table, Suspense boundary, useGLTF.preload and routed to blendops-start.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-glb-web-handoff/SKILL.md",
+            "skills/blendops-glb-web-handoff/EVAL.md",
+            "skills/blendops-glb-web-handoff/contract.json",
+            "skills/blendops-glb-web-handoff/references/component-shape-patterns.md",
+            "skills/blendops-glb-web-handoff/references/suspense-placement-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "r3f-component-plan-secondary-contract-handoff",
+      "skillId": "blendops-glb-web-handoff",
+      "scenario": "Secondary upstream_reference contract handoff from blendops-glb-web-handoff to blendops-glb-web-handoff",
+      "category": "structured_skip",
+      "inputPrompt": "While applying blendops-glb-web-handoff, the workflow context is {\"artifact.hasAnimation\":true,\"stage.current\":\"animation_handoff\"} (Animation contract). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/blendops-glb-web-handoff/contract.json",
+        "Routes to blendops-glb-web-handoff (Animation contract) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blendops-glb-web-handoff",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "full 100-line production React component implementation",
+        "60fps guaranteed",
+        "Artifact: Verified",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-glb-web-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to blendops-glb-web-handoff"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "artifact.hasAnimation": true,
+          "stage.current": "animation_handoff"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blendops-glb-web-handoff (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to blendops-glb-web-handoff (Animation contract).",
+          "targetHandoff": "blendops-glb-web-handoff",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from blendops-glb-web-handoff to blendops-glb-web-handoff under context {\"artifact.hasAnimation\":true,\"stage.current\":\"animation_handoff\"}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-glb-web-handoff/contract.json",
+            "skills/blendops-glb-web-handoff/SKILL.md",
+            "skills/blendops-glb-web-handoff/references/component-shape-patterns.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "r3f-component-plan-unmatched-handoff-and-evidence-boundary",
+      "skillId": "blendops-glb-web-handoff",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in blendops-glb-web-handoff",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during blendops-glb-web-handoff with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for blendops-glb-web-handoff and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/blendops-glb-web-handoff/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (blendops-glb-web-handoff)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for blendops-glb-web-handoff.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/blendops-glb-web-handoff/contract.json",
+            "skills/blendops-glb-web-handoff/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "r3f-component-plan-ambiguous-missing-required-inputs",
+      "skillId": "blendops-glb-web-handoff",
+      "scenario": "Missing required input (glb_delivery_contract) for blendops-glb-web-handoff halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Design a React Three Fiber component contract without telling me the GLB asset structure, animation clip names, or configurable variant props.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'glb_delivery_contract' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing GLB node/animation manifest and required interactive props required by blendops-glb-web-handoff (glb_delivery_contract)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "glb_delivery_contract",
+        "GLB node/animation manifest and required interactive props",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "full 100-line production React component implementation",
+        "60fps guaranteed",
+        "Artifact: Verified",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'glb_delivery_contract' (GLB node/animation manifest and required interactive props)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (blendops-glb-web-handoff)",
+          "recommendedNextAction": "Provide the missing GLB node/animation manifest and required interactive props (glb_delivery_contract) before blendops-glb-web-handoff locks r3f_component_props_and_ref_spec.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted blendops-glb-web-handoff due to missing required input 'glb_delivery_contract' (GLB node/animation manifest and required interactive props); no values were fabricated.",
+          "warnings": [
+            "Do not invent GLB node/animation manifest and required interactive props when 'glb_delivery_contract' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-glb-web-handoff/SKILL.md",
+            "skills/blendops-glb-web-handoff/EVAL.md",
+            "skills/blendops-glb-web-handoff/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "r3f-component-plan-out-of-scope-exclusion-delegation",
+      "skillId": "blendops-glb-web-handoff",
+      "scenario": "Out-of-scope request (consumers using vanilla Three.js (different API)) is excluded from blendops-glb-web-handoff and delegated to blendops-glb-web-handoff",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of plan the react three fiber component shape (props, refs, suspense, usegltf cache, animation hooks) before delivering a glb to a web team., handle this request inside blendops-glb-web-handoff: consumers using vanilla Three.js (different API).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/blendops-glb-web-handoff/contract.json when consumers using vanilla Three.js (different API)",
+        "Delegates to blendops-glb-web-handoff (different API) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blendops-glb-web-handoff",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "full 100-line production React component implementation",
+        "60fps guaranteed",
+        "Artifact: Verified",
+        "handled inside blendops-glb-web-handoff anyway"
+      ],
+      "expectedRoutingTarget": "blendops-glb-web-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blendops-glb-web-handoff per skills/blendops-glb-web-handoff/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (blendops-glb-web-handoff)",
+          "recommendedNextAction": "Request is out of scope for blendops-glb-web-handoff (consumers using vanilla Three.js (different API)); delegate to blendops-glb-web-handoff.",
+          "targetHandoff": "blendops-glb-web-handoff",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced blendops-glb-web-handoff exclusion boundary (different API) and delegated to blendops-glb-web-handoff.",
+          "warnings": [
+            "blendops-glb-web-handoff is scoped to r3f-component-contract-architect and does not absorb blendops-glb-web-handoff responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-glb-web-handoff/contract.json",
+            "skills/blendops-glb-web-handoff/SKILL.md",
+            "skills/blendops-glb-web-handoff/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}
