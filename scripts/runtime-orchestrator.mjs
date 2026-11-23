@@ -267,7 +267,7 @@ const SECRET_KEY_PATTERN =
   /(password|passwd|secret|token|api[-_]?key|authorization|bearer|private[-_]?key|client[-_]?secret|credential|session[-_]?key|access[-_]?key|auth[-_]?header|cookie|set[-_]?cookie)/i;
 const SECRET_VALUE_PATTERN =
   /(Bearer\s+[A-Za-z0-9._~+/=-]{6,}|Basic\s+[A-Za-z0-9+/=]{8,}|sk-[A-Za-z0-9_-]{10,}|ghp_[A-Za-z0-9]{10,}|github_pat_[A-Za-z0-9_]{10,}|xox[baprs]-[A-Za-z0-9-]{10,}|AIza[0-9A-Za-z-_]{12,}|eyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,})/g;
-const URL_USERINFO_PATTERN = /([a-zA-Z][a-zA-Z0-9+.-]*:\/\/)([^/\s:@]+:[^/\s@]+)@/g;
+const URL_USERINFO_PATTERN = /(?<![a-zA-Z0-9+.-])([a-zA-Z][a-zA-Z0-9+.-]*:\/\/)([^/\s:@]+:[^/\s@]+)@/g;
 const URL_QUERY_SECRET_PATTERN =
   /([?&](?:token|api_key|apikey|access_token|refresh_token|secret|password|passwd|auth|key|credential|client_secret|sig|signature)=)([^&#\s"']+)/gi;
 const INLINE_ASSIGN_SECRET_PATTERN =
@@ -501,7 +501,7 @@ export function validateStdioCommandConfig(config = {}) {
     const msg = 'STDIO transport forbids shell=true; subprocesses must be spawned with explicit executable and argument array.';
     return { valid: false, command: null, args: [], cwd: null, env: {}, sanitizedEnv: {}, shell: false, reason: msg, error: msg };
   }
-  if (/[;&|`$><\n\r]/.test(command) || /\s+-c\s+/i.test(command)) {
+  if (/[;&|`$><\n\r]/.test(command) || /\s-c\s/i.test(command)) {
     const msg = `STDIO command '${redactStringSecrets(command).value}' contains forbidden shell metacharacters or inline shell flags.`;
     return { valid: false, command: null, args: [], cwd: null, env: {}, sanitizedEnv: {}, shell: false, reason: msg, error: msg };
   }

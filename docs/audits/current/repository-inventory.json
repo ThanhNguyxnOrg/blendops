@@ -3907,8 +3907,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 107276,
-      "sha256": "c82fd8414441ebe4069d90f524de0ff67b248b9c0f3276b96336c0d11ea746b8"
+      "byteSize": 107503,
+      "sha256": "9e1ecceb106bad5af05d32e63af1e724ac50de52e7037a21e11039be1089964c"
     },
     {
       "path": "scripts/build-registry.mjs",
@@ -3997,8 +3997,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 70611,
-      "sha256": "0a82efe61a58b3478fd878ad47bc8dabb191e15b19f6df46efe00cc06dd0886d"
+      "byteSize": 70737,
+      "sha256": "60b3a9c1b0653dcc9ca5016a91b026f01146532815cf1075a6951de3ad0751bb"
     },
     {
       "path": "scripts/generate-current-audit.mjs",
@@ -4027,8 +4027,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 89648,
-      "sha256": "cb0cfe10df1ca29a7fce5cf43058af0d5d22045a14b2d250fc09309044766ff6"
+      "byteSize": 89911,
+      "sha256": "479b78bca0821824f392c10773df313373c614cd381669b798be7d5c77093ddf"
     },
     {
       "path": "scripts/inspect-glb.mjs",
@@ -4057,8 +4057,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 196646,
-      "sha256": "f1fdbc1d5c7ca48dd423ccbf6a568b6c72d65de169a7cae9ecda9bad8195b05a"
+      "byteSize": 196636,
+      "sha256": "7f19e6abc693dfb162af761a8d35a3445488e4b857c3bc182f37d653bb4c1059"
     },
     {
       "path": "scripts/run-evals.mjs",
@@ -4102,8 +4102,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 299652,
-      "sha256": "80791caa8e449d100e91d2a91372bb60c2a2a91ffbf405304877f7f1d17f2605"
+      "byteSize": 299669,
+      "sha256": "7384ea3b5902dd4c04298df83989350eb13429079fc1a3c160aca5bd48b2ef9c"
     },
     {
       "path": "scripts/sync-current-audit-digest.mjs",
@@ -4447,8 +4447,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 20974,
-      "sha256": "9d62a226be9faa56fb1ec90a6eef8759e3508e0f19037187570eddcc23e2cb96"
+      "byteSize": 21056,
+      "sha256": "98ee6d06b1bd5cf793586f4ef8e73955562cb9155b4c95f3005b6970d5aef855"
     },
     {
       "path": "scripts/validate-compatibility-matrix.mjs",

@@ -182,7 +182,13 @@ function parseFrontmatter(markdownText, relPath, errors) {
 }
 
 function stripHtmlComments(text) {
-  return String(text || '').replace(/<!--[\s\S]*?-->/g, '');
+  let out = String(text || '');
+  let previous;
+  do {
+    previous = out;
+    out = out.replace(/<!--[\s\S]*?-->/g, '');
+  } while (out !== previous);
+  return out.replace(/<!--/g, '');
 }
 
 function normalizeInlineMarkdown(text, skillId) {

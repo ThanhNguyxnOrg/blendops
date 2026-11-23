@@ -1761,7 +1761,7 @@ function applyManagedBlockToDocument(existingContent, managedBlock, defaultHeade
     return `${before}${managedBlock.trim()}${after}`;
   }
 
-  const trimmed = existingContent.replace(/\s+$/, '');
+  const trimmed = existingContent.trimEnd();
   return `${trimmed}\n\n${managedBlock.trim()}\n`;
 }
 

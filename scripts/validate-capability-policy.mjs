@@ -434,7 +434,9 @@ export function evaluateRuntimeCapabilityInvocation(invocation, policy = null) {
       } else if (
         allowlist.length === 0 ||
         !allowlist.some((prefix) => {
-          const normPrefix = String(prefix).replace(/\\/g, '/').replace(/\/+$/, '') + '/';
+          let normPrefix = String(prefix).replace(/\\/g, '/');
+          while (normPrefix.endsWith('/')) normPrefix = normPrefix.slice(0, -1);
+          normPrefix += '/';
           return normOut.startsWith(normPrefix);
         })
       ) {

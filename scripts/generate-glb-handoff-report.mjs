@@ -213,14 +213,22 @@ export function escapeHtml(value) {
     .replace(/'/g, '&#39;');
 }
 
+function trimEdgeChars(value, chars) {
+  let start = 0;
+  let end = value.length;
+  while (start < end && chars.includes(value[start])) start++;
+  while (end > start && chars.includes(value[end - 1])) end--;
+  return value.slice(start, end);
+}
+
 function sanitizeSlug(raw, fallback = 'glb-artifact') {
   if (typeof raw !== 'string' || raw.trim().length === 0) return fallback;
   const cleaned = raw
     .toLowerCase()
     .replace(/\.(glb|gltf)$/i, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-  return cleaned.length >= 3 ? cleaned.slice(0, 80) : `${cleaned || fallback}-handoff`;
+    .replace(/[^a-z0-9]+/g, '-');
+  const trimmed = trimEdgeChars(cleaned, '-');
+  return trimmed.length >= 3 ? trimmed.slice(0, 80) : `${trimmed || fallback}-handoff`;
 }
 
 export function validateGlbWebHandoffManifest(

@@ -184,6 +184,14 @@ export const REQUIRED_RECIPE_IDS = [
   'recipe.web-ready-asset-optimization'
 ];
 
+function trimEdgeChars(value, chars) {
+  let start = 0;
+  let end = value.length;
+  while (start < end && chars.includes(value[start])) start++;
+  while (end > start && chars.includes(value[end - 1])) end--;
+  return value.slice(start, end);
+}
+
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
@@ -290,7 +298,7 @@ export function tokenize(text) {
   const baseTokens = folded
     .replace(/[^a-z0-9+#.-]+/g, ' ')
     .split(/\s+/)
-    .map((t) => t.replace(/^[.-]+|[.-]+$/g, ''))
+    .map((t) => trimEdgeChars(t, '.-'))
     .filter((t) => t.length >= 2 && !STOP_WORDS.has(t));
 
   // Expand Vietnamese domain phrases deterministically
@@ -1515,7 +1523,7 @@ export function searchCatalog(rootDir = DEFAULT_ROOT, query = '', options = {}) 
   const rawSimpleTokens = foldedRawQuery
     .replace(/[^a-z0-9+#.-]+/g, ' ')
     .split(/\s+/)
-    .map((t) => t.replace(/^[.-]+|[.-]+$/g, ''))
+    .map((t) => trimEdgeChars(t, '.-'))
     .filter((t) => t.length >= 2 && !STOP_WORDS.has(t));
 
   const queryTokens = tokenize(query);
