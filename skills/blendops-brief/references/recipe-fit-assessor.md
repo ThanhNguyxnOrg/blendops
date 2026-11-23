@@ -149,7 +149,7 @@ Still usable; note runtime unavailable does not change recipe fit.
 * [ ] Documented recipe/pack catalog consulted
 * [ ] Fit verdict (`Strong` / `Partial` / `Poor`) and plain-language rationale assigned
 * [ ] Explicit gap list included (or `none`)
-* [ ] Exactly **one** next skill recommended from the valid 14-skill catalog
+* [ ] Exactly **one** next skill recommended from the valid 15-skill catalog
 * [ ] Truth states follow downgrade-only rules with Artifact status defaulting to `Not Produced`
 * [ ] No Blender execution, Python code, pack installation, or runtime success claims
 

@@ -1,0 +1,308 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "blendops-build",
+  "category": "runtime-and-execution",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/blendops-build/contract.json",
+  "skillMarkdownPath": "skills/blendops-build/SKILL.md",
+  "evalMarkdownPath": "skills/blendops-build/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "build-steps-normal-in-scope-handoff",
+      "skillId": "blendops-build",
+      "scenario": "Locked product-hero plan with no runtime: blendops-build writes ordered build steps and routes to blendops-connect-blender",
+      "category": "normal",
+      "inputPrompt": "Apply blendops-build to a locked product-hero plan (sneaker, three-point light, 85 mm camera, PNG still). No Blender runtime is connected yet.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Produces pre_build_scene_check, pre_mutation_backup_record, per_step_json_reports for role scene-build-execution",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blendops-connect-blender (Runtime is not ready for building)"
+      ],
+      "requiredOutputProperties": [
+        "blendops-connect-blender",
+        "backup",
+        "JSON report",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "render completed",
+        "Artifact: Verified",
+        "paste this Python"
+      ],
+      "expectedRoutingTarget": "blendops-connect-blender",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs ordered build steps conforming to skills/blendops-build/SKILL.md",
+        "Matches contract fallback predicate to blendops-connect-blender in skills/blendops-build/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "runtime.verifiedReady": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only scene-build-execution step list (blendops-build)",
+          "recommendedNextAction": "Run readiness checks in blendops-connect-blender before executing the build steps.",
+          "targetHandoff": "blendops-connect-blender",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Wrote 10 ordered build steps (scene check, backup, units, block-out, modifiers, materials, lights, camera, preview, render), each with a JSON report, and routed to blendops-connect-blender because no runtime is ready.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-build/SKILL.md",
+            "skills/blendops-build/EVAL.md",
+            "skills/blendops-build/contract.json",
+            "skills/blendops-build/references/build-order.md",
+            "skills/blendops-build/references/api-version-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "build-produced-progression-to-final-check",
+      "skillId": "blendops-build",
+      "scenario": "Build steps produced a preview file; blendops-build hands off to blendops-final-check",
+      "category": "structured_skip",
+      "inputPrompt": "While applying blendops-build, the workflow context is {\"runtime.status\":\"Produced\",\"artifact.type\":\"preview\"} (Preview output exists; check it against the done criteria). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the progression handoff predicate in skills/blendops-build/contract.json",
+        "Routes to blendops-final-check without claiming Verified"
+      ],
+      "requiredOutputProperties": [
+        "blendops-final-check",
+        "progression",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "verified without final check"
+      ],
+      "expectedRoutingTarget": "blendops-final-check",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract progression handoff predicate match to blendops-final-check"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "runtime.status": "Produced",
+          "artifact.type": "preview"
+        },
+        "simulatedOutput": {
+          "mode": "Contract handoff evaluation (blendops-build)",
+          "recommendedNextAction": "Hand off to blendops-final-check to check the built output against the done criteria.",
+          "targetHandoff": "blendops-final-check",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Matched progression predicate runtime.status=Produced and artifact.type=preview and routed to blendops-final-check.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-build/contract.json",
+            "skills/blendops-build/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "build-step-error-conditional-to-fix-problems",
+      "skillId": "blendops-build",
+      "scenario": "A build step raised an error; blendops-build routes to blendops-fix-problems",
+      "category": "evidence_boundary",
+      "inputPrompt": "While applying blendops-build, the workflow context is {\"runtime.errorDetected\":true} (A build step failed or the output looks wrong). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the conditional handoff predicate in skills/blendops-build/contract.json",
+        "Routes to blendops-fix-problems and does not claim the step succeeded"
+      ],
+      "requiredOutputProperties": [
+        "blendops-fix-problems",
+        "conditional",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Produced",
+        "step succeeded"
+      ],
+      "expectedRoutingTarget": "blendops-fix-problems",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract conditional handoff predicate match to blendops-fix-problems"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "runtime.errorDetected": true
+        },
+        "simulatedOutput": {
+          "mode": "Contract handoff evaluation (blendops-build)",
+          "recommendedNextAction": "Hand off to blendops-fix-problems with the failing step and its error text.",
+          "targetHandoff": "blendops-fix-problems",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Matched conditional predicate runtime.errorDetected=true and routed to blendops-fix-problems.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-build/contract.json",
+            "skills/blendops-build/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "build-version-rules-eevee-engine-id",
+      "skillId": "blendops-build",
+      "scenario": "Blender 5.x build must use BLENDER_EEVEE and 4.0+ Principled socket names",
+      "category": "ambiguous",
+      "inputPrompt": "Apply blendops-build: set EEVEE and add a neon glow material. The Blender version is not known yet.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Reads bpy.app.version before writing engine or socket names",
+        "Uses BLENDER_EEVEE on 5.0+, BLENDER_EEVEE_NEXT on 4.2-4.5, and Emission Color on 4.0+"
+      ],
+      "requiredOutputProperties": [
+        "bpy.app.version",
+        "BLENDER_EEVEE",
+        "Emission Color",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "guessed engine id"
+      ],
+      "expectedRoutingTarget": "blendops-build",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Cites skills/blendops-build/references/api-version-rules.md"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Version-gated API selection (blendops-build)",
+          "recommendedNextAction": "Read bpy.app.version, then pick the engine id and socket names from the version table.",
+          "targetHandoff": "blendops-build",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Deferred engine and socket choice until bpy.app.version is read: BLENDER_EEVEE on 5.0+, BLENDER_EEVEE_NEXT on 4.2-4.5; Emission Color and Emission Strength on 4.0+.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-build/SKILL.md",
+            "skills/blendops-build/EVAL.md",
+            "skills/blendops-build/contract.json",
+            "skills/blendops-build/references/build-order.md",
+            "skills/blendops-build/references/api-version-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "build-out-of-scope-glb-budget-delegation",
+      "skillId": "blendops-build",
+      "scenario": "GLB size budget question is delegated to blendops-glb-budget",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of building the scene, handle this request inside blendops-build: decide the GLB triangle and texture budget for mobile web.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the blendops-build exclusion boundary for GLB budget questions",
+        "Delegates to blendops-glb-budget without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blendops-glb-budget",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "handled inside blendops-build anyway"
+      ],
+      "expectedRoutingTarget": "blendops-glb-budget",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Cites the exclusion in skills/blendops-build/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (blendops-build)",
+          "recommendedNextAction": "Request is out of scope for blendops-build (GLB budget); delegate to blendops-glb-budget.",
+          "targetHandoff": "blendops-glb-budget",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced blendops-build exclusion boundary and delegated the GLB budget decision to blendops-glb-budget.",
+          "warnings": [
+            "blendops-build builds scenes and does not set GLB budgets."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-build/contract.json",
+            "skills/blendops-build/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

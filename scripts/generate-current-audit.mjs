@@ -319,11 +319,11 @@ export const HISTORICAL_BASELINE = Object.freeze({
     }),
     p4c2: Object.freeze({
       id: 'p4-c2',
-      description: '199 domain reference files covering geometry, PBR materials, lighting, camera, color management, and GLB budgets',
+      description: '205 domain reference files covering geometry, PBR materials, lighting, camera, color management, and GLB budgets',
       maxPoints: 6,
       awardedPoints: 4.5,
       status: 'Pass',
-      evidence: '199 reference markdown files across 14 skills (3–4 per skill).',
+      evidence: '205 reference markdown files across 15 skills (3–4 per skill).',
     }),
     p5c2: Object.freeze({
       id: 'p5-c2',
@@ -676,7 +676,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
   const canonicalSuites = evalIndex.suites || evalIndex.pilotSuites || [];
   const suiteEvalMap = new Map(canonicalSuites.map((s) => [s.skillId, s]));
 
-  // 1. Recompute live skill inventory across all 14 skills from registry/skills.json
+  // 1. Recompute live skill inventory across all 15 skills from registry/skills.json
   const catalogEntries = [...(registrySkills.skills || [])].sort((a, b) =>
     a.id < b.id ? -1 : a.id > b.id ? 1 : 0,
   );
@@ -838,7 +838,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
     hasPortablePackageSummariesDir &&
     hasClaudeDesktopManifest &&
     bundleSummariesCheck.ok &&
-    bundleSummariesCheck.expectedSummaryCount === 28;
+    bundleSummariesCheck.expectedSummaryCount === 30;
 
   const currentSkillInventory = {
     schemaVersion: '1.5.0',
@@ -883,7 +883,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
     skills: updatedSkills,
   };
 
-  // 2. Recompute live evaluation inventory across all 14 skills
+  // 2. Recompute live evaluation inventory across all 15 skills
   const updatedEvals = updatedSkills.map((skillEntry) => {
     const currentId = skillEntry.id;
     const evalMeta = scanEvalMarkdown(rootDir, currentId);
@@ -953,7 +953,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
   const findingsList = [
     {
       id: 'F-01',
-      title: '30 of 14 SKILL.md files include Not Run inside Artifact status',
+      title: '30 of 15 SKILL.md files include Not Run inside Artifact status',
       severity: 'P0',
       pillar: 'Pillar 1 & 5 (Truth State Integrity)',
       baselineState: 'OPEN (30/48 skills affected at 3ea3c35)',
@@ -985,7 +985,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         '.github/workflows/docs.yml',
         'package.json',
       ],
-      verificationMethod: 'Pure Node.js fflate (zlibSync) ZIP builder verified byte-for-byte across all 14 skills (SKILL.md, EVAL.md, and references/*) with isolated --output-root concurrency safety in scripts/test-skills-export.mjs; .github/workflows/docs.yml executes npm run ci.',
+      verificationMethod: 'Pure Node.js fflate (zlibSync) ZIP builder verified byte-for-byte across all 15 skills (SKILL.md, EVAL.md, and references/*) with isolated --output-root concurrency safety in scripts/test-skills-export.mjs; .github/workflows/docs.yml executes npm run ci.',
       remainingScope: 'None. Full 14-skill ZIP and folder export runs in CI.',
     },
     {
@@ -1014,11 +1014,11 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         'skills/blendops-done-criteria/contract.json',
       ],
       verificationMethod: f03Fixed
-        ? 'npm run registry:check, scripts/test-routing-contracts.mjs, and scripts/test-catalog-contracts.mjs validate Draft 2020-12 Ajv2020 schema compliance across all 14/14 catalog contracts (3 routing participants + 11 specialist skills), context field vocabulary compliance, 16-state activationGate overlap/reachability, 195-edge progression DAG acyclicity, and managed relative-path Markdown sync across all 14 SKILL.md files (0 bare-ID handoff skills).'
+        ? 'npm run registry:check, scripts/test-routing-contracts.mjs, and scripts/test-catalog-contracts.mjs validate Draft 2020-12 Ajv2020 schema compliance across all 15/15 catalog contracts (3 routing participants + 11 specialist skills), context field vocabulary compliance, 16-state activationGate overlap/reachability, 195-edge progression DAG acyclicity, and managed relative-path Markdown sync across all 15 SKILL.md files (0 bare-ID handoff skills).'
         : 'npm run registry:check and scripts/test-routing-contracts.mjs validate Draft 2020-12 Ajv2020 schema compliance, 16-state activationGate overlap/reachability, progression DAG acyclicity, and managed Markdown sync for contracted skills.',
       remainingScope: f03Fixed
-        ? 'None. All 14 catalog skills ship validated contract.json files, synchronized managed Markdown sections, and relative-path handoff links.'
-        : `${contractedCount}/14 skills contracted; ${updatedSkills.length - contractedCount}/14 skills remain uncontracted, and ${bareIdHandoffCount} skills still use bare-ID handoff notation in Markdown.`,
+        ? 'None. All 15 catalog skills ship validated contract.json files, synchronized managed Markdown sections, and relative-path handoff links.'
+        : `${contractedCount}/15 skills contracted; ${updatedSkills.length - contractedCount}/15 skills remain uncontracted, and ${bareIdHandoffCount} skills still use bare-ID handoff notation in Markdown.`,
     },
     {
       id: 'F-04',
@@ -1041,11 +1041,11 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         'docs/audits/current/eval-inventory.json',
       ],
       verificationMethod: f04Fixed
-        ? `npm run evals:check, npm run evals:run, scripts/test-behavioral-evals.mjs, and scripts/test-eval-coverage.mjs validate and execute all ${machineReadableSuitesCount}/14 catalog .eval.json suites (${totalEvalCasesCount} deterministic cases: ${contractRoutingCasesCount} contract_routing on the 3 routing participants + ${contractHandoffCasesCount} contract_handoff on the 11 specialist skills + ${deterministicFixtureCasesCount} deterministic_fixture across all 14 skills; 0 unmigrated prose-only skills) in CI.`
+        ? `npm run evals:check, npm run evals:run, scripts/test-behavioral-evals.mjs, and scripts/test-eval-coverage.mjs validate and execute all ${machineReadableSuitesCount}/15 catalog .eval.json suites (${totalEvalCasesCount} deterministic cases: ${contractRoutingCasesCount} contract_routing on the 3 routing participants + ${contractHandoffCasesCount} contract_handoff on the 11 specialist skills + ${deterministicFixtureCasesCount} deterministic_fixture across all 15 skills; 0 unmigrated prose-only skills) in CI.`
         : `npm run evals:check, npm run evals:run, and scripts/test-behavioral-evals.mjs validate and execute ${machineReadableSuitesCount} .eval.json suites (${totalEvalCasesCount} cases) in CI.`,
       remainingScope: f04Fixed
-        ? 'None for machine-readable catalog evaluation suites, contract-routing/contract-handoff predicate verification, and deterministic CI execution (14/14 skills covered, 269/269 cases Passed). Live LLM (live_model) and live Blender MCP (blender_runtime) execution remain Not Run.'
-        : `${machineReadableSuitesCount}/14 skills have machine-readable .eval.json suites; ${remainingProseSuitesCount}/14 prose-only EVAL.md skills await migration; live_model and blender_runtime evaluation modes remain Not Run.`,
+        ? 'None for machine-readable catalog evaluation suites, contract-routing/contract-handoff predicate verification, and deterministic CI execution (15/15 skills covered, 274/274 cases Passed). Live LLM (live_model) and live Blender MCP (blender_runtime) execution remain Not Run.'
+        : `${machineReadableSuitesCount}/15 skills have machine-readable .eval.json suites; ${remainingProseSuitesCount}/15 prose-only EVAL.md skills await migration; live_model and blender_runtime evaluation modes remain Not Run.`,
     },
     {
       id: 'F-05',
@@ -1068,10 +1068,10 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         'skills/blendops-start/SKILL.md',
       ],
       verificationMethod: f05Fixed
-        ? 'Enforced across all 14 catalog skills by validateSkillMarkdownStructure in scripts/check-docs.mjs (18 required headings: 9 core + 9 extended), verified in scripts/test-skill-templates.mjs, and measured in docs/audits/current/skill-inventory.json (skillsMissingExtendedTemplateSections = 0, totalMissingExtendedSectionInstances = 0).'
+        ? 'Enforced across all 15 catalog skills by validateSkillMarkdownStructure in scripts/check-docs.mjs (18 required headings: 9 core + 9 extended), verified in scripts/test-skill-templates.mjs, and measured in docs/audits/current/skill-inventory.json (skillsMissingExtendedTemplateSections = 0, totalMissingExtendedSectionInstances = 0).'
         : `Measured in docs/audits/current/skill-inventory.json (skillsMissingExtendedTemplateSections = ${missingExtendedSkillsCount}, totalMissingExtendedSectionInstances = ${totalMissingExtendedInstances}).`,
       remainingScope: f05Fixed
-        ? 'None. All 14 catalog skills contain all 9 extended template sections and Non-goals.'
+        ? 'None. All 15 catalog skills contain all 9 extended template sections and Non-goals.'
         : 'Backfill missing extended template sections and enforce requiredSkillHeadings in scripts/check-docs.mjs.',
     },
     {
@@ -1160,13 +1160,13 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
       title: 'Deterministic generation of compressed bundle reference summaries from canonical SKILL.md + contract.json',
       severity: 'P2',
       pillar: 'Pillar 8 (Documentation & Bundle Maintenance)',
-      baselineState: 'OPEN (96 manual summary files in bundles/ average 14 lines vs 225 lines in SKILL.md)',
+      baselineState: 'OPEN (96 manual summary files in bundles/ average 15 lines vs 225 lines in SKILL.md)',
       currentLifecycleStatus: !f03Fixed ? 'DEFERRED' : f09Fixed ? 'FIXED' : 'OPEN',
       resolvedInMilestone: !f03Fixed
-        ? 'Deferred until 14/14 skill contracts are authored'
+        ? 'Deferred until 15/15 skill contracts are authored'
         : f09Fixed
           ? 'Deterministic Bundle Reference Summary Generator (defb847 -> 3e72020)'
-          : 'Prerequisite satisfied (14/14 contracts authored)',
+          : 'Prerequisite satisfied (15/15 contracts authored)',
       lastVerifiedCommit: headSha,
       evidencePaths: f09Fixed
         ? [
@@ -1186,10 +1186,10 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             'registry/skills.json',
           ],
       verificationMethod: f09Fixed
-        ? 'npm run bundles:summaries:check, scripts/check-docs.mjs, and scripts/test-bundle-summaries.mjs verify that all 28 bundle reference summaries (14 in bundles/claude-desktop-manual/references/skills/<id>.md and 14 in bundles/skill-package/blendops/references/skill-<id>.md) plus bundles/claude-desktop-manual/manifest.json are deterministically generated from the 14 canonical skills/<id>/SKILL.md + skills/<id>/contract.json pairs with zero manual drift.'
-        : 'Static check in scripts/check-docs.mjs confirms all bundle files exist and pass frontmatter/link checks; all 14/14 canonical contract.json inputs are now compiled in registry/skills.json.',
+        ? 'npm run bundles:summaries:check, scripts/check-docs.mjs, and scripts/test-bundle-summaries.mjs verify that all 30 bundle reference summaries (15 in bundles/claude-desktop-manual/references/skills/<id>.md and 15 in bundles/skill-package/blendops/references/skill-<id>.md) plus bundles/claude-desktop-manual/manifest.json are deterministically generated from the 15 canonical skills/<id>/SKILL.md + skills/<id>/contract.json pairs with zero manual drift.'
+        : 'Static check in scripts/check-docs.mjs confirms all bundle files exist and pass frontmatter/link checks; all 15/15 canonical contract.json inputs are now compiled in registry/skills.json.',
       remainingScope: f09Fixed
-        ? 'None. All 28 bundle reference summaries and bundle manifest entries are deterministically generated and verified in CI on every commit.'
+        ? 'None. All 30 bundle reference summaries and bundle manifest entries are deterministically generated and verified in CI on every commit.'
         : 'Implement deterministic bundle reference summary generator from canonical SKILL.md + contract.json.',
     },
     {
@@ -1210,10 +1210,10 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         'scripts/test-behavioral-evals.mjs',
       ],
       verificationMethod: f10Fixed
-        ? 'Enforced by schemas/runtime-capability-policy.schema.json, registry/runtime-capability-policy.json (all 14 skills defaulting to L0), scripts/validate-capability-policy.mjs, and scripts/test-behavioral-evals.mjs (blocking implicit escalation and blocking scene mutation whenever pre-mutation .blend backup verification fails).'
+        ? 'Enforced by schemas/runtime-capability-policy.schema.json, registry/runtime-capability-policy.json (all 15 skills defaulting to L0), scripts/validate-capability-policy.mjs, and scripts/test-behavioral-evals.mjs (blocking implicit escalation and blocking scene mutation whenever pre-mutation .blend backup verification fails).'
         : 'Runtime capability policy files pending.',
       remainingScope: f10Fixed
-        ? 'None for policy schema, 14-skill capability classification, and fail-closed backup/rollback validation. Live Blender rollback execution remains Not Run.'
+        ? 'None for policy schema, 15-skill capability classification, and fail-closed backup/rollback validation. Live Blender rollback execution remains Not Run.'
         : 'Add L0-L3 capability fields to runtime skill contracts and enforce pre-mutation .blend snapshot instructions.',
     },
   ];
@@ -1304,9 +1304,9 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
       activeZeroCompensationBlockers: [],
       resolvedZeroCompensationBlockers: [
         'RESOLVED (F-01): 0/14 SKILL.md files assign Not Run to Artifact status (was 30/14 at 3ea3c35). Guarded by scripts/check-docs.mjs and schemas.',
-        'RESOLVED (F-02): scripts/export-claude-skills.mjs uses pure-Node fflate across all 14 skills (SKILL.md + EVAL.md + references/*) with isolated --output-root concurrency safety and .github/workflows/docs.yml runs npm run ci.',
-        'RESOLVED (F-03): 14/14 catalog skills ship validated contract.json files, compiled registry/skills.json + registry/workflow-graph.json (195 edges, 0 progression cycles), and synchronized relative-path Markdown handoff blocks.',
-        'RESOLVED (F-04): scripts/run-evals.mjs validates and executes 269 deterministic, contract-routing, and contract-handoff evaluation cases across all 14/14 catalog skills in CI (0 unmigrated prose skills); live_model and blender_runtime modes remain honestly marked Not Run.',
+        'RESOLVED (F-02): scripts/export-claude-skills.mjs uses pure-Node fflate across all 15 skills (SKILL.md + EVAL.md + references/*) with isolated --output-root concurrency safety and .github/workflows/docs.yml runs npm run ci.',
+        'RESOLVED (F-03): 15/15 catalog skills ship validated contract.json files, compiled registry/skills.json + registry/workflow-graph.json (198 edges, 0 progression cycles), and synchronized relative-path Markdown handoff blocks.',
+        'RESOLVED (F-04): scripts/run-evals.mjs validates and executes 274 deterministic, contract-routing, and contract-handoff evaluation cases across all 15/15 catalog skills in CI (0 unmigrated prose skills); live_model and blender_runtime modes remain honestly marked Not Run.',
       ],
     },
     totals: {
@@ -1337,21 +1337,21 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         criteria: [
           {
             id: 'p1-c1',
-            description: 'All 14 skills ship valid Anthropic/Claude.ai frontmatter (name <= 64, description <= 200, no extra keys)',
+            description: 'All 15 skills ship valid Anthropic/Claude.ai frontmatter (name <= 64, description <= 200, no extra keys)',
             maxPoints: 4,
             awardedPoints: 4.0,
             status: 'Pass',
-            evidence: '14/14 skills pass assertSkillFrontmatterSpecCompliant and assertSkillFrontmatterUploadLimits in scripts/check-docs.mjs.',
+            evidence: '15/15 skills pass assertSkillFrontmatterSpecCompliant and assertSkillFrontmatterUploadLimits in scripts/check-docs.mjs.',
           },
           {
             id: 'p1-c2',
-            description: 'All 14 skills contain complete template sections and consistent truth-state definitions',
+            description: 'All 15 skills contain complete template sections and consistent truth-state definitions',
             maxPoints: 4,
             awardedPoints: p1c2Awarded,
             status: f05Fixed ? 'Pass' : 'Warn',
             evidence: f05Fixed
-              ? 'F-01 FIXED & F-05 FIXED: 14/14 skills strictly separate Runtime status (Not Run) from Artifact status (Not Produced) and include all 9 core + 9 extended template sections enforced by scripts/check-docs.mjs and scripts/test-skill-templates.mjs.'
-              : 'F-01 FIXED: 14/14 skills strictly separate Runtime status (Not Run) from Artifact status (Not Produced). F-05 OPEN: extended template sections remain missing.',
+              ? 'F-01 FIXED & F-05 FIXED: 15/15 skills strictly separate Runtime status (Not Run) from Artifact status (Not Produced) and include all 9 core + 9 extended template sections enforced by scripts/check-docs.mjs and scripts/test-skill-templates.mjs.'
+              : 'F-01 FIXED: 15/15 skills strictly separate Runtime status (Not Run) from Artifact status (Not Produced). F-05 OPEN: extended template sections remain missing.',
           },
           {
             id: 'p1-c3',
@@ -1359,7 +1359,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             maxPoints: 4,
             awardedPoints: 4.0,
             status: 'Pass',
-            evidence: '191 distinct trigger phrases and 14 distinct canonical roles across all 14 contracts with 0 collisions; the 3 routing participants enforce mutually exclusive Rank 1-4 activation gates verified across all 16 state combinations in scripts/build-registry.mjs.',
+            evidence: '191 distinct trigger phrases and 15 distinct canonical roles across all 15 contracts with 0 collisions; the 3 routing participants enforce mutually exclusive Rank 1-4 activation gates verified across all 16 state combinations in scripts/build-registry.mjs.',
           },
           {
             id: 'p1-c4',
@@ -1368,7 +1368,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             awardedPoints: p1c4Awarded,
             status: f03Fixed ? 'Pass' : 'Warn',
             evidence: f03Fixed
-              ? 'F-03 FIXED: All 14/14 catalog skills ship Draft 2020-12 Ajv2020-validated contract.json files, context field vocabulary validation (registry/contract-context-fields.json), and compiled registry/skills.json.'
+              ? 'F-03 FIXED: All 15/15 catalog skills ship Draft 2020-12 Ajv2020-validated contract.json files, context field vocabulary validation (registry/contract-context-fields.json), and compiled registry/skills.json.'
               : 'Draft 2020-12 Ajv2020 contract schema, compiler, and partial contracts are live in registry/skills.json.',
           },
         ],
@@ -1390,12 +1390,12 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         criteria: [
           {
             id: 'p2-c1',
-            description: 'All 14 skills connected in workflow handoff graph with valid targets',
+            description: 'All 15 skills connected in workflow handoff graph with valid targets',
             maxPoints: 5,
             awardedPoints: p2c1Awarded,
             status: 'Pass',
             evidence: f03Fixed
-              ? 'All 14/14 skills are contracted nodes in registry/workflow-graph.json (195 edges) and 100% of handoff targets and exclusion delegates resolve to valid catalog skill IDs.'
+              ? 'All 15/15 skills are contracted nodes in registry/workflow-graph.json (198 edges) and 100% of handoff targets and exclusion delegates resolve to valid catalog skill IDs.'
               : '100% of handoff targets resolve to valid catalog skill IDs.',
           },
           {
@@ -1404,7 +1404,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             maxPoints: 4,
             awardedPoints: 4.0,
             status: 'Pass',
-            evidence: 'detectProgressionCycles and Ajv2020 retryPolicy validation enforce acyclic progression (0 cycles across all 14 skills) and bounded retry exit conditions in CI.',
+            evidence: 'detectProgressionCycles and Ajv2020 retryPolicy validation enforce acyclic progression (0 cycles across all 15 skills) and bounded retry exit conditions in CI.',
           },
           {
             id: 'p2-c3',
@@ -1413,7 +1413,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             awardedPoints: p2c3Awarded,
             status: f03Fixed ? 'Pass' : 'Warn',
             evidence: f03Fixed
-              ? 'F-03 & F-06 FIXED: All 14/14 SKILL.md files synchronize managed relative-path handoff blocks (../<target>/SKILL.md); 0 skills use bare-ID handoff notation.'
+              ? 'F-03 & F-06 FIXED: All 15/15 SKILL.md files synchronize managed relative-path handoff blocks (../<target>/SKILL.md); 0 skills use bare-ID handoff notation.'
               : 'F-06 FIXED: blendops-start links the routing quartet and blendops-start links blendops-done-criteria. Bare-ID handoff notation remains in uncontracted skills.',
           },
           {
@@ -1423,7 +1423,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             awardedPoints: p2c4Awarded,
             status: 'Pass',
             evidence: f03Fixed
-              ? 'scripts/build-registry.mjs compiles registry/workflow-graph.json across all 14 contracted skills (195 edges, 0 progression cycles) and validates state-space overlap, reachability, and context field predicates in CI.'
+              ? 'scripts/build-registry.mjs compiles registry/workflow-graph.json across all 15 contracted skills (198 edges, 0 progression cycles) and validates state-space overlap, reachability, and context field predicates in CI.'
               : 'scripts/build-registry.mjs compiles registry/workflow-graph.json and validates state-space overlap/reachability in CI.',
           },
         ],
@@ -1451,7 +1451,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             maxPoints: 4,
             awardedPoints: 4.0,
             status: 'Pass',
-            evidence: '14/14 skills ship EVAL.md verified by check-docs.mjs and exported byte-for-byte into dist/claude-skills/desktop-zips/*.zip and dist/claude-skills/claude-code-skills/*/.',
+            evidence: '15/15 skills ship EVAL.md verified by check-docs.mjs and exported byte-for-byte into dist/claude-skills/desktop-zips/*.zip and dist/claude-skills/claude-code-skills/*/.',
           },
           {
             id: 'p3-c2',
@@ -1460,8 +1460,8 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             awardedPoints: p3c2Awarded,
             status: f04Fixed ? 'Pass' : 'Warn',
             evidence: f04Fixed
-              ? `F-04 FIXED: All ${machineReadableSuitesCount}/14 catalog skills ship machine-readable evals/suites/<skill>.eval.json suites (${totalEvalCasesCount} total cases, >= 5 cases per skill, 0 unmigrated prose-only skills).`
-              : `${machineReadableSuitesCount}/14 skills ship machine-readable .eval.json suites (${totalEvalCasesCount} total cases). ${remainingProseSuitesCount}/14 skills remain single-prompt prose outlines pending migration.`,
+              ? `F-04 FIXED: All ${machineReadableSuitesCount}/15 catalog skills ship machine-readable evals/suites/<skill>.eval.json suites (${totalEvalCasesCount} total cases, >= 5 cases per skill, 0 unmigrated prose-only skills).`
+              : `${machineReadableSuitesCount}/15 skills ship machine-readable .eval.json suites (${totalEvalCasesCount} total cases). ${remainingProseSuitesCount}/15 skills remain single-prompt prose outlines pending migration.`,
           },
           {
             id: 'p3-c3',
@@ -1470,7 +1470,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             awardedPoints: p3c3Awarded,
             status: 'Warn',
             evidence: f04Fixed
-              ? `scripts/run-evals.mjs executes all ${totalEvalCasesCount} deterministic cases across 14/14 catalog skills (${contractRoutingCasesCount} contract_routing + ${contractHandoffCasesCount} contract_handoff + ${deterministicFixtureCasesCount} deterministic_fixture; ${totalEvalCasesCount}/${totalEvalCasesCount} Passed) in CI. Live LLM (live_model) and Blender MCP (blender_runtime) evaluation modes remain Not Run.`
+              ? `scripts/run-evals.mjs executes all ${totalEvalCasesCount} deterministic cases across 15/15 catalog skills (${contractRoutingCasesCount} contract_routing + ${contractHandoffCasesCount} contract_handoff + ${deterministicFixtureCasesCount} deterministic_fixture; ${totalEvalCasesCount}/${totalEvalCasesCount} Passed) in CI. Live LLM (live_model) and Blender MCP (blender_runtime) evaluation modes remain Not Run.`
               : `scripts/run-evals.mjs executes ${totalEvalCasesCount} deterministic cases in CI. Live LLM (live_model) and Blender MCP (blender_runtime) evaluation modes remain Not Run.`,
           },
         ],
@@ -1531,7 +1531,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             awardedPoints: p5c1Awarded,
             status: 'Pass',
             evidence:
-              'Enforced across all 14 SKILL.md files by scripts/check-docs.mjs, schemas/skill-contract.schema.json, schemas/skill-eval.schema.json, schemas/runtime-evidence-packet.schema.json, scripts/validate-evidence-packet.mjs, and scripts/run-evals.mjs.',
+              'Enforced across all 15 SKILL.md files by scripts/check-docs.mjs, schemas/skill-contract.schema.json, schemas/skill-eval.schema.json, schemas/runtime-evidence-packet.schema.json, scripts/validate-evidence-packet.mjs, and scripts/run-evals.mjs.',
           },
           HISTORICAL_BASELINE.baselineCriteria.p5c2,
           {
@@ -1572,7 +1572,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             awardedPoints: p6c3Awarded,
             status: f10Fixed ? 'Pass' : 'Warn',
             evidence: f10Fixed
-              ? 'F-10 FIXED: schemas/runtime-capability-policy.schema.json, registry/runtime-capability-policy.json (all 14 skills defaulting to L0), scripts/validate-capability-policy.mjs, and docs/safety-model.md enforce L0-L3 capability tiers, non-escalation, blendops-assets clearance, and fail-closed pre-mutation .blend backup verification.'
+              ? 'F-10 FIXED: schemas/runtime-capability-policy.schema.json, registry/runtime-capability-policy.json (all 15 skills defaulting to L0), scripts/validate-capability-policy.mjs, and docs/safety-model.md enforce L0-L3 capability tiers, non-escalation, blendops-assets clearance, and fail-closed pre-mutation .blend backup verification.'
               : 'Runtime capability policy enforcement pending.',
           },
         ],
@@ -1636,12 +1636,12 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
           {
             id: 'p8-c1',
             description:
-              'Clear start-here onboarding, hub index, plain-language law, deterministic 28-file bundle reference summaries, and 0 broken relative links across active Markdown files',
+              'Clear start-here onboarding, hub index, plain-language law, deterministic 30-file bundle reference summaries, and 0 broken relative links across active Markdown files',
             maxPoints: 5,
             awardedPoints: p8c1Awarded,
             status: 'Pass',
             evidence: f09Fixed
-              ? 'F-09 FIXED: Active markdown files pass relative link and policy checks in scripts/check-docs.mjs, and all 28 bundle reference summaries across bundles/claude-desktop-manual/references/skills/*.md and bundles/skill-package/blendops/references/skill-*.md are deterministically generated and verified via scripts/generate-bundle-reference-summaries.mjs and scripts/test-bundle-summaries.mjs.'
+              ? 'F-09 FIXED: Active markdown files pass relative link and policy checks in scripts/check-docs.mjs, and all 30 bundle reference summaries across bundles/claude-desktop-manual/references/skills/*.md and bundles/skill-package/blendops/references/skill-*.md are deterministically generated and verified via scripts/generate-bundle-reference-summaries.mjs and scripts/test-bundle-summaries.mjs.'
               : 'Bundle reference summary check pending.',
           },
         ],
@@ -1724,7 +1724,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
           script: 'npm run docs:check',
           command: 'node scripts/check-docs.mjs',
           status: 'Passed',
-          verifiedScope: 'Active Markdown files, frontmatter limits, relative links, Path 1 Blender 5.1+ attribution, truth-state guard, 18-heading skill structure, 26-target adapter matrix consistency, and 28-file bundle summaries',
+          verifiedScope: 'Active Markdown files, frontmatter limits, relative links, Path 1 Blender 5.1+ attribution, truth-state guard, 18-heading skill structure, 26-target adapter matrix consistency, and 30-file bundle summaries',
         },
         {
           script: 'npm run catalog:check',
@@ -1748,31 +1748,31 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
           script: 'npm run registry:check',
           command: 'node scripts/build-registry.mjs --check',
           status: 'Passed',
-          verifiedScope: 'Draft 2020-12 Ajv2020 contract schema validation across all 14/14 catalog skills, 16-state precedence ladder overlap/reachability, 195-edge acyclic progression DAG, and managed Markdown sync',
+          verifiedScope: 'Draft 2020-12 Ajv2020 contract schema validation across all 15/15 catalog skills, 16-state precedence ladder overlap/reachability, 195-edge acyclic progression DAG, and managed Markdown sync',
         },
         {
           script: 'npm run evals:check',
           command: 'node scripts/run-evals.mjs --check',
           status: 'Passed',
-          verifiedScope: 'Draft 2020-12 Ajv2020 evaluation schema (2.0.0) validation across all 14/14 catalog suites (269 cases) and evals/index.json synchronization',
+          verifiedScope: 'Draft 2020-12 Ajv2020 evaluation schema (2.0.0) validation across all 15/15 catalog suites (274 cases) and evals/index.json synchronization',
         },
         {
           script: 'npm run evals:run',
           command: 'node scripts/run-evals.mjs',
           status: 'Passed',
-          verifiedScope: '269/269 deterministic fixture, truth-state separation, contract-routing, and specialist contract-handoff assertions passed across 14/14 skills (live_model: Not Run, blender_runtime: Not Run)',
+          verifiedScope: '274/274 deterministic fixture, truth-state separation, contract-routing, and specialist contract-handoff assertions passed across 15/15 skills (live_model: Not Run, blender_runtime: Not Run)',
         },
         {
           script: 'npm run bundles:summaries:check',
           command: 'node scripts/generate-bundle-reference-summaries.mjs --check',
           status: 'Passed',
-          verifiedScope: 'Byte-for-byte verification of all 28 bundle reference summaries and bundles/claude-desktop-manual/manifest.json against canonical SKILL.md + contract.json',
+          verifiedScope: 'Byte-for-byte verification of all 30 bundle reference summaries and bundles/claude-desktop-manual/manifest.json against canonical SKILL.md + contract.json',
         },
         {
           script: 'npm run skills:export',
           command: 'node scripts/export-claude-skills.mjs',
           status: 'Passed',
-          verifiedScope: '14 ZIP archives in dist/claude-skills/desktop-zips/ and 14 folders in dist/claude-skills/claude-code-skills/',
+          verifiedScope: '15 ZIP archives in dist/claude-skills/desktop-zips/ and 15 folders in dist/claude-skills/claude-code-skills/',
         },
         {
           script: 'npm test',
@@ -1784,8 +1784,8 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
     },
     truthStates: {
       staticValidation: 'Verified',
-      contractRoutingPilot: 'Verified (14/14 skills contracted; 3 routing participants + 11 specialist contracts)',
-      deterministicEvalFixtures: `Verified (${machineReadableSuitesCount}/14 skills, ${totalEvalCasesCount} cases: ${contractRoutingCasesCount} contract_routing + ${contractHandoffCasesCount} contract_handoff + ${deterministicFixtureCasesCount} deterministic_fixture)`,
+      contractRoutingPilot: 'Verified (15/15 skills contracted; 3 routing participants + 11 specialist contracts)',
+      deterministicEvalFixtures: `Verified (${machineReadableSuitesCount}/15 skills, ${totalEvalCasesCount} cases: ${contractRoutingCasesCount} contract_routing + ${contractHandoffCasesCount} contract_handoff + ${deterministicFixtureCasesCount} deterministic_fixture)`,
       liveModelEval: 'Not Run',
       blenderRuntimeExecution: 'Not Run',
       blenderArtifacts: 'Not Produced',
@@ -1807,12 +1807,12 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 | :--- | :---: | :---: | :--- |
 | **Overall Measured Score** | \`54.5 / 100\` | **\`${totalMeasuredScore.toFixed(1)} / 100\`** | **\`${totalScoreDelta}\`** (backed by schemas, registries, CLI tooling, and CI suites) |
 | **Active P0 Zero-Compensation Blockers** | \`3\` (\`F-01\`, \`F-02\`, \`F-04\`) | **\`0\`** | \`F-01\`, \`F-02\`, \`F-03\`, \`F-04\` **FIXED** |
-| **Skills with \`Artifact status: Not Run\` (\`F-01\`)** | \`30 / 14\` | **\`0 / 14\`** | **FIXED** & guarded in \`scripts/check-docs.mjs\` |
-| **Extended Template Completeness (\`F-05\`)** | \`8 / 14\` skills missing sections | **\`${missingExtendedSkillsCount} / 14\` skills missing sections** | **${f05Fixed ? 'FIXED' : 'OPEN'}** (18-heading guard in \`scripts/check-docs.mjs\`) |
-| **Portable ZIP Exporter & Full CI (\`F-02\`)** | \`spawnSync zip ENOENT\` | **Pure-Node \`fflate\` (14/14 ZIPs)** | **FIXED** (isolated \`--output-root\` + full \`npm run ci\`) |
+| **Skills with \`Artifact status: Not Run\` (\`F-01\`)** | \`30 / 15\` | **\`0 / 15\`** | **FIXED** & guarded in \`scripts/check-docs.mjs\` |
+| **Extended Template Completeness (\`F-05\`)** | \`8 / 15\` skills missing sections | **\`${missingExtendedSkillsCount} / 15\` skills missing sections** | **${f05Fixed ? 'FIXED' : 'OPEN'}** (18-heading guard in \`scripts/check-docs.mjs\`) |
+| **Portable ZIP Exporter & Full CI (\`F-02\`)** | \`spawnSync zip ENOENT\` | **Pure-Node \`fflate\` (15/15 ZIPs)** | **FIXED** (isolated \`--output-root\` + full \`npm run ci\`) |
 | **Adapter Registry & Evidence Integrity (\`F-08\`)** | \`16 / 26\` targets synced | **\`26 / 26\` targets synced & guarded** | **PARTIALLY_FIXED** (2 \`verified-read\`, 24 \`linked-only\`, CLI installer verified) |
-| **Machine-Readable Contracts (\`F-03\`)** | \`0 / 14\` | **\`${contractedCount} / 14\` (\`${f03Fixed ? 'full-catalog' : 'routing-pilot'}\`)** | **${f03Fixed ? 'FIXED' : 'PARTIALLY_FIXED'}** (\`Ajv2020\` + 195-edge DAG + 0 bare-ID handoffs) |
-| **Machine-Readable Eval Suites (\`F-04\`)** | \`0 / 14\` (0 runners) | **\`${machineReadableSuitesCount} / 14\` (\`${totalEvalCasesCount}\` cases in CI)** | **${f04Fixed ? 'FIXED' : 'PARTIALLY_FIXED'}** (0 unmigrated prose suites) |
+| **Machine-Readable Contracts (\`F-03\`)** | \`0 / 15\` | **\`${contractedCount} / 15\` (\`${f03Fixed ? 'full-catalog' : 'routing-pilot'}\`)** | **${f03Fixed ? 'FIXED' : 'PARTIALLY_FIXED'}** (\`Ajv2020\` + 195-edge DAG + 0 bare-ID handoffs) |
+| **Machine-Readable Eval Suites (\`F-04\`)** | \`0 / 15\` (0 runners) | **\`${machineReadableSuitesCount} / 15\` (\`${totalEvalCasesCount}\` cases in CI)** | **${f04Fixed ? 'FIXED' : 'PARTIALLY_FIXED'}** (0 unmigrated prose suites) |
 | **Bundle Reference Summaries (\`F-09\`)** | \`28\` manual summary files | **\`28\` deterministic generated summaries** | **${f09Fixed ? 'FIXED' : 'OPEN'}** (\`bundles:summaries:build\` + \`bundles:summaries:check\` in CI) |
 | **Live LLM / Blender Runtime Evals** | \`Not Run\` | **\`Not Run\` / \`Not Produced\`** | Honest zero-fabrication boundary preserved |
 
@@ -1844,13 +1844,13 @@ The \`auditedInputsSha256\` digest is governed by [\`../audited-inputs.manifest.
 | :--- | :---: | :--- | :---: | :---: | :--- |
 | **F-01** | **P0** | \`Artifact status: Not Run\` contradiction in 30 skills | \`OPEN\` | **\`FIXED\`** | 0/14 skills affected; guarded in \`check-docs.mjs\` and \`test-skills-export.mjs\`. |
 | **F-02** | **P0** | External \`zip\` binary dependency & partial CI workflow | \`OPEN\` | **\`FIXED\`** | Pure-Node \`fflate\` exports \`SKILL.md\`, \`EVAL.md\`, and \`references/*\` with \`--output-root\` isolation; \`docs.yml\` runs \`npm run ci\`. |
-| **F-03** | **P0** | Machine-readable \`contract.json\` & compiled \`registry/\` | \`OPEN\` | **\`${f03Fixed ? 'FIXED' : 'PARTIALLY_FIXED'}\`** | ${f03Fixed ? '14/14 skills contracted (`4` routing participants + `44` specialist skills), 195-edge acyclic progression graph, and 14/14 relative-path Markdown handoffs.' : `${contractedCount}/14 skills contracted; ${updatedSkills.length - contractedCount}/14 skills pending.`} |
-| **F-04** | **P0** | Structured behavioral evaluation suites & automated runner | \`OPEN\` | **\`${f04Fixed ? 'FIXED' : 'PARTIALLY_FIXED'}\`** | ${f04Fixed ? `14/14 canonical \`.eval.json\` suites (${totalEvalCasesCount} cases: ${contractRoutingCasesCount} \`contract_routing\` + ${contractHandoffCasesCount} \`contract_handoff\` + ${deterministicFixtureCasesCount} \`deterministic_fixture\`, 0 prose-only pending) verified in CI; \`live_model\` and \`blender_runtime\` remain \`Not Run\`.` : `${machineReadableSuitesCount}/14 \`.eval.json\` suites (${totalEvalCasesCount} cases) in CI; ${remainingProseSuitesCount}/14 prose evals pending.`} |
-| **F-05** | **P1** | 8 skills omit 9–11 extended template sections | \`OPEN\` | **\`${f05Fixed ? 'FIXED' : 'OPEN'}\`** | ${f05Fixed ? '14/14 skills include all 9 core + 9 extended sections; guarded in `check-docs.mjs` and `test-skill-templates.mjs`.' : 'Extended template sections missing; tracked in `skill-inventory.json`.'} |
+| **F-03** | **P0** | Machine-readable \`contract.json\` & compiled \`registry/\` | \`OPEN\` | **\`${f03Fixed ? 'FIXED' : 'PARTIALLY_FIXED'}\`** | ${f03Fixed ? '15/15 skills contracted (`4` routing participants + `44` specialist skills), 195-edge acyclic progression graph, and 15/15 relative-path Markdown handoffs.' : `${contractedCount}/15 skills contracted; ${updatedSkills.length - contractedCount}/15 skills pending.`} |
+| **F-04** | **P0** | Structured behavioral evaluation suites & automated runner | \`OPEN\` | **\`${f04Fixed ? 'FIXED' : 'PARTIALLY_FIXED'}\`** | ${f04Fixed ? `15/15 canonical \`.eval.json\` suites (${totalEvalCasesCount} cases: ${contractRoutingCasesCount} \`contract_routing\` + ${contractHandoffCasesCount} \`contract_handoff\` + ${deterministicFixtureCasesCount} \`deterministic_fixture\`, 0 prose-only pending) verified in CI; \`live_model\` and \`blender_runtime\` remain \`Not Run\`.` : `${machineReadableSuitesCount}/15 \`.eval.json\` suites (${totalEvalCasesCount} cases) in CI; ${remainingProseSuitesCount}/15 prose evals pending.`} |
+| **F-05** | **P1** | 8 skills omit 9–11 extended template sections | \`OPEN\` | **\`${f05Fixed ? 'FIXED' : 'OPEN'}\`** | ${f05Fixed ? '15/15 skills include all 9 core + 9 extended sections; guarded in `check-docs.mjs` and `test-skill-templates.mjs`.' : 'Extended template sections missing; tracked in `skill-inventory.json`.'} |
 | **F-06** | **P1** | Routing quartet handoffs & \`blendops-done-criteria\` reachability | \`OPEN\` | **\`FIXED\`** | Wired in \`blendops-start\` and \`blendops-start\` contracts and verified in \`workflow-graph.json\`. |
 | **F-07** | **P1** | Deterministic GLB inspector & Blender version matrices | \`OPEN\` | **\`${f07Fixed ? 'FIXED' : 'OPEN'}\`** | ${f07Fixed ? '`scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, `schemas/glb-web-handoff-manifest.schema.json`, `docs/examples/blendops-glb-web-handoff/`, `scripts/validate-evidence-packet.mjs`, and `docs/blender-version-compatibility.md` verified in CI.' : 'GLB tooling pending.'} |
 | **F-08** | **P1** | \`docs/adapter-registry.md\` drift from 26 \`docs/install/\` targets | \`OPEN\` | **\`PARTIALLY_FIXED\`** | All 26 install targets synced and verified in \`docs/evals/adapter-empirical-verification.md\`; \`bin/blendops.mjs\`, \`scripts/install-skills.mjs\`, \`scripts/test-project-installer.mjs\`, and \`scripts/test-cli-package.mjs\` verify safe project-local attachment, rollback, and packaged CLI tarball execution; 2 targets (\`claude-code\`, \`generic-project\`) are \`verified-read\`; 24 targets remain \`linked-only\` pending live host testing. |
-| **F-09** | **P2** | Manual bundle reference summary drift risk | \`OPEN\` | **\`${!f03Fixed ? 'DEFERRED' : f09Fixed ? 'FIXED' : 'OPEN'}\`** | ${f09Fixed ? '28/28 bundle reference summaries (14 Claude Desktop + 14 portable skill package) and `bundles/claude-desktop-manual/manifest.json` deterministically generated and verified via `npm run bundles:summaries:check` and `scripts/test-bundle-summaries.mjs`.' : 'Bundle generator pending.'} |
+| **F-09** | **P2** | Manual bundle reference summary drift risk | \`OPEN\` | **\`${!f03Fixed ? 'DEFERRED' : f09Fixed ? 'FIXED' : 'OPEN'}\`** | ${f09Fixed ? '30/30 bundle reference summaries (15 Claude Desktop + 15 portable skill package) and `bundles/claude-desktop-manual/manifest.json` deterministically generated and verified via `npm run bundles:summaries:check` and `scripts/test-bundle-summaries.mjs`.' : 'Bundle generator pending.'} |
 | **F-10** | **P1** | Runtime capability tiers (L0–L3) & scene rollback protocol | \`OPEN\` | **\`${f10Fixed ? 'FIXED' : 'OPEN'}\`** | ${f10Fixed ? '`registry/runtime-capability-policy.json`, `scripts/validate-capability-policy.mjs`, and `docs/safety-model.md` enforce L0–L3 tiers and fail-closed `.blend` backup checks.' : 'Capability policy pending.'} |
 
 ---
@@ -1860,7 +1860,7 @@ The \`auditedInputsSha256\` digest is governed by [\`../audited-inputs.manifest.
 - [\`scorecard.json\`](./scorecard.json) — Reconciled 9-pillar scorecard (**${totalMeasuredScore.toFixed(1)} / 100**) with initial baseline comparison and \`auditProvenance\`.
 - [\`findings.json\`](./findings.json) — Machine-readable lifecycle table for \`F-01\` through \`F-10\`.
 - [\`skill-inventory.json\`](./skill-inventory.json) — Live 14-skill inventory reflecting truth-state fixes, full-catalog contracts, eval coverage, and template completion.
-- [\`eval-inventory.json\`](./eval-inventory.json) — Live 14-skill evaluation inventory covering all 14 machine-readable suites (${totalEvalCasesCount} cases) with 0 remaining prose-only skills.
+- [\`eval-inventory.json\`](./eval-inventory.json) — Live 14-skill evaluation inventory covering all 15 machine-readable suites (${totalEvalCasesCount} cases) with 0 remaining prose-only skills.
 - [\`verification-manifest.json\`](./verification-manifest.json) — Verified provenance context, CI pipeline commands, and runtime/artifact truth states.
 - [\`repository-inventory.json\`](./repository-inventory.json) — Complete machine-readable inventory classifying every tracked repository file across 7 canonical categories.
 

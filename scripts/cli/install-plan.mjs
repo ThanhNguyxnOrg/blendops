@@ -881,7 +881,7 @@ export function buildClaudeDesktopPlan({ repoRootReal, outReal, requestedTarget 
   };
 
   const limitations = [
-    'Manual upload bundle only (14 per-skill ZIPs in desktop-zips/*.zip + claude-desktop-manual/ + shared-catalog/blendops-knowledge-and-recipes.zip). Does not automate Claude Desktop UI import, does not configure Anthropic Blender Connector or Lab MCP add-on, and does not run Blender.',
+    'Manual upload bundle only (15 per-skill ZIPs in desktop-zips/*.zip + claude-desktop-manual/ + shared-catalog/blendops-knowledge-and-recipes.zip). Does not automate Claude Desktop UI import, does not configure Anthropic Blender Connector or Lab MCP add-on, and does not run Blender.',
   ];
 
   const planPayload = {

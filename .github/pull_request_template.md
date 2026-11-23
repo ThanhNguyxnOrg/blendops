@@ -19,7 +19,7 @@ For full contributing guidelines, see CONTRIBUTING.md.
 ## Pre-PR checks
 
 - [ ] `npm run docs:check` passes locally
-- [ ] `npm run skills:export` passes locally and produces one ZIP + one Claude Code folder per `skills/*/SKILL.md` (currently 14)
+- [ ] `npm run skills:export` passes locally and produces one ZIP + one Claude Code folder per `skills/*/SKILL.md` (currently 15)
 - [ ] No BlendOps-owned CLI / MCP / addon runtime surface reintroduced
 - [ ] No arbitrary Python presented as user-facing surface
 - [ ] Runtime references use the **2-path + CLI appendix** model (Path 1 = Lab MCP with hosts a/b; Path 2 = community `mcp-for-blender`; CLI fallback = appendix, documented upstream as first-class Blender CLI surface; see the [runtime evidence index](https://github.com/ThanhNguyxnOrg/blendops/blob/main/docs/evals/README.md)). See [`docs/runtime-stack-strategy.md`](../docs/runtime-stack-strategy.md).

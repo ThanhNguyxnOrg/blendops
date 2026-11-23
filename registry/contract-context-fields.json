@@ -195,6 +195,16 @@
       "description": "Whether the output container format, bit depth, compression, and alpha channel policy are locked."
     },
     {
+      "field": "decision.planLocked",
+      "domain": "decision",
+      "valueType": "boolean",
+      "allowedValues": [
+        true,
+        false
+      ],
+      "description": "Whether a scene plan (objects, sizes, materials, lights, camera, output) has been approved by blendops-scene-plan or blendops-product-shot."
+    },
+    {
       "field": "fit.multiDeliverableDetected",
       "domain": "fit",
       "valueType": "boolean",

@@ -23,7 +23,7 @@ test('local npm and skills.sh source manifests are internally aligned', () => {
   assert.equal(result.package.name, 'blendops');
   assert.equal(result.package.version, packageJson.version);
   assert.equal(result.skills.groupCount, 4);
-  assert.equal(result.skills.canonicalSkillCount, 14);
+  assert.equal(result.skills.canonicalSkillCount, 15);
 });
 
 test('semantic version comparison follows SemVer 2.0.0 prerelease precedence', () => {
@@ -115,8 +115,8 @@ test('distribution report keeps skills.sh display metrics separate from canonica
     skillsSh: {
       reachable: true,
       displayedListingMetric: 69,
-      canonicalSkillCount: 14,
-      groupedSkillCount: 14,
+      canonicalSkillCount: 15,
+      groupedSkillCount: 15,
       metricIsCanonicalInventory: false,
     },
   });

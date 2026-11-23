@@ -51,9 +51,9 @@ npm run operations:check         # validates deterministic 18-operation MCP/CLI 
 npm run arch:check               # validates repository inventory classification, root policy, duplicate rules, and internal references
 npm run registry:check           # verifies registry/skills.json and registry/workflow-graph.json match skills/*/contract.json
 npm run evals:check              # validates evals/*.json against schemas/skill-eval.schema.json
-npm run evals:run                # runs deterministic behavioral evaluations across all 14 skills (269 cases)
+npm run evals:run                # runs deterministic behavioral evaluations across all 15 skills (274 cases)
 npm run bundles:summaries:check  # verifies 96 generated bundle reference summaries are in sync
-npm run skills:export            # produces one ZIP + one Claude Code folder per skills/*/SKILL.md (14 total) into dist/claude-skills/
+npm run skills:export            # produces one ZIP + one Claude Code folder per skills/*/SKILL.md (15 total) into dist/claude-skills/
 npm test                         # runs all 17 descriptive regression test suites (scripts/test-*.mjs)
 ```
 

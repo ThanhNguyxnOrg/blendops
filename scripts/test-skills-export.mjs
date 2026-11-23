@@ -28,7 +28,7 @@ test('Exporter (F-02): export-claude-skills.mjs does not invoke OS zip or powers
   assert.equal(scriptSrc.includes('fflate'), true, 'Exporter must use fflate');
 });
 
-test('Exporter (F-02 / Workstream C): skills:export generates 14 valid ZIP archives with byte-identical SKILL.md, EVAL.md, and references in an isolated output root', () => {
+test('Exporter (F-02 / Workstream C): skills:export generates 15 valid ZIP archives with byte-identical SKILL.md, EVAL.md, and references in an isolated output root', () => {
   const outRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-skills-export-'));
   const desktopDir = path.join(outRoot, 'desktop-zips');
   const codeDir = path.join(outRoot, 'claude-code-skills');
@@ -40,23 +40,23 @@ test('Exporter (F-02 / Workstream C): skills:export generates 14 valid ZIP archi
     });
 
     const expectedSkills = listCanonicalSkills();
-    assert.equal(expectedSkills.length, 14, 'Expected exactly 14 canonical skills');
+    assert.equal(expectedSkills.length, 15, 'Expected exactly 15 canonical skills');
 
     const manifestPath = path.join(outRoot, 'manifest.json');
     assert.equal(fs.existsSync(manifestPath), true, 'manifest.json must exist');
     const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-    assert.equal(manifest.skillCount, 14);
+    assert.equal(manifest.skillCount, 15);
     assert.deepEqual(manifest.skills, expectedSkills);
     const normOutRoot = outRoot.split(path.sep).join('/');
     assert.equal(manifest.outputs.claudeDesktop, `${normOutRoot}/desktop-zips/*.zip`);
     assert.equal(manifest.outputs.claudeCode, `${normOutRoot}/claude-code-skills/*/SKILL.md`);
 
     const zipFiles = fs.readdirSync(desktopDir).filter((f) => f.endsWith('.zip')).sort();
-    assert.equal(zipFiles.length, 14, 'Expected 14 .zip files in desktop-zips');
+    assert.equal(zipFiles.length, 15, 'Expected 15 .zip files in desktop-zips');
     assert.deepEqual(
       zipFiles,
       expectedSkills.map((s) => `${s}.zip`),
-      'ZIP filenames must match the 14 canonical skills 1-to-1',
+      'ZIP filenames must match the 15 canonical skills 1-to-1',
     );
 
     const codeDirs = fs
@@ -64,7 +64,7 @@ test('Exporter (F-02 / Workstream C): skills:export generates 14 valid ZIP archi
       .filter((d) => d.isDirectory())
       .map((d) => d.name)
       .sort();
-    assert.deepEqual(codeDirs, expectedSkills, 'Claude Code exported directories must match the 14 canonical skills');
+    assert.deepEqual(codeDirs, expectedSkills, 'Claude Code exported directories must match the 15 canonical skills');
 
     for (const skillName of expectedSkills) {
       const srcSkillDir = path.join(skillsDir, skillName);
@@ -192,11 +192,11 @@ test('Exporter Concurrency: concurrent exporter invocations into distinct --outp
       [outRootB, resB],
       [outRootC, resC],
     ]) {
-      assert.match(res.stdout, /Exported 14 Claude skill zips/i);
+      assert.match(res.stdout, /Exported 15 Claude skill zips/i);
       const manifestPath = path.join(targetRoot, 'manifest.json');
       assert.equal(fs.existsSync(manifestPath), true);
       const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-      assert.equal(manifest.skillCount, 14);
+      assert.equal(manifest.skillCount, 15);
       assert.deepEqual(manifest.skills, expectedSkills);
 
       const normRoot = targetRoot.split(path.sep).join('/');
@@ -207,7 +207,7 @@ test('Exporter Concurrency: concurrent exporter invocations into distinct --outp
         .readdirSync(path.join(targetRoot, 'desktop-zips'))
         .filter((f) => f.endsWith('.zip'))
         .sort();
-      assert.equal(zips.length, 14);
+      assert.equal(zips.length, 15);
 
       const folders = fs
         .readdirSync(path.join(targetRoot, 'claude-code-skills'), { withFileTypes: true })
@@ -269,7 +269,7 @@ test('Exporter Validation: export-claude-skills.mjs rejects malformed CLI argume
   assert.equal(fs.existsSync(path.join(skillsDir, 'blendops-start', 'SKILL.md')), true);
 });
 
-test('Truth States (F-01): all 14 skills and _template separate Runtime status (Not Run) from Artifact status (Not Produced)', () => {
+test('Truth States (F-01): all 15 skills and _template separate Runtime status (Not Run) from Artifact status (Not Produced)', () => {
   const allDirs = [...listCanonicalSkills(), '_template'];
   for (const dir of allDirs) {
     const fPath = path.join(skillsDir, dir, 'SKILL.md');

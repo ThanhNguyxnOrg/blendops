@@ -26,7 +26,7 @@ Skills are intentionally composable. A helper skill routes the task, planning sk
 | Layer | Role | Example |
 |---|---|---|
 | Laws | Non-negotiable guardrails shared by every skill. | `laws/evidence-before-done.md` blocks artifact overclaims. |
-| Skills (`skills/*/SKILL.md`) | Focused operating workflows loaded by an agent when relevant (14 total). | `skills/blendops-product-shot/SKILL.md` plans a product hero scene. |
+| Skills (`skills/*/SKILL.md`) | Focused operating workflows loaded by an agent when relevant (15 total). | `skills/blendops-product-shot/SKILL.md` plans a product hero scene. |
 | Knowledge (`registry/knowledge-catalog.json`) | Source-backed, version-aware 3D domain rules (`knowledge.*`, 30 records across 11 domains) cited by multiple skills and recipes. | `knowledge.principled-bsdf-v2-energy-conserving-pbr`, `knowledge.agx-filmic-color-management-and-cycles-eevee`. |
 | Recipes (`registry/recipe-catalog.json`) | Multi-stage composable blueprints (`recipe.*`, 10 canonical recipes) chaining skills and knowledge records for an end-to-end deliverable. | `recipe.product-hero-scene` (bound to `packs/product-hero-v0/PACK.md` and `docs/recipes/cyberpunk-shoe-hero.md`). |
 | SceneSpec & Skill Harmonizer (`scripts/compile-scene-plan.mjs`) | Structured intermediate representation (`schemas/scene-spec.schema.json`) compiled into a 7-stage `ExecutionPlan` (`schemas/execution-plan.schema.json`) with an 8-level conflict precedence hierarchy (`1_laws` > `2_runtime_boundary_and_version_floor` > `3_hard_budget_and_export_constraints` > `4_scene_spec_explicit_constraints` > `5_recipe_stage_contracts` > `6_knowledge_record_rules` > `7_skill_heuristics` > `8_aesthetic_defaults`). | `blendops plan-compile evals/scene-specs/cyberpunk-shoe-hero.scene-spec.json` |
@@ -34,7 +34,7 @@ Skills are intentionally composable. A helper skill routes the task, planning sk
 | Evals & Audits | Deterministic behavioral/retrieval suites and evidence records. | `evals/catalog-retrieval-evals.json`, `evals/scene-specs/*.json`, `docs/audits/skill-architecture-audit.md`, `docs/evals/runtime-availability-checklist.md`. |
 | Runtime paths | External execution choices, separate from skill install. | Path 1 Official Blender Lab MCP (host: Anthropic Connector OR manual MCP client), Path 2 community `mcp-for-blender`, CLI fallback (documented upstream as first-class Blender CLI; see the [scoped mech-prop CLI eval](./evals/cli-fallback-mech-prop.md)). |
 
-A skill may point to runtime docs, knowledge records (`knowledge.*`), or recipes (`recipe.*`), but it must not imply runtime was installed or run. See [`knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) for the full catalog and [`audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md) for the 14-skill and 199-reference classification audit.
+A skill may point to runtime docs, knowledge records (`knowledge.*`), or recipes (`recipe.*`), but it must not imply runtime was installed or run. See [`knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) for the full catalog and [`audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md) for the 15-skill and 205-reference classification audit.
 
 ---
 
@@ -44,7 +44,7 @@ A skill may point to runtime docs, knowledge records (`knowledge.*`), or recipes
 |---|---|---|
 | Workflow skills | Route goals, plan next steps, and coordinate handoffs. | `blendops-start` |
 | Blender domain skills | Plan scene content, composition, camera, lighting, material, and quality. | `blendops-product-shot`, `blendops-camera`, `blendops-lighting-materials`, `blendops-final-check` |
-| Runtime/eval skills | Check readiness and preserve runtime truth. | `blendops-connect-blender` |
+| Runtime/eval skills | Check readiness, build in Blender, and preserve runtime truth. | `blendops-connect-blender`, `blendops-build` |
 | Evidence skills | Verify artifact truth before claims. | `blendops-final-check`, `blendops-glb-web-handoff` |
 | Packaging/adapter skills | Future install/package helpers for target agents. | Not packaged yet; tracked in install/distribution docs. |
 
@@ -52,7 +52,7 @@ A skill may point to runtime docs, knowledge records (`knowledge.*`), or recipes
 
 ## Canonical skill map
 
-All 14 skills, grouped by canonical role (merged from the former 48 narrow skills in v2.0.0). The full per-skill table with depth and gate-review status lives in [`skills/README.md`](../skills/README.md).
+All 15 skills, grouped by canonical role (merged from the former 48 narrow skills in v2.0.0). The full per-skill table with depth and gate-review status lives in [`skills/README.md`](../skills/README.md).
 
 | Canonical role | Active skill path | Notes |
 |---|---|---|
@@ -98,6 +98,7 @@ Use the smallest skill that can safely move the work forward.
 |---|---|---|
 | “What should I do next?” | `blendops-start` | Readiness, planning, evidence, or packaging docs. |
 | “Can I run Blender?” | `blendops-connect-blender` | Runtime stack docs and manual eval packet. |
+| “Build it in Blender.” | `blendops-build` | Locked scene plan and a ready runtime path. |
 | “Plan this scene” | `blendops-product-shot` | Composition/lighting/material planners. |
 | “Check this scene plan” | `blendops-final-check` | Response writer or evidence skill. |
 | “Did render/export/GLB succeed?” | `blendops-final-check` | `blendops-glb-web-handoff` and response writer. |
@@ -158,10 +159,10 @@ Do not claim packaged skill, plugin listing, marketplace listing, or broad adapt
 
 ```txt
 skills/
-├─ README.md                       # canonical inventory: all 14 skills by batch
+├─ README.md                       # canonical inventory: all 15 skills by batch
 ├─ _template/
 │  └─ SKILL.md                      # placeholder, excluded from export + spec checks
-├─ <skill-name>/                    # one folder per skill (14 total)
+├─ <skill-name>/                    # one folder per skill (15 total)
 │  ├─ SKILL.md
 │  └─ EVAL.md
 └─ ...                              # see skills/README.md for the full directory list

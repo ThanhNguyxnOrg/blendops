@@ -2,17 +2,17 @@
   "schemaVersion": "1.0.0",
   "coverage": "full-catalog",
   "contractStatus": "full-catalog",
-  "contractedSkills": 14,
+  "contractedSkills": 15,
   "uncontractedSkills": 0,
-  "catalogSkills": 14,
+  "catalogSkills": 15,
   "routingPrecedenceParticipants": 3,
-  "specialistContracts": 11,
+  "specialistContracts": 12,
   "routingPrecedenceOrder": [
     "blendops-brief",
     "blendops-done-criteria",
     "blendops-start"
   ],
-  "sourceChecksum": "d45a4b10fc6e953dc1bef17c8ebb26fa2965a016e800c3a4dd2bb57fb033a79a",
+  "sourceChecksum": "451a98549323da6e9558c85f1e99f18d2dc4b16fabeea22dd95808d31677b21d",
   "skills": [
     {
       "$schema": "../../schemas/skill-contract.schema.json",
@@ -2295,6 +2295,138 @@
     },
     {
       "$schema": "../../schemas/skill-contract.schema.json",
+      "id": "blendops-build",
+      "version": "2.0.0",
+      "category": "runtime-and-execution",
+      "role": "scene-build-execution",
+      "purpose": "Build the planned scene in Blender step by step: units, shapes, modifiers, materials, lights, camera, preview, render or GLB export, with a JSON report per step.",
+      "capabilityTier": "L0",
+      "triggers": [
+        "build the scene in Blender",
+        "make it in Blender",
+        "model this object",
+        "add materials and lights",
+        "set up the camera in Blender",
+        "render a preview",
+        "export the GLB from Blender",
+        "the script failed in Blender",
+        "which socket name does this Blender version use"
+      ],
+      "exclusions": [
+        {
+          "condition": "the scene plan, camera, or lighting plan is not decided yet",
+          "delegateTo": "blendops-scene-plan",
+          "reason": "plan before building"
+        },
+        {
+          "condition": "no runtime path is ready or the user has not chosen one",
+          "delegateTo": "blendops-connect-blender",
+          "reason": "check readiness first"
+        },
+        {
+          "condition": "GLB size, triangle, or texture budget questions",
+          "delegateTo": "blendops-glb-budget",
+          "reason": "budgets are owned by blendops-glb-budget"
+        }
+      ],
+      "inputs": {
+        "required": [
+          {
+            "name": "locked_scene_plan",
+            "type": "object",
+            "description": "Approved plan from blendops-scene-plan or blendops-product-shot: objects, sizes, materials, lights, camera, output"
+          },
+          {
+            "name": "runtime_path",
+            "type": "string",
+            "description": "Ready runtime path from blendops-connect-blender: Path 1, Path 2, or CLI fallback"
+          }
+        ],
+        "optional": [
+          {
+            "name": "blender_version",
+            "type": "string",
+            "description": "Blender version from bpy.app.version; decides API names such as the EEVEE engine id"
+          },
+          {
+            "name": "output_targets",
+            "type": "array",
+            "description": "Absolute output paths for preview, render, or GLB files"
+          }
+        ]
+      },
+      "outputs": {
+        "primary": [
+          "pre_build_scene_check",
+          "pre_mutation_backup_record",
+          "per_step_json_reports",
+          "version_specific_api_choices",
+          "preview_output_record",
+          "render_or_export_record",
+          "plain_language_change_summary"
+        ],
+        "truthStatePolicy": {
+          "runtimeDefault": "Not Run",
+          "artifactDefault": "Not Produced",
+          "mutationRule": "downgrade_only"
+        }
+      },
+      "handoffs": [
+        {
+          "target": "blendops-final-check",
+          "type": "progression",
+          "label": "Preview, render or GLB exists; check it against the done criteria",
+          "when": {
+            "all": [
+              {
+                "field": "runtime.status",
+                "operator": "equals",
+                "value": "Produced"
+              },
+              {
+                "field": "artifact.type",
+                "operator": "in",
+                "value": [
+                  "preview",
+                  "render",
+                  "glb"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "target": "blendops-fix-problems",
+          "type": "conditional",
+          "label": "A build step failed or the output looks wrong",
+          "when": {
+            "all": [
+              {
+                "field": "runtime.errorDetected",
+                "operator": "equals",
+                "value": true
+              }
+            ]
+          }
+        },
+        {
+          "target": "blendops-connect-blender",
+          "type": "fallback",
+          "label": "Runtime is not ready for building",
+          "when": {
+            "all": [
+              {
+                "field": "runtime.verifiedReady",
+                "operator": "equals",
+                "value": false
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "$schema": "../../schemas/skill-contract.schema.json",
       "id": "blendops-camera",
       "version": "2.0.0",
       "category": "scene-planners",
@@ -2745,6 +2877,25 @@
         }
       },
       "handoffs": [
+        {
+          "target": "blendops-build",
+          "type": "progression",
+          "label": "Runtime is ready and the scene plan is locked; build the scene",
+          "when": {
+            "all": [
+              {
+                "field": "runtime.verifiedReady",
+                "operator": "equals",
+                "value": true
+              },
+              {
+                "field": "decision.planLocked",
+                "operator": "equals",
+                "value": true
+              }
+            ]
+          }
+        },
         {
           "target": "blendops-product-shot",
           "type": "alternative",

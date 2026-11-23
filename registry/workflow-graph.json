@@ -1,23 +1,23 @@
 {
   "schemaVersion": "1.0.0",
   "coverage": "full-catalog",
-  "contractedSkills": 14,
+  "contractedSkills": 15,
   "uncontractedSkills": 0,
-  "catalogSkills": 14,
-  "sourceChecksum": "d45a4b10fc6e953dc1bef17c8ebb26fa2965a016e800c3a4dd2bb57fb033a79a",
+  "catalogSkills": 15,
+  "sourceChecksum": "451a98549323da6e9558c85f1e99f18d2dc4b16fabeea22dd95808d31677b21d",
   "summary": {
-    "totalNodes": 14,
-    "contractedNodes": 14,
+    "totalNodes": 15,
+    "contractedNodes": 15,
     "catalogOnlyNodes": 0,
     "routingPrecedenceParticipants": 3,
-    "specialistNodes": 11,
-    "totalContractedEdges": 195,
+    "specialistNodes": 12,
+    "totalContractedEdges": 199,
     "edgesByType": {
       "boundary_delegation": 6,
-      "progression": 55,
-      "conditional": 34,
+      "progression": 57,
+      "conditional": 35,
       "alternative": 32,
-      "fallback": 20,
+      "fallback": 21,
       "upstream_reference": 48
     },
     "progressionCycles": 0
@@ -40,6 +40,15 @@
       "capabilityTier": "L0",
       "isRoutingParticipant": true,
       "precedenceRank": 1
+    },
+    {
+      "id": "blendops-build",
+      "status": "contracted",
+      "category": "runtime-and-execution",
+      "role": "scene-build-execution",
+      "capabilityTier": "L0",
+      "isRoutingParticipant": false,
+      "precedenceRank": null
     },
     {
       "id": "blendops-camera",
@@ -1747,6 +1756,60 @@
       }
     },
     {
+      "from": "blendops-build",
+      "to": "blendops-final-check",
+      "type": "progression",
+      "label": "Preview, render or GLB exists; check it against the done criteria",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.status",
+            "operator": "equals",
+            "value": "Produced"
+          },
+          {
+            "field": "artifact.type",
+            "operator": "in",
+            "value": [
+              "preview",
+              "render",
+              "glb"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "from": "blendops-build",
+      "to": "blendops-fix-problems",
+      "type": "conditional",
+      "label": "A build step failed or the output looks wrong",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.errorDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "from": "blendops-build",
+      "to": "blendops-connect-blender",
+      "type": "fallback",
+      "label": "Runtime is not ready for building",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.verifiedReady",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
       "from": "blendops-camera",
       "to": "blendops-product-shot",
       "type": "upstream_reference",
@@ -1902,6 +1965,26 @@
             "field": "decision.engineLocked",
             "operator": "equals",
             "value": false
+          }
+        ]
+      }
+    },
+    {
+      "from": "blendops-connect-blender",
+      "to": "blendops-build",
+      "type": "progression",
+      "label": "Runtime is ready and the scene plan is locked; build the scene",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.verifiedReady",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "decision.planLocked",
+            "operator": "equals",
+            "value": true
           }
         ]
       }

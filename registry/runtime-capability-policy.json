@@ -90,7 +90,7 @@
   },
   "skills": [
     {
-      "skillId": "blendops-glb-budget",
+      "skillId": "blendops-assets",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L2",
       "requiresPreMutationBackupWhenExecuted": true,
@@ -99,12 +99,39 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "blendops-render-settings",
+      "skillId": "blendops-brief",
       "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L2",
+      "governedRuntimeCeiling": "L0",
+      "requiresPreMutationBackupWhenExecuted": false,
+      "requiresAssetLicenseClearance": false,
+      "requiresExplicitOperatorConfirmation": false,
+      "userFacingPythonAllowed": false
+    },
+    {
+      "skillId": "blendops-build",
+      "capabilityTier": "L0",
+      "governedRuntimeCeiling": "L3",
       "requiresPreMutationBackupWhenExecuted": true,
       "requiresAssetLicenseClearance": true,
+      "requiresExplicitOperatorConfirmation": true,
+      "userFacingPythonAllowed": false
+    },
+    {
+      "skillId": "blendops-camera",
+      "capabilityTier": "L0",
+      "governedRuntimeCeiling": "L1",
+      "requiresPreMutationBackupWhenExecuted": true,
+      "requiresAssetLicenseClearance": false,
       "requiresExplicitOperatorConfirmation": false,
+      "userFacingPythonAllowed": false
+    },
+    {
+      "skillId": "blendops-connect-blender",
+      "capabilityTier": "L0",
+      "governedRuntimeCeiling": "L3",
+      "requiresPreMutationBackupWhenExecuted": true,
+      "requiresAssetLicenseClearance": true,
+      "requiresExplicitOperatorConfirmation": true,
       "userFacingPythonAllowed": false
     },
     {
@@ -117,7 +144,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "blendops-glb-web-handoff",
+      "skillId": "blendops-final-check",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L2",
       "requiresPreMutationBackupWhenExecuted": true,
@@ -126,11 +153,29 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "blendops-camera",
+      "skillId": "blendops-fix-problems",
       "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L1",
-      "requiresPreMutationBackupWhenExecuted": true,
+      "governedRuntimeCeiling": "L0",
+      "requiresPreMutationBackupWhenExecuted": false,
       "requiresAssetLicenseClearance": false,
+      "requiresExplicitOperatorConfirmation": false,
+      "userFacingPythonAllowed": false
+    },
+    {
+      "skillId": "blendops-glb-budget",
+      "capabilityTier": "L0",
+      "governedRuntimeCeiling": "L2",
+      "requiresPreMutationBackupWhenExecuted": true,
+      "requiresAssetLicenseClearance": true,
+      "requiresExplicitOperatorConfirmation": false,
+      "userFacingPythonAllowed": false
+    },
+    {
+      "skillId": "blendops-glb-web-handoff",
+      "capabilityTier": "L0",
+      "governedRuntimeCeiling": "L2",
+      "requiresPreMutationBackupWhenExecuted": true,
+      "requiresAssetLicenseClearance": true,
       "requiresExplicitOperatorConfirmation": false,
       "userFacingPythonAllowed": false
     },
@@ -153,34 +198,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "blendops-scene-plan",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L1",
-      "requiresPreMutationBackupWhenExecuted": true,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "blendops-brief",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
-      "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "blendops-connect-blender",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L3",
-      "requiresPreMutationBackupWhenExecuted": true,
-      "requiresAssetLicenseClearance": true,
-      "requiresExplicitOperatorConfirmation": true,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "blendops-assets",
+      "skillId": "blendops-render-settings",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L2",
       "requiresPreMutationBackupWhenExecuted": true,
@@ -189,10 +207,10 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "blendops-fix-problems",
+      "skillId": "blendops-scene-plan",
       "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L0",
-      "requiresPreMutationBackupWhenExecuted": false,
+      "governedRuntimeCeiling": "L1",
+      "requiresPreMutationBackupWhenExecuted": true,
       "requiresAssetLicenseClearance": false,
       "requiresExplicitOperatorConfirmation": false,
       "userFacingPythonAllowed": false
@@ -203,15 +221,6 @@
       "governedRuntimeCeiling": "L0",
       "requiresPreMutationBackupWhenExecuted": false,
       "requiresAssetLicenseClearance": false,
-      "requiresExplicitOperatorConfirmation": false,
-      "userFacingPythonAllowed": false
-    },
-    {
-      "skillId": "blendops-final-check",
-      "capabilityTier": "L0",
-      "governedRuntimeCeiling": "L2",
-      "requiresPreMutationBackupWhenExecuted": true,
-      "requiresAssetLicenseClearance": true,
       "requiresExplicitOperatorConfirmation": false,
       "userFacingPythonAllowed": false
     }

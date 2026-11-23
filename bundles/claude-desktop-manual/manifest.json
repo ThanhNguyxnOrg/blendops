@@ -53,6 +53,10 @@
       "purpose": "Generated Claude Desktop reference summary for blendops-brief (routing-and-governance)"
     },
     {
+      "path": "references/skills/blendops-build.md",
+      "purpose": "Generated Claude Desktop reference summary for blendops-build (runtime-and-execution)"
+    },
+    {
       "path": "references/skills/blendops-camera.md",
       "purpose": "Generated Claude Desktop reference summary for blendops-camera (scene-planners)"
     },

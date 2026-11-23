@@ -83,7 +83,7 @@ The npm CLI supports Node.js `>=20.0.0`. No global installation is required. Opt
 npx skills add ThanhNguyxnOrg/blendops
 ```
 
-The Skills CLI guides users through choosing skills and supported agent targets from the public GitHub repository. The live listing is [skills.sh/ThanhNguyxnOrg/blendops](https://www.skills.sh/ThanhNguyxnOrg/blendops). The root `skills.sh.json` defines four display groups and is not an artifact that needs manual upload. The canonical repository inventory remains 14 skills in [`skills/README.md`](../../skills/README.md).
+The Skills CLI guides users through choosing skills and supported agent targets from the public GitHub repository. The live listing is [skills.sh/ThanhNguyxnOrg/blendops](https://www.skills.sh/ThanhNguyxnOrg/blendops). The root `skills.sh.json` defines four display groups and is not an artifact that needs manual upload. The canonical repository inventory remains 15 skills in [`skills/README.md`](../../skills/README.md).
 
 ### Future npm release automation
 
@@ -97,7 +97,7 @@ The Skills CLI guides users through choosing skills and supported agent targets 
 
 | Subcommand / Flag | Required behavior |
 |---|---|
-| `doctor` / `--doctor` | Read-only diagnostics only. Verifies Node.js runtime, required package assets, 14 canonical skills, target project markers, and existing `.blendops/install-manifest.json` or `.blendops/transaction-journal.json` state without writing files. |
+| `doctor` / `--doctor` | Read-only diagnostics only. Verifies Node.js runtime, required package assets, 15 canonical skills, target project markers, and existing `.blendops/install-manifest.json` or `.blendops/transaction-journal.json` state without writing files. |
 | `install` | Subcommand for `--dry-run` or `--write` installation. Defaults `--target` to `auto` when `--project <path>` is supplied without `--target`. |
 | `rollback` / `--rollback` | Restores modified files byte-for-byte from `.blendops/backups/` and removes installer-created files recorded in `.blendops/install-manifest.json`. Refuses to overwrite post-install user edits unless `--force-rollback` (`--force`) is explicitly passed. |
 | `--version`, `-v`, `version` | Prints `blendops <version>` and exits with code 0 without modifying files. |

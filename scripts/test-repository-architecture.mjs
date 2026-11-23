@@ -10,7 +10,7 @@
  *    package.json scripts/files, GitHub Actions workflows, and `docs/audits/audited-inputs.manifest.json` (plus negative tests).
  * 5. Windows CI regression closure (Windows drive roots `C:\`, `D:\`, UNC paths `\\server\share`, POSIX `/`,
  *    and `test-cli-package.mjs` import guard preventing duplicate suite execution when imported by `test-glb-handoff.mjs`).
- * 6. Skills (14), laws (4), packs (1), bundles (3), install targets (26), registry, and bundle reference summary determinism.
+ * 6. Skills (15), laws (4), packs (1), bundles (3), install targets (26), registry, and bundle reference summary determinism.
  * 7. Removal of obsolete development phase snapshots and verification of current-state (`v1.0.0-current`) audit provenance (`87.0/100`, `F-08 = PARTIALLY_FIXED`, `Not Run` / `Not Produced` / `Not Published`).
  * 8. `npm pack` tarball file list audit (public npm metadata, no test/audit bloat) and isolated consumer CLI execution.
  */
@@ -263,13 +263,13 @@ describe('Repository Architecture, Organization & Finalization', () => {
     assert.match(cliPackageSource, /if \(IS_DIRECT_CLI_PACKAGE_TEST\) \{\s*describe\(/);
   });
 
-  test('Scenario 6: Skills (14), laws (4), packs (1), bundles (3), install targets (26), registry, and bundle summaries remain intact', () => {
+  test('Scenario 6: Skills (15), laws (4), packs (1), bundles (3), install targets (26), registry, and bundle summaries remain intact', () => {
     const skillsDirs = fs
       .readdirSync(path.join(ROOT, 'skills'), { withFileTypes: true })
       .filter((d) => d.isDirectory() && d.name !== '_template')
       .map((d) => d.name)
       .sort();
-    assert.equal(skillsDirs.length, 14);
+    assert.equal(skillsDirs.length, 15);
 
     for (const skillId of skillsDirs) {
       const skillDir = path.join(ROOT, 'skills', skillId);
@@ -352,8 +352,8 @@ describe('Repository Architecture, Organization & Finalization', () => {
 
     const manifest1 = JSON.parse(fs.readFileSync(path.join(exportOut1, 'manifest.json'), 'utf8'));
     const manifest2 = JSON.parse(fs.readFileSync(path.join(exportOut2, 'manifest.json'), 'utf8'));
-    assert.equal(manifest1.skillCount, 14);
-    assert.equal(manifest2.skillCount, 14);
+    assert.equal(manifest1.skillCount, 15);
+    assert.equal(manifest2.skillCount, 15);
     assert.deepEqual(manifest1.skills, skillsDirs);
     assert.deepEqual(manifest2.skills, skillsDirs);
 
@@ -365,9 +365,9 @@ describe('Repository Architecture, Organization & Finalization', () => {
     const claudeSkillsZips2 = fs.readdirSync(zipsDir2).filter((f) => f.endsWith('.zip')).sort(compareCodeUnitOrder);
     const claudeCodeFolders = fs.readdirSync(codeSkillsDir1).sort(compareCodeUnitOrder);
     const claudeCodeFolders2 = fs.readdirSync(codeSkillsDir2).sort(compareCodeUnitOrder);
-    assert.equal(claudeSkillsZips.length, 14);
+    assert.equal(claudeSkillsZips.length, 15);
     assert.deepEqual(claudeSkillsZips, claudeSkillsZips2);
-    assert.equal(claudeCodeFolders.length, 14);
+    assert.equal(claudeCodeFolders.length, 15);
     assert.deepEqual(claudeCodeFolders, claudeCodeFolders2);
 
     for (const zipName of claudeSkillsZips) {

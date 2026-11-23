@@ -1120,7 +1120,7 @@ function main() {
       process.exit(1);
     }
     console.log(
-      `evals:check passed (${res.summary.machineReadableSuites}/${res.summary.catalogSkills} suites, ${res.summary.totalCases} machine-readable cases validated against Draft 2020-12 Ajv schema; ${res.summary.proseOnlySkillsPendingMigration}/14 prose-only EVAL.md skills remaining).`,
+      `evals:check passed (${res.summary.machineReadableSuites}/${res.summary.catalogSkills} suites, ${res.summary.totalCases} machine-readable cases validated against Draft 2020-12 Ajv schema; ${res.summary.proseOnlySkillsPendingMigration}/15 prose-only EVAL.md skills remaining).`,
     );
     return;
   }
@@ -1139,7 +1139,7 @@ function main() {
   }
 
   console.log(
-    `evals:run passed: ${res.summary.suitesExecuted} suite(s), ${res.summary.passedCases}/${res.summary.totalCasesExecuted} deterministic cases Passed | live_model: ${res.summary.liveModelStatus} | blender_runtime: ${res.summary.blenderRuntimeStatus} | ${res.summary.unmigratedProseSkills}/14 prose-only EVAL.md skills pending migration.`,
+    `evals:run passed: ${res.summary.suitesExecuted} suite(s), ${res.summary.passedCases}/${res.summary.totalCasesExecuted} deterministic cases Passed | live_model: ${res.summary.liveModelStatus} | blender_runtime: ${res.summary.blenderRuntimeStatus} | ${res.summary.unmigratedProseSkills}/15 prose-only EVAL.md skills pending migration.`,
   );
 }
 

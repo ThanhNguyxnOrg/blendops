@@ -166,6 +166,25 @@
   },
   "handoffs": [
     {
+      "target": "blendops-build",
+      "type": "progression",
+      "label": "Runtime is ready and the scene plan is locked; build the scene",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.verifiedReady",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "decision.planLocked",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
       "target": "blendops-product-shot",
       "type": "alternative",
       "label": "If Ready / Partially Ready and moving to scene planning (blendops-product-shot)",
