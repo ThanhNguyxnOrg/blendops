@@ -12,6 +12,7 @@ import {
   descriptionOverlap,
   scorePicks,
   promptPack,
+  packKeys,
 } from './run-skill-selection-eval.mjs';
 
 const skills = loadSkills();
@@ -63,9 +64,11 @@ test('agent responses are scored, with alternates and unanswered cases', () => {
 test('prompt pack lists every skill and case, and the CLI scores a responses file', () => {
   const pack = promptPack(skills, cases);
   for (const s of skills) assert.ok(pack.includes(`- ${s.name}: ${s.description}`));
-  for (const c of cases) assert.ok(pack.includes(`${c.id}: ${c.prompt}`));
+  const keys = packKeys(cases);
+  for (const { key, case: c } of keys) assert.ok(pack.includes(`${key}: ${c.prompt}`));
+  for (const c of cases) assert.ok(!pack.includes(c.id), `the pack must not show case id ${c.id}`);
   const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'selection-')), 'picks.json');
-  fs.writeFileSync(file, JSON.stringify(Object.fromEntries(cases.map((c) => [c.id, c.expected]))));
+  fs.writeFileSync(file, JSON.stringify(Object.fromEntries(keys.map(({ key, case: c }) => [key, c.expected]))));
   const out = JSON.parse(execFileSync(process.execPath, ['scripts/run-skill-selection-eval.mjs', '--responses', file, '--json'], { encoding: 'utf8' }));
   assert.equal(out.accuracy, 1);
   assert.equal(out.cases, cases.length);

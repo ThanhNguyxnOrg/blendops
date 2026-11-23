@@ -2,6 +2,7 @@
 // Skill selection eval: does each request pick the right skill from name + description alone?
 // Modes: default scores a deterministic word-overlap baseline; --responses <file> scores an
 // agent's picks; --prompt-pack prints the prompt to give an agent for a live run.
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -122,6 +123,20 @@ export function scorePicks(cases, picks) {
   };
 }
 
+// Case ids name the expected skill, so a live run sees opaque keys in a hash order instead.
+export function packKeys(cases) {
+  const hash = (id) => crypto.createHash('sha256').update(id).digest('hex');
+  const ordered = [...cases].sort((a, b) => hash(a.id).localeCompare(hash(b.id)));
+  const width = String(ordered.length).length;
+  return ordered.map((c, i) => ({ key: `r${String(i + 1).padStart(width, '0')}`, case: c }));
+}
+
+export function picksFromPackAnswers(cases, answers) {
+  return Object.fromEntries(
+    packKeys(cases).filter(({ key }) => key in answers).map(({ key, case: c }) => [c.id, answers[key]]),
+  );
+}
+
 export function promptPack(skills, cases) {
   return [
     'You can load one of these skills. You see only each skill\'s name and description.',
@@ -129,9 +144,9 @@ export function promptPack(skills, cases) {
     ...skills.map((s) => `- ${s.name}: ${s.description}`),
     '',
     'For each request below, answer with the one skill you would load first, or null if none fits.',
-    'Reply with JSON only, shaped {"<case id>": "<skill name or null>"}.',
+    'Reply with JSON only, shaped {"<request key>": "<skill name or null>"}.',
     '',
-    ...cases.map((c) => `${c.id}: ${c.prompt}`),
+    ...packKeys(cases).map(({ key, case: c }) => `${key}: ${c.prompt}`),
     '',
   ].join('\n');
 }
@@ -154,7 +169,7 @@ function main(argv) {
   let mode = 'word-overlap baseline';
   if (ri !== -1) {
     const raw = JSON.parse(fs.readFileSync(argv[ri + 1], 'utf8'));
-    picks = raw.cases ?? raw;
+    picks = picksFromPackAnswers(cases, raw.cases ?? raw);
     mode = `responses from ${argv[ri + 1]}`;
   } else {
     const route = baselineRouter(skills);

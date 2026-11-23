@@ -3,7 +3,7 @@
 Checks whether a request picks the right skill when an agent sees only each skill's `name` and `description` (the text a host loads before it opens a skill).
 
 - Cases: [`evals/skill-selection-evals.json`](../../evals/skill-selection-evals.json), 72 requests: 4 per skill (3 English, 1 Vietnamese) and 8 that should load no skill. A case may list `acceptable` alternates when two skills are both a fair first pick.
-- Runner: `npm run evals:selection` (`scripts/run-skill-selection-eval.mjs`). `--json` prints the full result, `--prompt-pack` prints the prompt for a live model run, `--responses <file>` scores that run's JSON answers.
+- Runner: `npm run evals:selection` (`scripts/run-skill-selection-eval.mjs`). `--json` prints the full result, `--prompt-pack` prints the prompt for a live model run (requests get opaque keys in a shuffled order, since case ids name the expected skill), `--responses <file>` scores that run's JSON answers keyed by those request keys.
 - Test: `scripts/test-skill-selection.mjs` (in `npm test`) checks the cases, the scorer, and that the word-overlap baseline stays at or above 0.6 with at most 3 false triggers and no description pair overlapping 0.3 or more.
 
 ## Truth state
