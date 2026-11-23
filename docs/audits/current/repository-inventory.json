@@ -3458,7 +3458,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 4637,
-      "sha256": "0e521bfbb61dcba9fc0f57923107f5ef728614774b78ff6df0f719e186c33ae4"
+      "sha256": "2a4051152935239f04e5dab7f59a502753cd60aae58f0cc1edbc64a2538a7185"
     },
     {
       "path": "packs/README.md",
@@ -3892,8 +3892,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 16619,
-      "sha256": "051888ab7113772442f87d2e85e7db83e88425265cba59710f4e7b49cbe1c3d4"
+      "byteSize": 17328,
+      "sha256": "92035445bec40fe096cd1c742994fe916dbe6a8957ba8a5dbd7008ee54c5f0d4"
     },
     {
       "path": "scripts/build-knowledge-catalog.mjs",
@@ -3982,8 +3982,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 13778,
-      "sha256": "1663bcf00b07419383aa8461625df18e707edc65ad2ad45f28c98629ad8a4d99"
+      "byteSize": 14067,
+      "sha256": "fa985da30a557e633ca7c16d42c97c3343de1532ccccf4aebef4bd6c0e1c31cf"
     },
     {
       "path": "scripts/cli/doctor.mjs",
