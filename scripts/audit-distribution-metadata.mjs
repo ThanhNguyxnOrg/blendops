@@ -127,10 +127,13 @@ export function auditLocalDistributionMetadata(rootDir = ROOT) {
     errors.push('package.json description must be at most 255 characters so npm registry metadata does not truncate it');
   }
   const describedSkillCount = /\b(\d+) Anthropic Skills\b/.exec(String(pkg.description || ''));
-  const canonicalSkillCount = fs
-    .readdirSync(path.join(root, 'skills'), { withFileTypes: true })
-    .filter((d) => d.isDirectory() && !d.name.startsWith('_') && fs.existsSync(path.join(root, 'skills', d.name, 'SKILL.md'))).length;
-  if (describedSkillCount && Number(describedSkillCount[1]) !== canonicalSkillCount) {
+  const skillsRoot = path.join(root, 'skills');
+  const canonicalSkillCount = fs.existsSync(skillsRoot) && fs.statSync(skillsRoot).isDirectory()
+    ? fs
+        .readdirSync(skillsRoot, { withFileTypes: true })
+        .filter((d) => d.isDirectory() && !d.name.startsWith('_') && fs.existsSync(path.join(skillsRoot, d.name, 'SKILL.md'))).length
+    : null;
+  if (describedSkillCount && canonicalSkillCount !== null && Number(describedSkillCount[1]) !== canonicalSkillCount) {
     errors.push(`package.json description says ${describedSkillCount[1]} Anthropic Skills but skills/ has ${canonicalSkillCount}`);
   }
   if (pkg.private === true) errors.push('package.json must not set private: true');
