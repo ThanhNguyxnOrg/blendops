@@ -3997,8 +3997,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 70737,
-      "sha256": "60b3a9c1b0653dcc9ca5016a91b026f01146532815cf1075a6951de3ad0751bb"
+      "byteSize": 70895,
+      "sha256": "b8192c7e0c331c746ba5f65e69f8e6eb9ae99f5012360b447b49b0ac84b0cd80"
     },
     {
       "path": "scripts/generate-current-audit.mjs",

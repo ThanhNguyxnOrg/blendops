@@ -182,13 +182,21 @@ function parseFrontmatter(markdownText, relPath, errors) {
 }
 
 function stripHtmlComments(text) {
-  let out = String(text || '');
-  let previous;
-  do {
-    previous = out;
-    out = out.replace(/<!--[\s\S]*?-->/g, '');
-  } while (out !== previous);
-  return out.replace(/<!--/g, '');
+  const src = String(text || '');
+  let out = '';
+  let i = 0;
+  while (i < src.length) {
+    const open = src.indexOf('<!--', i);
+    if (open === -1) {
+      out += src.slice(i);
+      break;
+    }
+    out += src.slice(i, open);
+    const close = src.indexOf('-->', open + 4);
+    if (close === -1) break;
+    i = close + 3;
+  }
+  return out;
 }
 
 function normalizeInlineMarkdown(text, skillId) {
