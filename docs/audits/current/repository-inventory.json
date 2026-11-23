@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "auditPhase": "v1.0.0-current",
   "summary": {
-    "totalTrackedFiles": 696,
+    "totalTrackedFiles": 697,
     "npmPackageIncludedFiles": 486,
     "generatedTrackedFiles": 111,
     "canonicalSkillsCount": 48,
@@ -14,7 +14,7 @@
     "classificationCounts": {
       "configuration": 37,
       "documentation": 84,
-      "historical_record": 16,
+      "historical_record": 17,
       "distribution_artifact": 15,
       "canonical_source": 327,
       "generated_artifact": 111,
@@ -28,7 +28,7 @@
       "bundles-and-packaging": 130,
       "product-and-target-docs": 67,
       "audits-and-provenance": 11,
-      "runtime-and-adapter-evals": 14,
+      "runtime-and-adapter-evals": 15,
       "glb-web-handoff-toolkit": 3,
       "knowledge-and-recipe-catalog": 5,
       "behavioral-evals": 63,
@@ -47,7 +47,7 @@
       ".github": 13,
       "bin": 1,
       "bundles": 130,
-      "docs": 96,
+      "docs": 97,
       "evals": 63,
       "laws": 5,
       "packs": 2,
@@ -58,7 +58,7 @@
       "skills": 297
     },
     "referenceIntegrity": {
-      "markdownFiles": 485,
+      "markdownFiles": 486,
       "jsModules": 42,
       "schemas": 16,
       "workflows": 6
@@ -2828,7 +2828,7 @@
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
       "byteSize": 284872,
-      "sha256": "f405e9405298316e6ed4a990fea88e7cdcc84493b5bb388b6aba3430908536ab"
+      "sha256": "5e2b35e8964fa73421d402f0bdffd2a2290d8fa6470c05ed62d4c4c60092350e"
     },
     {
       "path": "docs/audits/skill-architecture-audit.md",
@@ -2843,7 +2843,7 @@
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
       "byteSize": 25404,
-      "sha256": "b8ec6d914c3968f2773e5e4b109a53edee86d6b6099cc8620ed6e5e2c458761a"
+      "sha256": "49b8ff0c0c51730729cf31167b1a8046b773d4367b6e9274c06eab41891ac798"
     },
     {
       "path": "docs/blender-version-compatibility.md",
@@ -2979,6 +2979,21 @@
       "safeToMoveOrRemove": false,
       "byteSize": 11913,
       "sha256": "397f9be77d202d189034be269b80c1367925b0b53855e141914081fb77e4f539"
+    },
+    {
+      "path": "docs/evals/cli-fallback-recipe-2026-11-21.md",
+      "fileType": ".md",
+      "classification": "historical_record",
+      "purpose": "Evaluation packet or recorded verification evidence (cli-fallback-recipe-2026-11-21.md)",
+      "owningSubsystem": "runtime-and-adapter-evals",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 157,
+      "sha256": "33e0dcb4cf629727d500d42df69e6e489c2b4ba5f543f63d84a88561f278332b"
     },
     {
       "path": "docs/evals/cyberpunk-shoe-hero-v0-manual-eval.md",
