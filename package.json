@@ -1,6 +1,6 @@
 {
   "name": "blendops",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "AI-native Blender workflow, knowledge catalog, and portable skill pack for non-Blender users. Ships 16 Anthropic Skills, 4 laws, 10 recipes, SceneSpec compilation, MCP qualification, and GLB inspection.",
   "homepage": "https://github.com/ThanhNguyxnOrg/blendops#readme",
   "repository": {
