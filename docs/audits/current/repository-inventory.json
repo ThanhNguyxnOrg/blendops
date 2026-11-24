@@ -2,8 +2,8 @@
   "schemaVersion": "1.0.0",
   "auditPhase": "v1.0.0-current",
   "summary": {
-    "totalTrackedFiles": 585,
-    "npmPackageIncludedFiles": 400,
+    "totalTrackedFiles": 590,
+    "npmPackageIncludedFiles": 403,
     "generatedTrackedFiles": 47,
     "canonicalSkillsCount": 16,
     "lawsCount": 4,
@@ -13,12 +13,12 @@
     "exactDuplicateGroupsCount": 2,
     "classificationCounts": {
       "configuration": 38,
-      "documentation": 84,
-      "historical_record": 19,
+      "documentation": 87,
+      "historical_record": 20,
       "distribution_artifact": 15,
       "canonical_source": 291,
       "generated_artifact": 47,
-      "runtime_build_test_infrastructure": 91
+      "runtime_build_test_infrastructure": 92
     },
     "subsystemCounts": {
       "repository-governance": 4,
@@ -26,12 +26,12 @@
       "documentation-governance": 8,
       "cli-distribution": 1,
       "bundles-and-packaging": 66,
-      "product-and-target-docs": 67,
+      "product-and-target-docs": 70,
       "audits-and-provenance": 11,
-      "runtime-and-adapter-evals": 17,
+      "runtime-and-adapter-evals": 18,
       "glb-web-handoff-toolkit": 3,
       "knowledge-and-recipe-catalog": 5,
-      "behavioral-evals": 33,
+      "behavioral-evals": 34,
       "laws-and-packs": 7,
       "package-governance": 2,
       "registry-and-routing": 6,
@@ -47,8 +47,8 @@
       ".github": 14,
       "bin": 1,
       "bundles": 66,
-      "docs": 99,
-      "evals": 33,
+      "docs": 103,
+      "evals": 34,
       "laws": 5,
       "packs": 2,
       "registry": 10,
@@ -58,7 +58,7 @@
       "skills": 261
     },
     "referenceIntegrity": {
-      "markdownFiles": 420,
+      "markdownFiles": 424,
       "jsModules": 57,
       "schemas": 16,
       "workflows": 7
@@ -331,8 +331,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3520,
-      "sha256": "32bb773ca17f47c19d8f084cd2484247046f038d438713382808fdaae9441130"
+      "byteSize": 3572,
+      "sha256": "0924e3a97585b2434ef5ec158d033f2509a7cccf12d6f13cc1dd464699415bf0"
     },
     {
       "path": ".github/workflows/ci.yml",
@@ -1891,8 +1891,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 314426,
-      "sha256": "3a50e1ca106e875c056dd24330fc2cff3071c05cef81a6269bc41b13d52c9396"
+      "byteSize": 314573,
+      "sha256": "f46d30f4e9dc9a9410a3afb611ac379d907abbc1d832b102584911c9d7ea6ca0"
     },
     {
       "path": "docs/audits/skill-architecture-audit.md",
@@ -1906,8 +1906,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 21523,
-      "sha256": "eaa0ce6401b3884c558ef9aaf03f347af0d5c27e65d0e5cd2c30237c42235fbd"
+      "byteSize": 21502,
+      "sha256": "d5cd1f53bffbf3b024ce273c8fdb655b87725f089b4986d8aff45cea4a12148f"
     },
     {
       "path": "docs/blender-version-compatibility.md",
@@ -1981,8 +1981,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 7134,
-      "sha256": "179d5a28f861b40af595a3952288b3f5d9bb05c3660771441f517767042e4629"
+      "byteSize": 7449,
+      "sha256": "c5e545694975a02f8a0360fdbe2efcdd2e79cf76e38811bafd0742e7a8365701"
     },
     {
       "path": "docs/evals/adapter-empirical-verification.md",
@@ -2041,8 +2041,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4876,
-      "sha256": "443429a6aea3ad755f877d03ed27c3f7a4a882485f8917e132e79eb967dd6344"
+      "byteSize": 5039,
+      "sha256": "a6ab78cf39b9213680b23f2f7960cbcc4ca29eb746f5444d33fc3faf32b3b665"
     },
     {
       "path": "docs/evals/cli-fallback-mech-prop.md",
@@ -2073,6 +2073,21 @@
       "safeToMoveOrRemove": false,
       "byteSize": 157,
       "sha256": "33e0dcb4cf629727d500d42df69e6e489c2b4ba5f543f63d84a88561f278332b"
+    },
+    {
+      "path": "docs/evals/cli-fallback-recipe-walkthroughs.md",
+      "fileType": ".md",
+      "classification": "historical_record",
+      "purpose": "Evaluation packet or recorded verification evidence (cli-fallback-recipe-walkthroughs.md)",
+      "owningSubsystem": "runtime-and-adapter-evals",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 4553,
+      "sha256": "190f3692eb132d5ad6854b5e477c9c6b7f01e3b476143a5f8061b3f2bc369d3d"
     },
     {
       "path": "docs/evals/cli-fallback-scene-state.md",
@@ -2806,8 +2821,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 37514,
-      "sha256": "b1018dfdaf323dd56e9236ff0cd9e3a26cd90e356dc90ab7e66228c7f1ba48c0"
+      "byteSize": 37724,
+      "sha256": "0a0d96b835d9c1416e7deb79dad6490a9771da65a2022dcb05a2a6e66d32ff42"
     },
     {
       "path": "docs/multi-agent-install-strategy.md",
@@ -2851,8 +2866,23 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2159,
-      "sha256": "93c863288afc15fada1b1483c60b25374fdddce3f6cb42af8f327fd76fc31353"
+      "byteSize": 3144,
+      "sha256": "2f8cc53b1551dc97be39442865bb0ce67d1246361f7e1de4c1d3df95a016dde1"
+    },
+    {
+      "path": "docs/recipes/chair-glb-web-handoff.md",
+      "fileType": ".md",
+      "classification": "documentation",
+      "purpose": "Product, runtime, adapter, workflow, recipe, or target installation guide (docs/recipes/chair-glb-web-handoff.md)",
+      "owningSubsystem": "product-and-target-docs",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 7942,
+      "sha256": "06cfb37a4733e067af062b110733bf9f7bc30e223dabe3df8ebb2a14e9e60dec"
     },
     {
       "path": "docs/recipes/cyberpunk-shoe-hero.md",
@@ -2868,6 +2898,36 @@
       "safeToMoveOrRemove": false,
       "byteSize": 3488,
       "sha256": "c2f676a91f6bd67ed528a932af2b2efd1a658c2884e6ed638506df5cd006b4a1"
+    },
+    {
+      "path": "docs/recipes/dusk-campsite-environment.md",
+      "fileType": ".md",
+      "classification": "documentation",
+      "purpose": "Product, runtime, adapter, workflow, recipe, or target installation guide (docs/recipes/dusk-campsite-environment.md)",
+      "owningSubsystem": "product-and-target-docs",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 14290,
+      "sha256": "9951e2f7d23c028921bf9609e9b6e51812f1a447d93a7d3a5a2feba09fa61e36"
+    },
+    {
+      "path": "docs/recipes/sci-fi-crate-prop.md",
+      "fileType": ".md",
+      "classification": "documentation",
+      "purpose": "Product, runtime, adapter, workflow, recipe, or target installation guide (docs/recipes/sci-fi-crate-prop.md)",
+      "owningSubsystem": "product-and-target-docs",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 12598,
+      "sha256": "95add17ca071c17f611ed013635782a51cee375e271492efd27aacab6fee4638"
     },
     {
       "path": "docs/reference-runtime.md",
@@ -3048,6 +3108,21 @@
       "safeToMoveOrRemove": false,
       "byteSize": 1531,
       "sha256": "d794895bef2a79a1fbf2ec25888eb3383ab3ee6c5dc85a4841334693e284861f"
+    },
+    {
+      "path": "evals/blender-checks/run-walkthrough.py",
+      "fileType": ".py",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Headless Blender helper (run-walkthrough.py) for the skill reference checks in scripts/test-blender-references.mjs",
+      "owningSubsystem": "behavioral-evals",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 4185,
+      "sha256": "9e2da35dc94e1950581c82ef4fe82746a1bde10fab3798307bfbf40beb4b6d88"
     },
     {
       "path": "evals/blender-checks/scene-state-scenes.py",
@@ -3676,8 +3751,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 493663,
-      "sha256": "564083cae4617fc9543f6a329e988b12fc9b50477709b55b44eae384d2dbc3ac"
+      "byteSize": 493894,
+      "sha256": "3a8dfaa4e6c082e9736f0bfbe84513a7e069dbd3d39840d5749b640ebfccaad0"
     },
     {
       "path": "registry/compatibility-matrix.json",
@@ -3751,8 +3826,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 125692,
-      "sha256": "a0086ef16d3dfbfbf698a3fbbd3873e9918c68de31366ddad42883294f2d6fac"
+      "byteSize": 125899,
+      "sha256": "1c6e6e3848e8fe08f9879af0614b55e2340a676c8d3278171a2833f0173f87cd"
     },
     {
       "path": "registry/runtime-capability-policy.json",
@@ -4081,8 +4156,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 107447,
-      "sha256": "2a3bac1a08c162a006f2916c50a47f300d706491c901801b9d002813d97c1102"
+      "byteSize": 107529,
+      "sha256": "1a0276da64c5e657d18d6310ee4f5edb103a4e30b7062a9ccb9da95701d555c5"
     },
     {
       "path": "scripts/build-registry.mjs",
@@ -4546,8 +4621,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 8018,
-      "sha256": "a2c2756beee16e60dfbc77e166c7e5f418bf722b2e2d2fa0e5a09de40eaa448b"
+      "byteSize": 12406,
+      "sha256": "855fad6061b46ba8c63bfd74659f25c7cf7b181a0d98faf6a71953ed1877d498"
     },
     {
       "path": "scripts/test-bundle-summaries.mjs",

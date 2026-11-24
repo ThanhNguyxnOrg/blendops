@@ -15965,7 +15965,10 @@
           "documentation",
           "baselines",
           "live",
-          "run"
+          "run",
+          "docs",
+          "recipes",
+          "dusk-campsite-environment.md"
         ]
       }
     },
@@ -16604,6 +16607,9 @@
           "live",
           "runtime",
           "run",
+          "docs",
+          "recipes",
+          "sci-fi-crate-prop.md",
           "sculpt",
           "shrinkwrap"
         ]
@@ -20354,7 +20360,10 @@
           "4.5.15",
           "5.2.3",
           "documentation",
-          "baselines"
+          "baselines",
+          "docs",
+          "recipes",
+          "chair-glb-web-handoff.md"
         ]
       }
     },

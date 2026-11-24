@@ -144,3 +144,85 @@ test('scene-state reports the planted problems and nothing else', { skip }, () =
     }
   }
 });
+
+// Recipe walkthroughs: every step block runs in order, then scene-state checks the saved file
+// against the walkthrough's own locked plan and the exported GLB is inspected.
+const RECIPES = path.join(ROOT, 'docs', 'recipes');
+const WALKTHROUGHS = {
+  'sci-fi-crate-prop.md': {
+    blend: 'crate.blend',
+    files: ['preview.png', 'look-r1-camera.png', 'look-r1-front.png', 'look-r1-side.png'],
+    glb: { file: 'crate.glb', meshes: 2, maxTriangles: 50000 },
+  },
+  'dusk-campsite-environment.md': {
+    blend: 'campsite.blend',
+    files: ['preview.png', 'look-r1-camera.png', 'look-r1-front.png', 'look-r1-side.png', 'campsite.png'],
+    check: `import bpy
+trees = [o for o in bpy.data.objects if o.name.startswith("Tree_")]
+assert len(trees) == 8 and len({o.data.name for o in trees}) == 1, "trees must share one mesh"
+`,
+  },
+  'chair-glb-web-handoff.md': {
+    start: 'chair',
+    before: { blend: 'chair-start.blend', issues: ['fail:scale_applied:Chair'] },
+    blend: 'chair.blend',
+    files: ['chair-backup.blend'],
+    glb: { file: 'chair.glb', meshes: 2, maxTriangles: 100000 },
+    check: `import bpy
+assert tuple(bpy.data.objects["Chair"].scale) == (1.0, 1.0, 1.0)
+noise = lambda o: [n for s in o.material_slots for n in s.material.node_tree.nodes if n.bl_idname == "ShaderNodeTexNoise"]
+assert not noise(bpy.data.objects["Chair"])
+assert noise(bpy.data.objects["Chair_Old"]), "the hidden copy must keep its pattern"
+c = bpy.data.objects["Cushion"]
+zs = [(c.matrix_world @ v.co).z for v in c.data.vertices]
+assert abs(min(zs) - 0.49) < 1e-4 and abs(max(zs) - 0.54) < 1e-4, "the cushion must keep its size and place"
+`,
+  },
+};
+
+function lockedPlan(file) {
+  const m = /^## Plan[^\n]*\n[\s\S]*?^```json\n([\s\S]*?)^```$/m.exec(fs.readFileSync(file, 'utf8'));
+  assert.ok(m, `${path.basename(file)}: no json block under "## Plan"`);
+  return JSON.parse(m[1]);
+}
+
+test('every recipe walkthrough with bpy steps is covered', { skip }, () => {
+  const withCode = fs.readdirSync(RECIPES).filter((f) => f.endsWith('.md') && pythonBlocks(path.join(RECIPES, f)).length);
+  assert.deepEqual(withCode.sort(), Object.keys(WALKTHROUGHS).sort());
+});
+
+for (const [doc, want] of Object.entries(WALKTHROUGHS)) {
+  test(`recipe walkthrough ${doc} runs and passes its own plan`, { skip }, async () => {
+    const name = doc.replace(/\.md$/, '');
+    const dir = path.join(OUT, 'recipes', name);
+    fs.mkdirSync(dir, { recursive: true });
+    const file = path.join(RECIPES, doc);
+    const job = path.join(dir, 'job.json');
+    fs.writeFileSync(job, JSON.stringify({ blocks: pythonBlocks(file), start: want.start ?? 'empty', check: want.check ?? '', out_dir: dir }));
+    blender(['--python', path.join(CHECKS, 'run-walkthrough.py'), '--', job], name);
+    for (const f of want.files) assert.ok(fs.statSync(path.join(dir, f)).size > 0, `${name}: ${f} missing`);
+
+    const script = pythonBlocks(SCENE_STATE).at(-1);
+    const stateFile = (label, plan) => {
+      const p = path.join(dir, `scene-state-${label}.py`);
+      fs.writeFileSync(p, script.replace(/^PLAN = None.*$/m, () => `PLAN = ${JSON.stringify(plan)}`));
+      return p;
+    };
+    const plan = lockedPlan(file);
+    if (want.before) {
+      const report = blender([path.join(dir, want.before.blend), '--python', stateFile('before', plan)], `${name} before`);
+      fs.writeFileSync(path.join(dir, 'scene-state-before.json'), `${JSON.stringify(report, null, 2)}\n`);
+      assert.deepEqual(report.issues.map((i) => `${i.level}:${i.check}:${i.object ?? ''}`).sort(), want.before.issues.slice().sort(), `${name} issues before`);
+    }
+    const report = blender([path.join(dir, want.blend), '--python', stateFile('after', plan)], `${name} after`);
+    fs.writeFileSync(path.join(dir, 'scene-state-after.json'), `${JSON.stringify(report, null, 2)}\n`);
+    assert.deepEqual(report.issues.map((i) => `${i.level}:${i.check}:${i.object ?? ''}`), [], `${name} issues after`);
+    assert.equal(report.verdict, 'pass', `${name} verdict`);
+
+    if (!want.glb) return;
+    const glb = await inspectGlbFile(path.join(dir, want.glb.file));
+    assert.equal(glb.valid, true, JSON.stringify(glb, null, 2));
+    assert.equal(glb.counts.meshes, want.glb.meshes, `${name}: GLB meshes`);
+    if (want.glb.maxTriangles) assert.ok(glb.counts.trianglesEstimate <= want.glb.maxTriangles, `${name}: ${glb.counts.trianglesEstimate} triangles`);
+  });
+}

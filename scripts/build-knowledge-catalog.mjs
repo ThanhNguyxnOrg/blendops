@@ -731,7 +731,7 @@ export function buildSkillArchitectureAuditData(rootDir = DEFAULT_ROOT) {
       recipe_layer: {
         canonical_paths: ['registry/recipe-catalog.json', 'schemas/recipe-record.schema.json', 'docs/recipes/'],
         recipe_count: recipeCatalog.recipes.length,
-        scenario_recipes: ['docs/recipes/cyberpunk-shoe-hero.md']
+        scenario_recipes: recipeCatalog.recipes.map((r) => r.documentation_path).filter(Boolean)
       },
       runtime_production_layer: {
         status: 'external-boundary-only',
@@ -774,7 +774,7 @@ export function renderSkillArchitectureAuditMarkdown(auditData) {
     '| :--- | :--- | :--- | :--- |',
     `| **A. Skill Layer** | \`skills/*/SKILL.md\`, \`skills/*/contract.json\`, \`registry/skills.json\`, \`registry/workflow-graph.json\` | ${auditData.five_layer_architecture.skill_layer.skill_count} skills, ${auditData.five_layer_architecture.skill_layer.workflow_edge_count} workflow edges | Single-responsibility agent task units, contracts, capability tiers (\`L0\`–\`L3\`), and handoffs |`,
     `| **B. Knowledge Layer** | \`registry/knowledge-sources.json\`, \`registry/knowledge-catalog.json\` | ${auditData.five_layer_architecture.knowledge_layer.knowledge_record_count} records across ${auditData.five_layer_architecture.knowledge_layer.domain_count} domains (${auditData.five_layer_architecture.knowledge_layer.source_count} sources) | Reusable, source-traceable 3D/Blender domain rules, parameters, tradeoffs, and validation checks |`,
-    `| **C. Recipe Layer** | \`registry/recipe-catalog.json\`, \`docs/recipes/cyberpunk-shoe-hero.md\` | ${auditData.five_layer_architecture.recipe_layer.recipe_count} canonical recipes + 1 golden-path scenario doc | Multi-stage asset/scene construction plans composing skills, knowledge records, and checkpoints |`,
+    `| **C. Recipe Layer** | \`registry/recipe-catalog.json\`, \`docs/recipes/*.md\` | ${auditData.five_layer_architecture.recipe_layer.recipe_count} canonical recipes + ${auditData.five_layer_architecture.recipe_layer.scenario_recipes.length} scenario walkthroughs | Multi-stage asset/scene construction plans composing skills, knowledge records, and checkpoints |`,
     `| **D. Runtime / Production Layer** | \`registry/runtime-capability-policy.json\`, \`docs/runtime-stack-strategy.md\` | External boundary (Path 1 Lab MCP 5.1+, Path 2 \`mcp-for-blender\` 3.0+, CLI appendix) | External execution bridges; BlendOps owns zero runtime servers or add-ons |`,
     `| **E. Evaluation & Evidence Layer** | \`evals/suites/\`, \`evals/catalog-retrieval-evals.json\`, \`evals/scene-specs/\`, \`docs/evals/\` | Offline contract + retrieval + planner evals passing; runtime = \`${auditData.five_layer_architecture.evaluation_and_evidence_layer.runtime_execution_truth_state}\`, artifacts = \`${auditData.five_layer_architecture.evaluation_and_evidence_layer.artifact_production_truth_state}\` | Separates schema validity, source backing, version checks, runtime execution, and visual critique |`,
     '',
