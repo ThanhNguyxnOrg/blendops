@@ -403,6 +403,14 @@ const requiredRuntimeStackSnippets = [
 
 const requiredArtifactEvidenceSnippets = [
   {
+    file: 'skills/blendops-assets/SKILL.md',
+    snippets: ['## Asset source gate', '](references/asset-source-gate.md)'],
+  },
+  {
+    file: 'skills/blendops-build/SKILL.md',
+    snippets: ['## Asset source gate', '`generate_3d`'],
+  },
+  {
     file: 'docs/start-here.md',
     snippets: ['](./evals/cli-fallback-mech-prop.md)'],
   },

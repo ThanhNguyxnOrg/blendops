@@ -101,7 +101,7 @@ describe('Architecture Reconciliation & Knowledge/Recipe Foundation', () => {
     );
   });
 
-  test('Scenario 2: 5-layer architecture reconciliation and 15-skill + 211-reference classification audit are complete and deterministic', () => {
+  test('Scenario 2: 5-layer architecture reconciliation and 15-skill + 212-reference classification audit are complete and deterministic', () => {
     const auditData = generateSkillArchitectureAuditData(ROOT);
     assert.equal(auditData.five_layer_architecture.skill_layer.skill_count, 16);
     assert.equal(auditData.five_layer_architecture.knowledge_layer.domain_count, 11);
@@ -118,12 +118,12 @@ describe('Architecture Reconciliation & Knowledge/Recipe Foundation', () => {
     );
 
     assert.equal(auditData.summary.total_skills_audited, 16);
-    assert.equal(auditData.summary.total_skill_references_classified, 211);
+    assert.equal(auditData.summary.total_skill_references_classified, 212);
 
     const sumClassifications = Object.values(
       auditData.summary.reference_classification_breakdown,
     ).reduce((acc, n) => acc + n, 0);
-    assert.equal(sumClassifications, 211, 'All 211 skill reference files must be classified');
+    assert.equal(sumClassifications, 212, 'All 212 skill reference files must be classified');
     assert.ok(
       auditData.summary.reference_classification_breakdown.reusable_cross_skill_knowledge >= 30,
       'Expected >= 30 reusable cross-skill reference files promoted to knowledge records',

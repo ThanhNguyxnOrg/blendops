@@ -121,7 +121,8 @@ blendops/
 │   ├── inspect-glb.mjs                   # Binary GLB 2.0 container & glTF semantic inspector
 │   ├── install-skills.mjs                # Safe project-local installer & CLI (`--doctor`, `--dry-run`, `--write`, `--rollback`, `glb-*`, `catalog-*`, `scene-spec-validate`, `plan-*`, `runtime`, `operation`, `execution`)
 │   ├── run-evals.mjs                     # Deterministic behavioral evaluation runner for all 16 skills
-│   ├── runtime-orchestrator.mjs          # Runtime session discovery, typed operation registry validator, checkpoint/rollback transaction orchestrator, and CLI subcommands
+│   ├── runtime-orchestrator.mjs          # Runtime session discovery, typed operation registry validator, checkpoint/rollback transaction orchestrator, and CLI subcommands (public API; code in `runtime/`)
+│   ├── runtime/                          # Orchestrator modules: security, qualification, mock-runtime, session, execution, smoke, live-client, report, vertical-slice, cli
 │   ├── validate-capability-policy.mjs    # Validates `registry/runtime-capability-policy.json`
 │   ├── validate-compatibility-matrix.mjs # Validates `registry/compatibility-matrix.json` against `docs/install/` & `docs/adapters/`
 │   ├── validate-evidence-packet.mjs      # Validates runtime evidence packets against truth-state promotion gates
@@ -174,7 +175,7 @@ blendops/
 
 ## 5. npm Packaging & Permanent Scope Boundaries
 
-- **Packaged Tarball Scope (`package.json` `"files"`)**: Includes `bin/`, core runtime scripts (`install-skills.mjs` plus its `scripts/cli/` modules, `build-knowledge-catalog.mjs`, `compile-scene-plan.mjs`, `runtime-orchestrator.mjs`, `validate-capability-policy.mjs`, `validate-evidence-packet.mjs`, `export-claude-skills.mjs`, `inspect-glb.mjs`, `generate-glb-handoff-report.mjs`), `docs/knowledge-and-recipe-catalog.md`, `docs/recipes/`, `docs/workflows/`, `docs/examples/blendops-glb-web-handoff/`, `skills/`, `laws/`, `packs/`, `bundles/`, `registry/`, `schemas/`, `README.md`, `LICENSE`, and `CHANGELOG.md`. Excludes test suites (`scripts/test-*.mjs`), CI-only audit generators, dev server, `docs/audits/`, `evals/`, and `.github/`.
+- **Packaged Tarball Scope (`package.json` `"files"`)**: Includes `bin/`, core runtime scripts (`install-skills.mjs` plus its `scripts/cli/` modules, `build-knowledge-catalog.mjs`, `compile-scene-plan.mjs`, `runtime-orchestrator.mjs` plus its `scripts/runtime/` modules, `validate-capability-policy.mjs`, `validate-evidence-packet.mjs`, `export-claude-skills.mjs`, `inspect-glb.mjs`, `generate-glb-handoff-report.mjs`), `docs/knowledge-and-recipe-catalog.md`, `docs/recipes/`, `docs/workflows/`, `docs/examples/blendops-glb-web-handoff/`, `skills/`, `laws/`, `packs/`, `bundles/`, `registry/`, `schemas/`, `README.md`, `LICENSE`, and `CHANGELOG.md`. Excludes test suites (`scripts/test-*.mjs`), CI-only audit generators, dev server, `docs/audits/`, `evals/`, and `.github/`.
 - **Permanent Non-Goals**:
   - Public npm CLI distribution is published as [`blendops@1.0.0`](https://www.npmjs.com/package/blendops); the Agent Skills source is listed on [skills.sh](https://www.skills.sh/ThanhNguyxnOrg/blendops).
   - Official marketplace/plugin listing status remains `Not Published`.

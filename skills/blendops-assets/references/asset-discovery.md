@@ -91,7 +91,7 @@ This skill is BlendOps-specific (no direct analog in Anthropic Superpowers or BM
 
 This skill does not download, generate, fetch, or install any asset. It does not run Blender, configure any MCP path, or touch the network. It produces a plain-language plan in markdown.
 
-If the chosen strategy is `generative`, it is Path 2-only (community `mcp-for-blender`, formerly `ahujasid/blender-mcp`, Hyper3D / Hunyuan3D integrations) with per-path caveats (see `docs/unofficial-runtime-bridges.md`). Actual generation happens in a runtime step, never here.
+If the chosen strategy is `generative`, it is Path 2-only (community `mcp-for-blender`, formerly `ahujasid/blender-mcp`, Hyper3D / Hunyuan3D integrations) with per-path caveats (see `docs/unofficial-runtime-bridges.md`). Actual generation happens in a runtime step, never here. That runtime step still passes the [asset source gate](asset-source-gate.md): in the plan, approved by the user this session, recorded in evidence.
 
 ## Operating procedure
 

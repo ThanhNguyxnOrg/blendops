@@ -107,6 +107,7 @@
     "registry",
     "schemas",
     "scripts/cli",
+    "scripts/runtime",
     "skills"
   ]
 }

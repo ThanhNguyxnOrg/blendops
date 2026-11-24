@@ -19,7 +19,7 @@ The single index for everything in this repo. Bookmark this page.
 | CLI fallback | One scoped run | **Documented upstream** as a first-class Blender CLI surface; see the [scoped mech-prop CLI eval](./evals/cli-fallback-mech-prop.md). |
 | Full official runtime manual eval | Not Run | The scoped CLI run does not cover the full official runtime eval. |
 | Full official runtime eval artifacts | Not Produced | No preview/render/GLB from the full official runtime eval. |
-| Release tag (`v1.0.0`) | Ready | Skills layer (16 skills + 211 references), catalogs, CLI (`35+` targets), and full verification suite are complete. |
+| Release tag (`v1.0.0`) | Ready | Skills layer (16 skills + 212 references), catalogs, CLI (`35+` targets), and full verification suite are complete. |
 | npm CLI package | Published (`blendops@1.0.0`, `latest`) | [Public npm package](https://www.npmjs.com/package/blendops); the CLI entrypoint and transactional project installer ship in the package. |
 | Distribution metadata sync | Automated | ThanhNguyxnAgent checks npm registry + skills.sh on source changes and weekly; see `docs/audits/current/distribution-metadata.json` (created by the first successful live sync). |
 | Knowledge & Recipe Catalog | Implemented & Verified (`90/90` bilingual retrieval evals) | **30** `knowledge.*` records across **11** 3D domains, **10** `recipe.*` blueprints, **20** `source.*` citations, deterministic `catalog-search` / `catalog-resolve` / `plan-compile` CLI, and 15-skill / 211-reference architecture audit in [`knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) and [`audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md). |

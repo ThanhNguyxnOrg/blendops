@@ -2,8 +2,8 @@
   "schemaVersion": "1.0.0",
   "auditPhase": "v1.0.0-current",
   "summary": {
-    "totalTrackedFiles": 590,
-    "npmPackageIncludedFiles": 403,
+    "totalTrackedFiles": 608,
+    "npmPackageIncludedFiles": 417,
     "generatedTrackedFiles": 47,
     "canonicalSkillsCount": 16,
     "lawsCount": 4,
@@ -14,11 +14,11 @@
     "classificationCounts": {
       "configuration": 38,
       "documentation": 87,
-      "historical_record": 20,
+      "historical_record": 21,
       "distribution_artifact": 15,
-      "canonical_source": 291,
+      "canonical_source": 292,
       "generated_artifact": 47,
-      "runtime_build_test_infrastructure": 92
+      "runtime_build_test_infrastructure": 108
     },
     "subsystemCounts": {
       "repository-governance": 4,
@@ -28,38 +28,38 @@
       "bundles-and-packaging": 66,
       "product-and-target-docs": 70,
       "audits-and-provenance": 11,
-      "runtime-and-adapter-evals": 18,
+      "runtime-and-adapter-evals": 19,
       "glb-web-handoff-toolkit": 3,
       "knowledge-and-recipe-catalog": 5,
-      "behavioral-evals": 34,
+      "behavioral-evals": 35,
       "laws-and-packs": 7,
       "package-governance": 2,
       "registry-and-routing": 6,
       "schemas-and-contracts": 16,
-      "ci-and-build-generators": 11,
-      "cli-and-runtime-tools": 23,
-      "test-suites": 22,
+      "ci-and-build-generators": 12,
+      "cli-and-runtime-tools": 36,
+      "test-suites": 23,
       "quality-and-skill-reviews": 7,
-      "skills-catalog": 262
+      "skills-catalog": 263
     },
     "topLevelCounts": {
       "(root)": 15,
       ".github": 14,
       "bin": 1,
       "bundles": 66,
-      "docs": 103,
-      "evals": 34,
+      "docs": 104,
+      "evals": 35,
       "laws": 5,
       "packs": 2,
       "registry": 10,
       "schemas": 16,
-      "scripts": 56,
+      "scripts": 71,
       "skill-reviews": 7,
-      "skills": 261
+      "skills": 262
     },
     "referenceIntegrity": {
-      "markdownFiles": 424,
-      "jsModules": 57,
+      "markdownFiles": 426,
+      "jsModules": 72,
       "schemas": 16,
       "workflows": 7
     }
@@ -1562,7 +1562,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 22255,
-      "sha256": "6693f45ff6a80e0eeef94085f02df0a86a16c6cbee721833a37be30c86423c48"
+      "sha256": "213c5502d961e566c5d9c9c4aca9106e08afad58840d3b99f0b55e4a193e5414"
     },
     {
       "path": "docs/adapter-registry.md",
@@ -1741,8 +1741,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 20748,
-      "sha256": "32c38c844f2e045ea634b5251ebd7ec5143f2817c563ad71018bf4856d595068"
+      "byteSize": 20998,
+      "sha256": "89944370aa28fb4b564a6066e4840e1302091b3235b2b1733bf883e3c9768cd7"
     },
     {
       "path": "docs/audits/audited-inputs.manifest.json",
@@ -1756,8 +1756,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3560,
-      "sha256": "6fe2669b1b65963bd00386dc55eb86f11c4f4913e9d7a9d39880ed3d72b77f51"
+      "byteSize": 3583,
+      "sha256": "cf979555044336a6941431c1aa3872fec44a4394dc454f3ef123f89f3b790d85"
     },
     {
       "path": "docs/audits/current/README.md",
@@ -1891,8 +1891,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 314573,
-      "sha256": "f46d30f4e9dc9a9410a3afb611ac379d907abbc1d832b102584911c9d7ea6ca0"
+      "byteSize": 315713,
+      "sha256": "5ccc1ed8035778cf91d6ebee80d919fc99c877a259477b757a919e92c5387bdc"
     },
     {
       "path": "docs/audits/skill-architecture-audit.md",
@@ -1907,7 +1907,7 @@
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
       "byteSize": 21502,
-      "sha256": "d5cd1f53bffbf3b024ce273c8fdb655b87725f089b4986d8aff45cea4a12148f"
+      "sha256": "de42ccdda004a9e7117e7dd1f98b7824e88cd89871159eb2f5df969ae1cbaa8e"
     },
     {
       "path": "docs/blender-version-compatibility.md",
@@ -1981,8 +1981,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 7449,
-      "sha256": "c5e545694975a02f8a0360fdbe2efcdd2e79cf76e38811bafd0742e7a8365701"
+      "byteSize": 7679,
+      "sha256": "f69607f0071d67c378842d1a1f5dde1cc8c5ef7051932c8826df83e5d5d1aece"
     },
     {
       "path": "docs/evals/adapter-empirical-verification.md",
@@ -2238,6 +2238,21 @@
       "safeToMoveOrRemove": false,
       "byteSize": 13531,
       "sha256": "ae7337735b61f0ca2f45eefbdc854701f49d08cd47860803eceaed7b6ceb9b15"
+    },
+    {
+      "path": "docs/evals/skill-selection.md",
+      "fileType": ".md",
+      "classification": "historical_record",
+      "purpose": "Evaluation packet or recorded verification evidence (skill-selection.md)",
+      "owningSubsystem": "runtime-and-adapter-evals",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 2820,
+      "sha256": "9257eade62dc56aab0d7fe309edd4137912a76954e92c89ae9b2141aed11d50c"
     },
     {
       "path": "docs/examples/agent-install-prompt.md",
@@ -2957,7 +2972,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 8779,
-      "sha256": "5a36a839eec367dbdee8455533cffa059711ee67b12f8bf700e68bc126fc2d34"
+      "sha256": "30b07e2d309c3908db974e8aad4d94da967df8508edcf5a3d95e01c75e7d16ed"
     },
     {
       "path": "docs/runtime-stack-strategy.md",
@@ -3031,8 +3046,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 8902,
-      "sha256": "22669e06b32af7e9b490c40114577a4f539d604c57904aad405c774a777f1141"
+      "byteSize": 9120,
+      "sha256": "e17efb45b859bc56f1c8765450a726bd2c1d80e00acb33f640788244f23c8b48"
     },
     {
       "path": "docs/workflow-contract.md",
@@ -3363,6 +3378,21 @@
       "safeToMoveOrRemove": false,
       "byteSize": 4000,
       "sha256": "3d8bd1f0845c6ecff6b1f515a63bd69d283fddc3a8956d2bbf302309bd1ec7c0"
+    },
+    {
+      "path": "evals/skill-selection-evals.json",
+      "fileType": ".json",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Bilingual skill selection cases: which skill a request should load from name and description alone",
+      "owningSubsystem": "behavioral-evals",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 12255,
+      "sha256": "de0c4013c8b625dd5e2b9b1166cf44a09865f5a35e9f8c35a026dcdbaa0ce9c9"
     },
     {
       "path": "evals/suites/blendops-assets.eval.json",
@@ -3706,8 +3736,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4708,
-      "sha256": "7d3dfcc6443636d1abcd0fbe4eb4026c442805fa2ad74df65daf4be076106b73"
+      "byteSize": 4833,
+      "sha256": "4c7e63c3c021d8848621e965b2255cdb56c9e1d982faa8bdbde6ad499d9dba1a"
     },
     {
       "path": "packs/README.md",
@@ -4186,8 +4216,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 41779,
-      "sha256": "d677526b9f49e839a805e65cbdd0e08ef75414b68a19f9c712689ba0c9454f30"
+      "byteSize": 42021,
+      "sha256": "f217f7ad34f0ae0a34926f0e890eb7db213b8c036c5996603193cb3b957d2b07"
     },
     {
       "path": "scripts/cli/args.mjs",
@@ -4472,7 +4502,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 94215,
-      "sha256": "1e0211e6cbe3c43cf5d731775edb40a2f50c02701cf83e2052eeb7246ad0c9d0"
+      "sha256": "cea08f5bcacad895762806727e718e67cb731abb7c01e203e2ccc0e4e2bfef9d"
     },
     {
       "path": "scripts/generate-glb-handoff-report.mjs",
@@ -4550,6 +4580,21 @@
       "sha256": "245058537d2a3ac43aca462c595c115c1efbd875e40adff9c6075fbb9af2e062"
     },
     {
+      "path": "scripts/run-skill-selection-eval.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Repository generator, validator, or preview server script (run-skill-selection-eval.mjs)",
+      "owningSubsystem": "ci-and-build-generators",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 8295,
+      "sha256": "69d37c3adad95d48b312461e6ad7a0b66b80712b7fbf46b30dbe5a3a6e54cb69"
+    },
+    {
       "path": "scripts/runtime-orchestrator.mjs",
       "fileType": ".mjs",
       "classification": "runtime_build_test_infrastructure",
@@ -4561,8 +4606,203 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 299589,
-      "sha256": "40798ce830ac339598c4dedc1d2e64903062e4185ef69f97764f0e4d1f99c4c8"
+      "byteSize": 3787,
+      "sha256": "c80c5743c08468d6becda124d9f4eaaf6bbae4707c19a92ce048cac44688495b"
+    },
+    {
+      "path": "scripts/runtime/cli-fallback.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (cli-fallback.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 4569,
+      "sha256": "af8325373d2dd20ee90d9d29471395e8a5e69005c3e1624af9d857a2c4e616b9"
+    },
+    {
+      "path": "scripts/runtime/cli.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (cli.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 23755,
+      "sha256": "7a3254bcd010ab3b254f62a8acc83783f6e6b8f54047c144609bca1e7e10e10d"
+    },
+    {
+      "path": "scripts/runtime/constants.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (constants.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 7264,
+      "sha256": "77ea76e506aa8f74014ae6177be6cc9fd7bd3c3d68969690be91ef64667c46b2"
+    },
+    {
+      "path": "scripts/runtime/execution.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (execution.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 62773,
+      "sha256": "957a8bfe7adbe0a2b5acc923599fc86222db64d4d68e85f416b7f8006aaf13dd"
+    },
+    {
+      "path": "scripts/runtime/live-client.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (live-client.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 22705,
+      "sha256": "689fceb37ce2cf741eaeaa5926420435112e44290f6698a12e54f4587aaee18a"
+    },
+    {
+      "path": "scripts/runtime/mock-runtime.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (mock-runtime.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 32733,
+      "sha256": "aedeb47a86a3e902aadafc2444346c5012793d8d1bfcfa30537ed6f0513969ab"
+    },
+    {
+      "path": "scripts/runtime/paths.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (paths.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 276,
+      "sha256": "96432e5edc82a2466b347c8d8f9470acf033a63e34838ebe7846bc46abfd1380"
+    },
+    {
+      "path": "scripts/runtime/qualification.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (qualification.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 51331,
+      "sha256": "2d15527898deae26f4de632d76ab1c0e2a16657708a530bfc3064a0fbb668fd3"
+    },
+    {
+      "path": "scripts/runtime/report.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (report.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 10949,
+      "sha256": "635ab1a777da53e8cf699dd7608c535daf33ba9175b114baf212e9a1cd756941"
+    },
+    {
+      "path": "scripts/runtime/security.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (security.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 24292,
+      "sha256": "6c7ba6774aa7d5ea2960dc97ee18fa69e7589bdf227f3c0d1218d085bcb5f38c"
+    },
+    {
+      "path": "scripts/runtime/session.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (session.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 23901,
+      "sha256": "6b2271d6dfb1e16977871f98648691b45169fcae877e7888034f18b666a14b99"
+    },
+    {
+      "path": "scripts/runtime/smoke.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (smoke.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 33101,
+      "sha256": "8ca2df81878e3db711ce2382338ec124158f00b6392c997c7d7b6c01f17195ea"
+    },
+    {
+      "path": "scripts/runtime/vertical-slice.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (vertical-slice.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 6643,
+      "sha256": "733fd9eba4e3442bd39aefc5609719f76659008d247701bb6adab8ab0841fa7f"
     },
     {
       "path": "scripts/sync-current-audit-digest.mjs",
@@ -4742,7 +4982,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 12929,
-      "sha256": "82ee20bb702008a4800f20a49a86bbb8b116d767e0c601b42d4a346f412dbe09"
+      "sha256": "0153f38e3c4f797c018ca62c6fea868d04a6944e1599cc6f083eb12bc1e880b5"
     },
     {
       "path": "scripts/test-live-runtime-eval.mjs",
@@ -4877,7 +5117,22 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 26012,
-      "sha256": "cf2d8963241be1b62b28cf88481e300d4bad0ef359697b2508fece3407e72d5e"
+      "sha256": "5a221ec03bfab9cb7e1ccdd40b1fa35c6933b5963bc4e39b48615210fa7cdc88"
+    },
+    {
+      "path": "scripts/test-skill-selection.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Automated regression and verification test suite (test-skill-selection.mjs)",
+      "owningSubsystem": "test-suites",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 3857,
+      "sha256": "09951d905c7994b4f003e34cb90de980a334bcb2dfed3d8209f1c91b14c143c1"
     },
     {
       "path": "scripts/test-skill-templates.mjs",
@@ -4966,8 +5221,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 33229,
-      "sha256": "40e86e5cbd19bdc31b02f878fab27a1db94e7c7f99ca7227c549235d49f19aff"
+      "byteSize": 33451,
+      "sha256": "83433cc4b26df98652e206cfa56602a8cb69392b314df05a23f789dafa3dffee"
     },
     {
       "path": "skill-reviews/README.md",
@@ -5146,8 +5401,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 12319,
-      "sha256": "7ad7d3ab5723cc3ee1e10ac6764f5a6b33c5fdbd76e33ebbc0942b8545b6231c"
+      "byteSize": 13028,
+      "sha256": "ea487b3e3472f89a38a90e099a9657a08ba858db522300af27ae89f72a8d3b44"
     },
     {
       "path": "skills/blendops-assets/contract.json",
@@ -5176,8 +5431,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 11788,
-      "sha256": "1298ed33642cd1528f420538d499d24cb8962262a465103401b3b240565fe465"
+      "byteSize": 11936,
+      "sha256": "3991942398d95603925d1fd2ad88b54fc96edc7967915eccf0b3ac97ad8f6f58"
     },
     {
       "path": "skills/blendops-assets/references/asset-fallback-strategy.md",
@@ -5223,6 +5478,21 @@
       "safeToMoveOrRemove": false,
       "byteSize": 11780,
       "sha256": "e94fcba341e8122946dcfec08edd7558f3640b9a8b7003346709d854b372a479"
+    },
+    {
+      "path": "skills/blendops-assets/references/asset-source-gate.md",
+      "fileType": ".md",
+      "classification": "canonical_source",
+      "purpose": "Domain reference guide attached to canonical skill",
+      "owningSubsystem": "skills-catalog",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 1755,
+      "sha256": "25be36d6bddd1f501a5e4cd0048acba3f3dd8783f3eca327170b752af98c7db1"
     },
     {
       "path": "skills/blendops-assets/references/asset-strategy-decision-tree.md",
@@ -5776,8 +6046,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 9912,
-      "sha256": "08f5ebef6777993f0a04dcf8a8155ae72e917d5a34bdddf2b6d2939f20bcaf35"
+      "byteSize": 10924,
+      "sha256": "9b1be8928947a8447cb990399319ab577295ca56c65aaf0a4205b19354141dc4"
     },
     {
       "path": "skills/blendops-build/contract.json",
